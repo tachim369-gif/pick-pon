@@ -45,30 +45,8 @@
     margin: 0 auto;
     padding: 16px 16px calc(32px + env(safe-area-inset-bottom));
   }
-  label.title {
-    display: block;
-    font-weight: 700;
-    margin-bottom: 6px;
-  }
-  textarea {
-    width: 100%;
-    min-height: 260px;
-    padding: 12px;
-    font: inherit;
-    color: inherit;
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    resize: vertical;
-  }
-  textarea:focus { outline: 2px solid var(--green); outline-offset: 1px; }
-  #summary {
-    min-height: 1.6em;
-    margin: 8px 2px 14px;
-    color: var(--sub);
-    font-size: 15px;
-  }
-  #summary.warn { color: var(--warn); font-weight: 700; }
+  section[hidden], div[hidden], ul[hidden] { display: none !important; }
+  label.title { display: block; font-weight: 700; margin-bottom: 6px; }
   button {
     font: inherit;
     font-weight: 700;
@@ -83,31 +61,118 @@
   button.secondary { background: #fff; color: var(--green); flex: 1; }
   button.secondary:active { background: #e8f0ea; }
   button:disabled { opacity: 0.4; cursor: default; }
-  #resultArea { margin-top: 24px; }
-  #resultArea[hidden] { display: none; }
-  h2 {
-    font-size: 16px;
-    margin: 0 0 10px;
-    padding-bottom: 6px;
-    border-bottom: 2px solid var(--green);
+  .row { display: flex; gap: 10px; margin-top: 14px; }
+  .row button { padding-left: 8px; padding-right: 8px; font-size: 15px; white-space: nowrap; }
+
+  /* スタート画面 */
+  .pageTitle { font-weight: 700; font-size: 18px; margin: 4px 0 12px; }
+  button.method {
+    width: 100%; display: block; text-align: left;
+    background: var(--card); color: var(--text);
+    border: 1px solid var(--line); border-left: 6px solid var(--green);
+    padding: 14px 16px; margin-bottom: 10px;
   }
-  .group {
-    display: flex;
-    gap: 12px;
+  button.method:active { background: #e8f0ea; }
+  button.method .mt { display: block; font-size: 18px; }
+  button.method .ms { display: block; font-weight: 400; font-size: 14px; color: var(--sub); }
+  button.method:disabled { border-left-color: var(--line); }
+  button.link { background: none; border: none; color: var(--green); font-weight: 400; padding: 4px 0; min-height: 40px; }
+  .textIn {
+    width: 100%;
+    padding: 12px;
+    font: inherit; color: inherit;
     background: var(--card);
     border: 1px solid var(--line);
     border-radius: 10px;
-    padding: 12px 14px;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
   }
-  .group .no {
-    flex: 0 0 auto;
-    font-weight: 700;
-    color: var(--green);
-    white-space: nowrap;
+  .textIn:focus { outline: 2px solid var(--green); outline-offset: 1px; }
+  .eventName { font-size: 15px; color: var(--sub); margin-bottom: 2px; word-break: break-all; }
+  .eventName:empty { display: none; }
+
+  .sub { font-size: 14px; color: var(--sub); margin: -6px 0 12px; word-break: break-all; }
+  .grow { display: flex; gap: 8px; margin-bottom: 10px; }
+  .grow button.method { margin-bottom: 0; flex: 1; min-width: 0; }
+  .grow button.method .mt { word-break: break-all; }
+  .grow button.gedit { flex: 0 0 auto; background: #fff; color: var(--green); font-size: 15px; padding: 8px 14px; }
+  button.addGroup { width: 100%; background: #fff; color: var(--green); border-style: dashed; }
+  .titleRow { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+  .titleRow label.title, .titleRow .title { margin-bottom: 0; font-weight: 700; }
+  button.danger { width: 100%; margin-top: 28px; background: #fff; color: var(--warn); border-color: var(--warn); }
+  #editList { list-style: none; margin: 0; padding: 0; background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+  #editList:empty { display: none; }
+  #editList li { display: flex; align-items: center; border-bottom: 1px solid var(--line); }
+  #editList li:last-child { border-bottom: none; }
+  #editList button.open {
+    flex: 1; min-width: 0; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    border: none; border-radius: 0; background: none; color: inherit; font-weight: 400; text-align: left;
+    padding: 8px 4px 8px 14px; min-height: 54px;
   }
+  #editList button.open:active { background: #e8f0ea; }
+  #editList .who { min-width: 0; word-break: break-all; }
+  #editList .who .org, #memberList .org { display: block; font-size: 13px; color: var(--sub); line-height: 1.3; }
+  #editList .arrow { flex: 0 0 auto; color: var(--sub); }
+  .hint { font-size: 14px; color: var(--sub); margin: 8px 2px 0; }
+  .hint:empty { display: none; }
+  .fieldMsg { margin: -10px 2px 12px; font-size: 15px; color: var(--warn); font-weight: 700; }
+  .fieldMsg:empty { display: none; }
+  input[type=date].textIn { display: block; min-height: 50px; -webkit-appearance: none; appearance: none; }
+  textarea.textIn { resize: vertical; min-height: 90px; display: block; }
+  #editList button.del { flex: 0 0 auto; border: none; background: none; color: var(--sub); font-size: 20px; min-height: 50px; padding: 0 16px; }
+
+  /* メンバー */
+  .addRow { display: flex; gap: 8px; }
+  .addRow input {
+    flex: 1; min-width: 0;
+    padding: 12px;
+    font: inherit; color: inherit;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+  .addRow input:focus { outline: 2px solid var(--green); outline-offset: 1px; }
+  .addRow button { flex: 0 0 auto; background: var(--green); color: #fff; }
+  #addMsg { min-height: 1.6em; margin: 4px 2px 6px; font-size: 15px; color: var(--warn); font-weight: 700; }
+  #memberList { list-style: none; margin: 0; padding: 0; background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+  #memberList:empty { display: none; }
+  #memberList li { display: flex; align-items: center; border-bottom: 1px solid var(--line); }
+  #memberList li:last-child { border-bottom: none; }
+  #memberList label { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; padding: 10px 12px; min-height: 50px; cursor: pointer; word-break: break-all; }
+  #memberList input[type=checkbox] { flex: 0 0 auto; width: 24px; height: 24px; accent-color: var(--green); }
+  #memberList li.off .name { color: var(--sub); }
+  #memberList button.del { flex: 0 0 auto; border: none; background: none; color: var(--sub); font-size: 20px; min-height: 50px; padding: 0 16px; }
+  .bulk { display: flex; gap: 10px; margin-top: 10px; }
+  .bulk button { flex: 1; background: #fff; color: var(--green); min-height: 44px; padding: 8px 10px; font-size: 15px; }
+  #summary { min-height: 1.6em; margin: 8px 2px 14px; color: var(--sub); font-size: 15px; }
+  #summary.warn { color: var(--warn); font-weight: 700; }
+
+  /* 抽選 */
+  .drawHead { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+  .drawHead .t { font-weight: 700; font-size: 18px; }
+  .drawHead .r { color: var(--sub); font-size: 15px; white-space: nowrap; }
+  .dot { display: inline-block; width: 16px; height: 16px; border-radius: 50%; flex: 0 0 auto; border: 1px solid rgba(0,0,0,0.18); }
+  #quota { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  #quota .chip { display: flex; align-items: center; gap: 6px; background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; font-size: 15px; }
+  #quota .chip.full { opacity: 0.45; }
+  #drawList { list-style: none; margin: 0; padding: 0; background: var(--card); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  #drawList li { border-bottom: 1px solid var(--line); }
+  #drawList li:last-child { border-bottom: none; }
+  #drawList button {
+    width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    border: none; border-radius: 0; background: none; color: inherit;
+    font-weight: 400; text-align: left; padding: 10px 14px; min-height: 54px;
+  }
+  #drawList button:active { background: #e8f0ea; }
+  #drawList button .name { word-break: break-all; }
+  #drawList button .res { display: flex; align-items: center; gap: 6px; font-weight: 700; white-space: nowrap; }
+  #drawList button.done { cursor: default; background: #f7f8f5; }
+  #drawList button.done:active { background: #f7f8f5; }
+  .group { display: flex; gap: 10px; align-items: flex-start; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; }
+  .group .no { flex: 0 0 auto; display: flex; align-items: center; gap: 6px; font-weight: 700; white-space: nowrap; }
+  .group .no .dot { margin-top: 1px; }
   .group .members { flex: 1; word-break: break-all; }
-  .row { display: flex; gap: 10px; margin-top: 14px; }
+  #btnBack2 { width: 100%; margin-top: 10px; background: none; border: none; color: var(--sub); font-weight: 400; text-decoration: underline; min-height: 44px; }
+
   #toast {
     position: fixed;
     left: 50%;
@@ -128,17 +193,93 @@
 <body>
 <header>Pick Pon</header>
 <main>
-  <label class="title" for="names">参加者（1行に1人）</label>
-  <textarea id="names" placeholder="例）田中&#10;　　鈴木" autocomplete="off" autocapitalize="off" spellcheck="false"></textarea>
-  <div id="summary"></div>
-  <button id="btnDraw" class="primary" type="button">組み分けする</button>
+  <!-- ① グループをえらぶ -->
+  <section id="viewHome" hidden>
+    <div class="pageTitle">グループをえらぶ</div>
+    <div id="homeEmpty" class="sub" hidden>まず、グループ（名簿）を作ってください</div>
+    <div id="groupList"></div>
+    <button id="btnAddGroup" class="addGroup" type="button">＋ グループを追加</button>
+  </section>
 
-  <section id="resultArea" hidden>
-    <h2>結果</h2>
+  <!-- グループの編集（名簿） -->
+  <section id="viewEdit" hidden>
+    <button id="btnEditBack" class="link" type="button">← 戻る</button>
+    <div class="pageTitle">グループの編集</div>
+    <label class="title" for="groupName">グループ名</label>
+    <input id="groupName" class="textIn" type="text" placeholder="例）ゴルフ仲間" maxlength="30" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
+    <label class="title" for="newName">メンバー</label>
+    <div class="addRow">
+      <input id="newName" type="text" placeholder="名前を入力" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
+      <button id="btnAdd" type="button">追加</button>
+    </div>
+    <div id="addMsg"></div>
+    <ul id="editList"></ul>
+    <div class="hint" id="editHint">名前をタップすると、所属や連絡先などを入力できます</div>
+    <button id="btnDelGroup" class="danger" type="button">このグループを削除</button>
+  </section>
+
+  <!-- メンバーの編集（名簿の1人分） -->
+  <section id="viewMember" hidden>
+    <button id="btnMemberBack" class="link" type="button">← 戻る</button>
+    <div class="pageTitle">メンバーの編集</div>
+    <div class="sub">名前以外は、入れなくてもOK</div>
+    <label class="title" for="mName">名前</label>
+    <input id="mName" class="textIn" type="text" maxlength="40" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
+    <div class="fieldMsg" id="mNameMsg"></div>
+    <label class="title" for="mOrg">所属</label>
+    <input id="mOrg" class="textIn" type="text" placeholder="例）〇〇会" maxlength="40" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
+    <label class="title" for="mBirth">生年月日</label>
+    <input id="mBirth" class="textIn" type="date" min="1900-01-01" max="2100-12-31">
+    <label class="title" for="mContact">連絡先</label>
+    <input id="mContact" class="textIn" type="text" placeholder="例）090-1234-5678" maxlength="80" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
+    <label class="title" for="mMemo">メモ</label>
+    <textarea id="mMemo" class="textIn" rows="3" maxlength="500" autocomplete="off" autocapitalize="off" spellcheck="false"></textarea>
+  </section>
+
+  <!-- ② 抽選方法をえらぶ -->
+  <section id="viewMethod" hidden>
+    <button id="btnMethodBack" class="link" type="button">← 戻る</button>
+    <div class="pageTitle">抽選方法をえらぶ</div>
+    <div class="sub" id="methodGroup"></div>
+    <button class="method" id="btnBalls" type="button"><span class="mt">色の玉で組み分け</span><span class="ms">例）11人を3・4・4に分ける</span></button>
+    <button class="method" type="button" disabled><span class="mt">あみだくじ</span><span class="ms">準備中</span></button>
+    <button class="method" type="button" disabled><span class="mt">順番を決める</span><span class="ms">準備中</span></button>
+  </section>
+
+  <!-- ③ 準備（イベント名と参加者） -->
+  <section id="viewMembers" hidden>
+    <button id="btnSetupBack" class="link" type="button">← 戻る</button>
+    <div class="pageTitle">色の玉で組み分け</div>
+    <div class="sub" id="setupGroup"></div>
+    <label class="title" for="eventName">イベント名（なくてもOK）</label>
+    <input id="eventName" class="textIn" type="text" placeholder="例）10月コンペ" maxlength="40" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
+    <div class="titleRow"><span class="title">参加者をえらぶ</span><button id="btnEditHere" class="link" type="button">名簿を編集</button></div>
+    <ul id="memberList"></ul>
+    <div class="bulk" id="bulk" hidden>
+      <button id="btnAllOn" type="button">全員にチェック</button>
+      <button id="btnAllOff" type="button">全員はずす</button>
+    </div>
+    <div id="summary"></div>
+    <button id="btnStart" class="primary" type="button">抽選をはじめる</button>
+  </section>
+
+  <!-- ④ 抽選 -->
+  <section id="viewDraw" hidden>
+    <div class="eventName" id="drawEvent"></div>
+    <div class="drawHead"><span class="t" id="drawTitle"></span><span class="r" id="drawRemain"></span></div>
+    <div id="quota"></div>
+    <ul id="drawList"></ul>
     <div id="groups"></div>
-    <div class="row">
-      <button id="btnRedo" class="secondary" type="button">やり直す</button>
-      <button id="btnCopy" class="secondary" type="button">コピー</button>
+    <div class="row" id="rowDrawing">
+      <button id="btnRest" class="secondary" type="button">残りをまとめて抽選</button>
+      <button id="btnBack" class="secondary" type="button">メンバーに戻る</button>
+    </div>
+    <div id="rowDone" hidden>
+      <div class="row">
+        <button id="btnCopy" class="secondary" type="button">コピー</button>
+        <button id="btnRedo" class="secondary" type="button">最初からやり直す</button>
+      </div>
+      <button id="btnBack2" type="button">メンバーに戻る</button>
     </div>
   </section>
 </main>
@@ -150,21 +291,148 @@
 
   // ---- 保存データ（版番号つき。形を変えるときは v を上げて移行処理を書く） ----
   var STORAGE_KEY = 'pickpon_data';
-  var DATA_VERSION = 1;
+  var DATA_VERSION = 6;
   var MAX_PER_GROUP = 4;
   var MIN_PLAYERS = 3;
+  var NO_NAME = '（名前なし）';
 
-  var data = { v: DATA_VERSION, namesText: '', groups: null };
+  // 組の色（画面は hex、コピー文は絵文字）
+  var COLORS = [
+    { hex: '#e5382b', emoji: '🔴' }, // 赤
+    { hex: '#1f7ae0', emoji: '🔵' }, // 青
+    { hex: '#f2b705', emoji: '🟡' }, // 黄
+    { hex: '#2fa84f', emoji: '🟢' }, // 緑
+    { hex: '#f57c1f', emoji: '🟠' }, // 橙
+    { hex: '#7b47d1', emoji: '🟣' }, // 紫
+    { hex: '#8a5a3c', emoji: '🟤' }, // 茶
+    { hex: '#2b2b2b', emoji: '⚫' },       // 黒
+    { hex: '#ffffff', emoji: '⚪' }        // 白
+  ];
+  function colorOf(g) { return COLORS[g % COLORS.length]; }
+
+  // groups:    グループ（名簿）の一覧 [{ id, name, members: [メンバー] }]
+  //            メンバー = { id, name, on: 今回参加するか, org: 所属, birth: 生年月日 'YYYY-MM-DD', contact: 連絡先, memo: メモ }
+  //            （org / birth / contact / memo は空でもよい）
+  // eventName: イベント名（空でもよい）
+  // sel:       いま選んでいるもの { groupId: グループ or null, method: 'balls' or null }
+  // draw:      抽選中・抽選済みの状態。null なら抽選していない
+  //            { groupId, sizes: [組ごとの人数], ids: [参加者の id], picked: [[id, 組の番号(0始まり)], ...] 引いた順 }
+  var data = { v: DATA_VERSION, groups: [], nextId: 1, eventName: '', sel: { groupId: null, method: null }, draw: null };
+  var editId = null;       // 編集中のグループ（保存しない）
+  var editMemberId = null; // 編集中のメンバー（保存しない）
+
+  function trim(s) { return String(s).replace(/^[\s　]+|[\s　]+$/g, ''); }
+  function newId() { return data.nextId++; }
+  function str(v) { return typeof v === 'string' ? v : ''; }
+  function newMember(id, name) { return { id: id, name: name, on: true, org: '', birth: '', contact: '', memo: '' }; }
+
+  function groupById(id) {
+    for (var i = 0; i < data.groups.length; i++) if (data.groups[i].id === id) return data.groups[i];
+    return null;
+  }
+  function groupLabel(g) { return trim(g.name) || NO_NAME; }
+  function memberById(g, id) {
+    for (var i = 0; i < g.members.length; i++) if (g.members[i].id === id) return g.members[i];
+    return null;
+  }
+
+  function cleanMembers(list) {
+    var out = [];
+    if (!Array.isArray(list)) return out;
+    list.forEach(function (m) {
+      if (m && typeof m.name === 'string' && m.name) {
+        out.push({
+          id: Number(m.id) || 0, name: m.name, on: m.on !== false,
+          org: str(m.org), birth: /^\d{4}-\d{2}-\d{2}$/.test(m.birth) ? m.birth : '', contact: str(m.contact), memo: str(m.memo)
+        });
+      }
+    });
+    return out;
+  }
+
+  // 番号が無い・重なっているものに新しい番号を付ける。メンバーの番号を付け直したら true
+  function fixIds() {
+    var seen = {}, max = 0, todo = [], memberFixed = false;
+    function visit(o, isMember) {
+      if (o.id > 0 && o.id === Math.floor(o.id) && !seen[o.id]) { seen[o.id] = true; if (o.id > max) max = o.id; }
+      else { todo.push(o); if (isMember) memberFixed = true; }
+    }
+    data.groups.forEach(function (g) { g.members.forEach(function (m) { visit(m, true); }); });
+    data.groups.forEach(function (g) { visit(g, false); });
+    todo.forEach(function (o) { o.id = ++max; });
+    data.nextId = max + 1;
+    return memberFixed;
+  }
+
+  function readDraw(d) {
+    if (!d || !Array.isArray(d.sizes) || !Array.isArray(d.ids) || !Array.isArray(d.picked)) return null;
+    var grp = groupById(d.groupId);
+    if (!grp) return null;
+    var known = {}, total = 0, ok = true;
+    grp.members.forEach(function (m) { known[m.id] = true; });
+    d.sizes.forEach(function (n) { if (!(n > 0) || n !== Math.floor(n)) ok = false; total += n; });
+    d.ids.forEach(function (id) { if (!known[id]) ok = false; });
+    if (!ok || total !== d.ids.length || d.ids.length === 0) return null;
+    var used = d.sizes.map(function () { return 0; }), seen = {};
+    d.picked.forEach(function (p) {
+      if (!Array.isArray(p) || d.ids.indexOf(p[0]) < 0 || seen[p[0]] || !(p[1] >= 0 && p[1] < d.sizes.length)) { ok = false; return; }
+      seen[p[0]] = true; used[p[1]]++;
+    });
+    used.forEach(function (n, g) { if (n > d.sizes[g]) ok = false; });
+    return ok ? { groupId: grp.id, sizes: d.sizes.slice(), ids: d.ids.slice(), picked: d.picked.map(function (p) { return [p[0], p[1]]; }) } : null;
+  }
 
   function loadData() {
     try {
       var raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return;
       var d = JSON.parse(raw);
-      if (d && d.v === DATA_VERSION) {
-        data.namesText = typeof d.namesText === 'string' ? d.namesText : '';
-        data.groups = Array.isArray(d.groups) ? d.groups : null;
+      if (!d) return;
+      if (d.v === 5 || d.v === DATA_VERSION) {
+        // v5 → v6: メンバーに所属などの項目が増えただけ（空で始まる）
+        if (Array.isArray(d.groups)) {
+          d.groups.forEach(function (g) {
+            if (g && typeof g === 'object') {
+              data.groups.push({ id: Number(g.id) || 0, name: typeof g.name === 'string' ? g.name : '', members: cleanMembers(g.members) });
+            }
+          });
+        }
+        var broken = fixIds();
+        data.nextId = Math.max(Number(d.nextId) || 1, data.nextId);
+        data.eventName = typeof d.eventName === 'string' ? d.eventName : '';
+        if (d.sel && groupById(d.sel.groupId)) {
+          data.sel.groupId = d.sel.groupId;
+          data.sel.method = d.sel.method === 'balls' ? 'balls' : null;
+        }
+        if (!broken) data.draw = readDraw(d.draw);
+        if (d.v === 5) saveData();
+      } else if (d.v >= 1 && d.v <= 4) {
+        // 旧形式（名簿が1つだけ）→ その名簿を1つ目のグループとして引き継ぐ
+        var members = [];
+        if (d.v === 1) {
+          var seen = {};
+          parseNames(typeof d.namesText === 'string' ? d.namesText : '').forEach(function (n) {
+            if (seen[n]) return;
+            seen[n] = true;
+            members.push(newMember(0, n));
+          });
+        } else {
+          members = cleanMembers(d.members);
+        }
+        if (members.length > 0) data.groups.push({ id: 0, name: 'グループ1', members: members });
+        var broken2 = fixIds();
+        data.nextId = Math.max(Number(d.nextId) || 1, data.nextId);
+        if (data.groups.length > 0 && data.groups[0].id >= data.nextId) data.nextId = data.groups[0].id + 1;
+        if (d.v >= 3 && d.draw && data.groups.length > 0 && !broken2) {
+          data.draw = readDraw({ groupId: data.groups[0].id, sizes: d.draw.sizes, ids: d.draw.ids, picked: d.draw.picked });
+        }
+        if (d.v === 4) {
+          data.eventName = typeof d.eventName === 'string' ? d.eventName : '';
+          if (d.method === 'balls' && data.groups.length > 0) { data.sel.groupId = data.groups[0].id; data.sel.method = 'balls'; }
+        }
+        saveData();
       }
+      if (data.draw) { data.sel.groupId = data.draw.groupId; data.sel.method = 'balls'; }
     } catch (e) { /* 読めないときは空で始める */ }
   }
 
@@ -174,90 +442,303 @@
 
   // ---- 計算 ----
   function parseNames(text) {
-    return text.split(/\r?\n/).map(function (s) {
-      return s.replace(/^[\s\u3000]+|[\s\u3000]+$/g, '');
-    }).filter(function (s) { return s.length > 0; });
+    return text.split(/[\r\n、,，]+/).map(trim).filter(function (s) { return s.length > 0; });
   }
 
-  function findDuplicates(names) {
-    var seen = {}, dup = [];
-    names.forEach(function (n) {
-      if (seen[n] === 1) dup.push(n);
-      seen[n] = (seen[n] || 0) + 1;
-    });
-    return dup;
-  }
-
-  // 例: 11人 → [4,4,3]
+  // 例: 11人 → [3,4,4]（少ない組を先に）
   function groupSizes(n) {
     var g = Math.ceil(n / MAX_PER_GROUP);
     var base = Math.floor(n / g), extra = n % g, sizes = [];
-    for (var i = 0; i < g; i++) sizes.push(i < extra ? base + 1 : base);
+    for (var i = 0; i < g; i++) sizes.push(i >= g - extra ? base + 1 : base);
     return sizes;
   }
 
-  function shuffle(arr) {
-    var a = arr.slice();
-    for (var i = a.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var t = a[i]; a[i] = a[j]; a[j] = t;
-    }
-    return a;
+  function memberName(id) {
+    var grp = groupById(data.draw.groupId);
+    if (grp) for (var i = 0; i < grp.members.length; i++) if (grp.members[i].id === id) return grp.members[i].name;
+    return '';
   }
 
-  function makeGroups(names) {
-    var mixed = shuffle(names), sizes = groupSizes(names.length), groups = [], p = 0;
-    sizes.forEach(function (s) { groups.push(mixed.slice(p, p + s)); p += s; });
+  // 組ごとの残りの玉の数
+  function remaining() {
+    var rem = data.draw.sizes.slice();
+    data.draw.picked.forEach(function (p) { rem[p[1]]--; });
+    return rem;
+  }
+
+  function groupOf(id) {
+    var pk = data.draw.picked;
+    for (var i = 0; i < pk.length; i++) if (pk[i][0] === id) return pk[i][1];
+    return -1;
+  }
+
+  // 残っている玉から1つ引く（どの玉も同じ確率）
+  function pickOne(id) {
+    if (groupOf(id) >= 0) return;
+    var rem = remaining(), total = 0;
+    rem.forEach(function (n) { total += n; });
+    if (total <= 0) return;
+    var r = Math.floor(Math.random() * total), g = 0;
+    while (r >= rem[g]) { r -= rem[g]; g++; }
+    data.draw.picked.push([id, g]);
+  }
+
+  function eventName() { return trim(data.eventName); }
+  function isDone() { return data.draw.picked.length === data.draw.ids.length; }
+
+  function groupsByName() {
+    var groups = data.draw.sizes.map(function () { return []; });
+    data.draw.picked.forEach(function (p) { groups[p[1]].push(memberName(p[0])); });
     return groups;
   }
 
-  function resultText(groups) {
-    var lines = ['【組み分け】'];
-    groups.forEach(function (g, i) { lines.push((i + 1) + '組：' + g.join('、')); });
+  function resultText() {
+    var ev = eventName();
+    var lines = ['【' + (ev ? ev + ' ' : '') + '組み分け】'];
+    groupsByName().forEach(function (g, i) { lines.push(colorOf(i).emoji + (i + 1) + '組：' + g.join('、')); });
     return lines.join('\n');
   }
 
   // ---- 画面 ----
-  var elNames = document.getElementById('names');
-  var elSummary = document.getElementById('summary');
-  var elDraw = document.getElementById('btnDraw');
-  var elArea = document.getElementById('resultArea');
-  var elGroups = document.getElementById('groups');
-  var elToast = document.getElementById('toast');
-  var toastTimer = null;
+  var $ = function (id) { return document.getElementById(id); };
+  var VIEWS = { home: $('viewHome'), edit: $('viewEdit'), member: $('viewMember'), method: $('viewMethod'), setup: $('viewMembers'), draw: $('viewDraw') };
+  var elNew = $('newName'), elAddMsg = $('addMsg'), elList = $('memberList'), elBulk = $('bulk');
+  var elSummary = $('summary'), elStart = $('btnStart'), elEvent = $('eventName');
+  var elGroupName = $('groupName'), elEditList = $('editList');
+  var elTitle = $('drawTitle'), elRemain = $('drawRemain'), elQuota = $('quota');
+  var elDrawList = $('drawList'), elGroups = $('groups');
+  var elToast = $('toast'), toastTimer = null;
+
+  function curGroup() { return groupById(data.sel.groupId); }
+
+  function screen() {
+    if (data.draw) return 'draw';
+    if (editId !== null && groupById(editId)) return memberById(groupById(editId), editMemberId) ? 'member' : 'edit';
+    if (!curGroup()) return 'home';
+    if (data.sel.method !== 'balls') return 'method';
+    return 'setup';
+  }
+
+  function dot(g) {
+    var d = document.createElement('span');
+    d.className = 'dot'; d.style.background = colorOf(g).hex;
+    return d;
+  }
+
+  // ① グループをえらぶ
+  function renderHome() {
+    var box = $('groupList');
+    box.textContent = '';
+    $('homeEmpty').hidden = data.groups.length > 0;
+    data.groups.forEach(function (g) {
+      var row = document.createElement('div'); row.className = 'grow';
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'method';
+      var mt = document.createElement('span'); mt.className = 'mt'; mt.textContent = groupLabel(g);
+      var ms = document.createElement('span'); ms.className = 'ms'; ms.textContent = g.members.length + '人';
+      b.appendChild(mt); b.appendChild(ms);
+      b.addEventListener('click', function () { data.sel.groupId = g.id; data.sel.method = null; saveData(); go(); });
+      var e = document.createElement('button'); e.type = 'button'; e.className = 'gedit'; e.textContent = '編集';
+      e.setAttribute('aria-label', groupLabel(g) + 'を編集');
+      e.addEventListener('click', function () { editId = g.id; go(); });
+      row.appendChild(b); row.appendChild(e); box.appendChild(row);
+    });
+  }
+
+  // グループの編集
+  function renderEdit() {
+    var g = groupById(editId);
+    if (document.activeElement !== elGroupName) elGroupName.value = g.name;
+    elEditList.textContent = '';
+    g.members.forEach(function (m) {
+      var li = document.createElement('li');
+      var open = document.createElement('button'); open.type = 'button'; open.className = 'open';
+      var who = document.createElement('span'); who.className = 'who'; who.textContent = m.name;
+      if (trim(m.org)) { var org = document.createElement('span'); org.className = 'org'; org.textContent = trim(m.org); who.appendChild(org); }
+      var arrow = document.createElement('span'); arrow.className = 'arrow'; arrow.textContent = '＞';
+      open.appendChild(who); open.appendChild(arrow);
+      open.addEventListener('click', function () { editMemberId = m.id; go(); });
+      var del = document.createElement('button');
+      del.type = 'button'; del.className = 'del'; del.textContent = '×';
+      del.setAttribute('aria-label', m.name + 'を削除');
+      del.addEventListener('click', function () {
+        if (!window.confirm(m.name + 'を名簿から削除しますか？')) return;
+        g.members = g.members.filter(function (x) { return x !== m; });
+        saveData(); renderEdit();
+      });
+      li.appendChild(open); li.appendChild(del); elEditList.appendChild(li);
+    });
+    $('editHint').hidden = g.members.length === 0;
+  }
+
+  // メンバーの編集（1人分）
+  var mFields = { org: $('mOrg'), birth: $('mBirth'), contact: $('mContact'), memo: $('mMemo') };
+  function curMember() { var g = groupById(editId); return g ? memberById(g, editMemberId) : null; }
+
+  function renderMember() {
+    var m = curMember();
+    $('mName').value = m.name;
+    $('mNameMsg').textContent = '';
+    Object.keys(mFields).forEach(function (k) { mFields[k].value = m[k]; });
+  }
+
+  // 名前は、空や重複のあいだは保存しない（前の名前のまま）
+  function onMemberName() {
+    var g = groupById(editId), m = curMember(), v = trim($('mName').value), msg = '';
+    if (!v) msg = '名前を入力してください';
+    else if (g.members.some(function (x) { return x !== m && x.name === v; })) msg = '同じ名前があります：' + v;
+    else if (/[、,，]/.test(v)) msg = '名前に「、」や「,」は使えません';
+    $('mNameMsg').textContent = msg;
+    if (!msg && m.name !== v) { m.name = v; saveData(); }
+  }
+
+  function addMembers() {
+    var g = groupById(editId);
+    var names = parseNames(elNew.value);
+    if (names.length === 0) { elAddMsg.textContent = ''; return; }
+    var have = {}, dup = [];
+    g.members.forEach(function (m) { have[m.name] = true; });
+    names.forEach(function (n) {
+      if (have[n]) { if (dup.indexOf(n) < 0) dup.push(n); }
+      have[n] = true;
+    });
+    if (dup.length > 0) { elAddMsg.textContent = '同じ名前があります：' + dup.join('、'); return; }
+    names.forEach(function (n) { g.members.push(newMember(newId(), n)); });
+    saveData();
+    elNew.value = ''; elAddMsg.textContent = '';
+    renderEdit();
+  }
+
+  function deleteGroup() {
+    var g = groupById(editId);
+    if (!window.confirm('「' + groupLabel(g) + '」を削除しますか？\n名簿の' + g.members.length + '人も消えます。元に戻せません。')) return;
+    data.groups = data.groups.filter(function (x) { return x !== g; });
+    if (data.sel.groupId === g.id) { data.sel.groupId = null; data.sel.method = null; }
+    editId = null; editMemberId = null;
+    saveData(); go();
+  }
+
+  // ③ 準備
+  function selectedIds() {
+    return curGroup().members.filter(function (m) { return m.on; }).map(function (m) { return m.id; });
+  }
 
   function check() {
-    var names = parseNames(elNames.value);
-    var dup = findDuplicates(names);
+    var total = curGroup().members.length, n = selectedIds().length;
     var ok = false, msg = '', warn = false;
-    if (names.length === 0) {
-      msg = '';
-    } else if (dup.length > 0) {
-      msg = '同じ名前があります：' + dup.join('、'); warn = true;
-    } else if (names.length < MIN_PLAYERS) {
-      msg = MIN_PLAYERS + '人以上入力してください'; warn = true;
+    if (total === 0) {
+      msg = '名簿に名前がありません。「名簿を編集」から追加してください';
+    } else if (n < MIN_PLAYERS) {
+      msg = MIN_PLAYERS + '人以上にチェックを入れてください'; warn = true;
     } else {
-      var sizes = groupSizes(names.length);
-      msg = names.length + '人 → ' + sizes.length + '組（' + sizes.join('・') + '）';
+      var sizes = groupSizes(n);
+      msg = '参加 ' + n + '人 → ' + sizes.length + '組（' + sizes.join('・') + '）';
       ok = true;
     }
     elSummary.textContent = msg;
     elSummary.className = warn ? 'warn' : '';
-    elDraw.disabled = !ok;
-    return ok ? names : null;
+    elStart.disabled = !ok;
+    return ok;
   }
 
-  function renderGroups() {
-    elGroups.textContent = '';
-    if (!data.groups) { elArea.hidden = true; return; }
-    data.groups.forEach(function (g, i) {
-      var row = document.createElement('div'); row.className = 'group';
-      var no = document.createElement('div'); no.className = 'no'; no.textContent = (i + 1) + '組';
-      var mem = document.createElement('div'); mem.className = 'members'; mem.textContent = g.join('、');
-      row.appendChild(no); row.appendChild(mem); elGroups.appendChild(row);
+  function renderSetup() {
+    var g = curGroup();
+    $('setupGroup').textContent = 'グループ：' + groupLabel(g);
+    if (document.activeElement !== elEvent) elEvent.value = data.eventName;
+    elList.textContent = '';
+    g.members.forEach(function (m) {
+      var li = document.createElement('li');
+      if (!m.on) li.className = 'off';
+      var label = document.createElement('label');
+      var cb = document.createElement('input');
+      cb.type = 'checkbox'; cb.checked = m.on;
+      cb.addEventListener('change', function () {
+        m.on = cb.checked; saveData();
+        li.className = m.on ? '' : 'off';
+        check();
+      });
+      var name = document.createElement('span');
+      name.className = 'name'; name.textContent = m.name;
+      if (trim(m.org)) { var org = document.createElement('span'); org.className = 'org'; org.textContent = trim(m.org); name.appendChild(org); }
+      label.appendChild(cb); label.appendChild(name);
+      li.appendChild(label); elList.appendChild(li);
     });
-    elArea.hidden = false;
+    elBulk.hidden = g.members.length === 0;
+    check();
   }
+
+  function setAll(on) {
+    curGroup().members.forEach(function (m) { m.on = on; });
+    saveData(); renderSetup();
+  }
+
+  // ④ 抽選
+  function renderDraw() {
+    var d = data.draw, done = isDone(), rem = remaining();
+    $('drawEvent').textContent = eventName();
+    elTitle.textContent = done ? '全員決まりました' : '名前をタップして抽選';
+    elRemain.textContent = done ? '' : '残り ' + (d.ids.length - d.picked.length) + '人';
+
+    elQuota.textContent = '';
+    elQuota.hidden = done;
+    d.sizes.forEach(function (n, g) {
+      var chip = document.createElement('span');
+      chip.className = 'chip' + (rem[g] === 0 ? ' full' : '');
+      chip.appendChild(dot(g));
+      chip.appendChild(document.createTextNode((g + 1) + '組 あと' + rem[g] + '人'));
+      elQuota.appendChild(chip);
+    });
+
+    elDrawList.textContent = '';
+    elDrawList.hidden = done;
+    d.ids.forEach(function (id) {
+      var g = groupOf(id);
+      var li = document.createElement('li');
+      var b = document.createElement('button');
+      b.type = 'button';
+      var name = document.createElement('span');
+      name.className = 'name'; name.textContent = memberName(id);
+      b.appendChild(name);
+      if (g >= 0) {
+        b.className = 'done';
+        var res = document.createElement('span');
+        res.className = 'res';
+        res.appendChild(dot(g));
+        res.appendChild(document.createTextNode((g + 1) + '組'));
+        b.appendChild(res);
+      } else {
+        b.addEventListener('click', function () { pickOne(id); saveData(); renderDraw(); });
+      }
+      li.appendChild(b); elDrawList.appendChild(li);
+    });
+
+    elGroups.textContent = '';
+    elGroups.hidden = !done;
+    if (done) {
+      groupsByName().forEach(function (names, g) {
+        var row = document.createElement('div'); row.className = 'group';
+        var no = document.createElement('div'); no.className = 'no';
+        no.appendChild(dot(g)); no.appendChild(document.createTextNode((g + 1) + '組'));
+        var mem = document.createElement('div'); mem.className = 'members'; mem.textContent = names.join('、');
+        row.appendChild(no); row.appendChild(mem); elGroups.appendChild(row);
+      });
+    }
+    $('rowDrawing').hidden = done;
+    $('rowDone').hidden = !done;
+  }
+
+  function render() {
+    var sc = screen();
+    Object.keys(VIEWS).forEach(function (k) { VIEWS[k].hidden = k !== sc; });
+    if (sc === 'home') renderHome();
+    else if (sc === 'edit') renderEdit();
+    else if (sc === 'member') renderMember();
+    else if (sc === 'method') $('methodGroup').textContent = 'グループ：' + groupLabel(curGroup());
+    else if (sc === 'setup') renderSetup();
+    else renderDraw();
+  }
+
+  // 画面を切り替える（一番上から表示）
+  function go() { render(); window.scrollTo(0, 0); }
 
   function toast(msg) {
     elToast.textContent = msg;
@@ -266,18 +747,37 @@
     toastTimer = setTimeout(function () { elToast.classList.remove('show'); }, 1600);
   }
 
-  function draw() {
-    var names = check();
-    if (!names) return;
-    data.groups = makeGroups(names);
-    saveData();
-    renderGroups();
-    elArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  function startDraw() {
+    if (!check()) return;
+    var ids = selectedIds();
+    data.draw = { groupId: data.sel.groupId, sizes: groupSizes(ids.length), ids: ids, picked: [] };
+    saveData(); go();
+  }
+
+  function pickRest() {
+    data.draw.ids.forEach(function (id) { pickOne(id); });
+    saveData(); go();
+  }
+
+  function redo() {
+    if (!window.confirm('抽選を最初からやり直しますか？')) return;
+    data.draw.picked = [];
+    saveData(); go();
+  }
+
+  function backToMembers() {
+    if (data.draw.picked.length > 0) {
+      var msg = isDone()
+        ? 'メンバーに戻ると、この結果は消えます。戻りますか？'
+        : '抽選の途中です。メンバーに戻ると、ここまでの結果は消えます。戻りますか？';
+      if (!window.confirm(msg)) return;
+    }
+    data.draw = null;
+    saveData(); go();
   }
 
   function copyResult() {
-    if (!data.groups) return;
-    var text = resultText(data.groups);
+    var text = resultText();
     function fallback() {
       var ta = document.createElement('textarea');
       ta.value = text; ta.setAttribute('readonly', '');
@@ -295,19 +795,64 @@
     }
   }
 
-  elNames.addEventListener('input', function () {
-    data.namesText = elNames.value;
-    saveData();
-    check();
+  function blurOnEnter(el) {
+    el.addEventListener('keydown', function (e) { if (e.key === 'Enter' && !e.isComposing) el.blur(); });
+  }
+
+  // ① グループ
+  $('btnAddGroup').addEventListener('click', function () {
+    var g = { id: newId(), name: '', members: [] };
+    data.groups.push(g); saveData();
+    editId = g.id; go();
+    elGroupName.focus();
   });
-  elDraw.addEventListener('click', draw);
-  document.getElementById('btnRedo').addEventListener('click', draw);
-  document.getElementById('btnCopy').addEventListener('click', copyResult);
+  // 編集
+  $('btnEditBack').addEventListener('click', function () { editId = null; editMemberId = null; elNew.value = ''; elAddMsg.textContent = ''; go(); });
+  elGroupName.addEventListener('input', function () { var g = groupById(editId); if (g) { g.name = elGroupName.value; saveData(); } });
+  blurOnEnter(elGroupName);
+  $('btnAdd').addEventListener('click', addMembers);
+  elNew.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); addMembers(); }
+  });
+  elNew.addEventListener('input', function () { elAddMsg.textContent = ''; });
+  $('btnDelGroup').addEventListener('click', deleteGroup);
+  // メンバーの編集
+  $('btnMemberBack').addEventListener('click', function () {
+    var m = curMember();
+    if (m && trim($('mName').value) !== m.name && $('mNameMsg').textContent) {
+      if (!window.confirm('名前が変更されていません（' + $('mNameMsg').textContent + '）。\n前の名前「' + m.name + '」のまま戻りますか？')) return;
+    }
+    editMemberId = null; go();
+  });
+  $('mName').addEventListener('input', onMemberName);
+  blurOnEnter($('mName'));
+  Object.keys(mFields).forEach(function (k) {
+    var el = mFields[k];
+    function save() { var m = curMember(); if (m) { m[k] = el.value; saveData(); } }
+    el.addEventListener('input', save);
+    el.addEventListener('change', save);
+    if (k !== 'memo') blurOnEnter(el);
+  });
+  // ② 方法
+  $('btnMethodBack').addEventListener('click', function () { data.sel.groupId = null; data.sel.method = null; saveData(); go(); });
+  $('btnBalls').addEventListener('click', function () { data.sel.method = 'balls'; saveData(); go(); });
+  // ③ 準備
+  $('btnSetupBack').addEventListener('click', function () { data.sel.method = null; saveData(); go(); });
+  $('btnEditHere').addEventListener('click', function () { editId = data.sel.groupId; go(); });
+  elEvent.addEventListener('input', function () { data.eventName = elEvent.value; saveData(); });
+  blurOnEnter(elEvent);
+  $('btnAllOn').addEventListener('click', function () { setAll(true); });
+  $('btnAllOff').addEventListener('click', function () { setAll(false); });
+  elStart.addEventListener('click', startDraw);
+  // ④ 抽選
+  $('btnRest').addEventListener('click', pickRest);
+  $('btnBack').addEventListener('click', backToMembers);
+  $('btnBack2').addEventListener('click', backToMembers);
+  $('btnRedo').addEventListener('click', redo);
+  $('btnCopy').addEventListener('click', copyResult);
 
   loadData();
-  elNames.value = data.namesText;
-  check();
-  renderGroups();
+  render();
 
   // オフラインでも開けるようにする（PCでファイルを直接開いたときは何もしない）
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
