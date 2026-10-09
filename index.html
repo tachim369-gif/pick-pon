@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1f6b45">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Pick Pon">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<title>Pick Pon</title>
+<style>
+  :root {
+    --green: #1f6b45;
+    --green-dark: #17523a;
+    --bg: #f3f5f1;
+    --card: #ffffff;
+    --text: #1d2420;
+    --sub: #66706a;
+    --line: #dfe4dd;
+    --warn: #b3261e;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-text-size-adjust: 100%;
+  }
+  header {
+    background: var(--green);
+    color: #fff;
+    padding: calc(14px + env(safe-area-inset-top)) 16px 14px;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  main {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 16px 16px calc(32px + env(safe-area-inset-bottom));
+  }
+  label.title {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  textarea {
+    width: 100%;
+    min-height: 260px;
+    padding: 12px;
+    font: inherit;
+    color: inherit;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    resize: vertical;
+  }
+  textarea:focus { outline: 2px solid var(--green); outline-offset: 1px; }
+  #summary {
+    min-height: 1.6em;
+    margin: 8px 2px 14px;
+    color: var(--sub);
+    font-size: 15px;
+  }
+  #summary.warn { color: var(--warn); font-weight: 700; }
+  button {
+    font: inherit;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 14px 16px;
+    min-height: 52px;
+    cursor: pointer;
+    border: 1px solid var(--green);
+  }
+  button.primary { background: var(--green); color: #fff; width: 100%; font-size: 18px; }
+  button.primary:active { background: var(--green-dark); }
+  button.secondary { background: #fff; color: var(--green); flex: 1; }
+  button.secondary:active { background: #e8f0ea; }
+  button:disabled { opacity: 0.4; cursor: default; }
+  #resultArea { margin-top: 24px; }
+  #resultArea[hidden] { display: none; }
+  h2 {
+    font-size: 16px;
+    margin: 0 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--green);
+  }
+  .group {
+    display: flex;
+    gap: 12px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+  }
+  .group .no {
+    flex: 0 0 auto;
+    font-weight: 700;
+    color: var(--green);
+    white-space: nowrap;
+  }
+  .group .members { flex: 1; word-break: break-all; }
+  .row { display: flex; gap: 10px; margin-top: 14px; }
+  #toast {
+    position: fixed;
+    left: 50%;
+    bottom: calc(28px + env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    background: rgba(29, 36, 32, 0.92);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 15px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  #toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<header>Pick Pon</header>
+<main>
+  <label class="title" for="names">参加者（1行に1人）</label>
+  <textarea id="names" placeholder="例）田中&#10;　　鈴木" autocomplete="off" autocapitalize="off" spellcheck="false"></textarea>
+  <div id="summary"></div>
+  <button id="btnDraw" class="primary" type="button">組み分けする</button>
+
+  <section id="resultArea" hidden>
+    <h2>結果</h2>
+    <div id="groups"></div>
+    <div class="row">
+      <button id="btnRedo" class="secondary" type="button">やり直す</button>
+      <button id="btnCopy" class="secondary" type="button">コピー</button>
+    </div>
+  </section>
+</main>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ---- 保存データ（版番号つき。形を変えるときは v を上げて移行処理を書く） ----
+  var STORAGE_KEY = 'pickpon_data';
+  var DATA_VERSION = 1;
+  var MAX_PER_GROUP = 4;
+  var MIN_PLAYERS = 3;
+
+  var data = { v: DATA_VERSION, namesText: '', groups: null };
+
+  function loadData() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      var d = JSON.parse(raw);
+      if (d && d.v === DATA_VERSION) {
+        data.namesText = typeof d.namesText === 'string' ? d.namesText : '';
+        data.groups = Array.isArray(d.groups) ? d.groups : null;
+      }
+    } catch (e) { /* 読めないときは空で始める */ }
+  }
+
+  function saveData() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (e) {}
+  }
+
+  // ---- 計算 ----
+  function parseNames(text) {
+    return text.split(/\r?\n/).map(function (s) {
+      return s.replace(/^[\s\u3000]+|[\s\u3000]+$/g, '');
+    }).filter(function (s) { return s.length > 0; });
+  }
+
+  function findDuplicates(names) {
+    var seen = {}, dup = [];
+    names.forEach(function (n) {
+      if (seen[n] === 1) dup.push(n);
+      seen[n] = (seen[n] || 0) + 1;
+    });
+    return dup;
+  }
+
+  // 例: 11人 → [4,4,3]
+  function groupSizes(n) {
+    var g = Math.ceil(n / MAX_PER_GROUP);
+    var base = Math.floor(n / g), extra = n % g, sizes = [];
+    for (var i = 0; i < g; i++) sizes.push(i < extra ? base + 1 : base);
+    return sizes;
+  }
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function makeGroups(names) {
+    var mixed = shuffle(names), sizes = groupSizes(names.length), groups = [], p = 0;
+    sizes.forEach(function (s) { groups.push(mixed.slice(p, p + s)); p += s; });
+    return groups;
+  }
+
+  function resultText(groups) {
+    var lines = ['【組み分け】'];
+    groups.forEach(function (g, i) { lines.push((i + 1) + '組：' + g.join('、')); });
+    return lines.join('\n');
+  }
+
+  // ---- 画面 ----
+  var elNames = document.getElementById('names');
+  var elSummary = document.getElementById('summary');
+  var elDraw = document.getElementById('btnDraw');
+  var elArea = document.getElementById('resultArea');
+  var elGroups = document.getElementById('groups');
+  var elToast = document.getElementById('toast');
+  var toastTimer = null;
+
+  function check() {
+    var names = parseNames(elNames.value);
+    var dup = findDuplicates(names);
+    var ok = false, msg = '', warn = false;
+    if (names.length === 0) {
+      msg = '';
+    } else if (dup.length > 0) {
+      msg = '同じ名前があります：' + dup.join('、'); warn = true;
+    } else if (names.length < MIN_PLAYERS) {
+      msg = MIN_PLAYERS + '人以上入力してください'; warn = true;
+    } else {
+      var sizes = groupSizes(names.length);
+      msg = names.length + '人 → ' + sizes.length + '組（' + sizes.join('・') + '）';
+      ok = true;
+    }
+    elSummary.textContent = msg;
+    elSummary.className = warn ? 'warn' : '';
+    elDraw.disabled = !ok;
+    return ok ? names : null;
+  }
+
+  function renderGroups() {
+    elGroups.textContent = '';
+    if (!data.groups) { elArea.hidden = true; return; }
+    data.groups.forEach(function (g, i) {
+      var row = document.createElement('div'); row.className = 'group';
+      var no = document.createElement('div'); no.className = 'no'; no.textContent = (i + 1) + '組';
+      var mem = document.createElement('div'); mem.className = 'members'; mem.textContent = g.join('、');
+      row.appendChild(no); row.appendChild(mem); elGroups.appendChild(row);
+    });
+    elArea.hidden = false;
+  }
+
+  function toast(msg) {
+    elToast.textContent = msg;
+    elToast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { elToast.classList.remove('show'); }, 1600);
+  }
+
+  function draw() {
+    var names = check();
+    if (!names) return;
+    data.groups = makeGroups(names);
+    saveData();
+    renderGroups();
+    elArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function copyResult() {
+    if (!data.groups) return;
+    var text = resultText(data.groups);
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+      toast(ok ? 'コピーしました' : 'コピーできませんでした');
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { toast('コピーしました'); }, fallback);
+    } else {
+      fallback();
+    }
+  }
+
+  elNames.addEventListener('input', function () {
+    data.namesText = elNames.value;
+    saveData();
+    check();
+  });
+  elDraw.addEventListener('click', draw);
+  document.getElementById('btnRedo').addEventListener('click', draw);
+  document.getElementById('btnCopy').addEventListener('click', copyResult);
+
+  loadData();
+  elNames.value = data.namesText;
+  check();
+  renderGroups();
+
+  // オフラインでも開けるようにする（PCでファイルを直接開いたときは何もしない）
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+    navigator.serviceWorker.register('sw.js').catch(function () {});
+  }
+})();
+</script>
+</body>
+</html>
