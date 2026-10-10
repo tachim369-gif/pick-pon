@@ -1,6 +1,6 @@
 // Pick Pon service worker
 // 公開のたびに、下のバージョン番号を上げる
-const VERSION = 'v2';
+const VERSION = 'v3';
 const CACHE = 'pick-pon-' + VERSION;
 const FILES = ['./', 'index.html', 'manifest.json', 'icon-180.png', 'icon-192.png', 'icon-512.png'];
 
