@@ -79,6 +79,9 @@
   button.link { background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--green); font-weight: 400; font-size: 14px; padding: 0 12px; min-height: 36px; }
   button.link:active { background: #e8f0ea; }
   section > button.link { display: block; margin-bottom: 12px; }
+  section > button.link[hidden] { display: none; }
+  #viewMethod, #viewMembers, #viewDraw, #viewResults, #viewFee { position: relative; }
+  section > button.evTop { position: absolute; top: 0; right: 0; margin: 0; }
   .textIn {
     width: 100%;
     padding: 12px;
@@ -107,6 +110,7 @@
   button.selBox .mark { flex: 0 0 auto; color: var(--sub); font-size: 12px; }
   #groupPanel { margin: -6px 0 16px; }
   #groupPanel .sub { margin-top: 0; }
+  .gedit-space { flex: 0 0 auto; width: 44px; }
   .grow.sel button.method { border-color: var(--green); background: #e8f0ea; }
   button.addGroup { width: 100%; background: #fff; color: var(--green); border-style: dashed; }
   .titleRow { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
@@ -122,6 +126,21 @@
   }
   #editList button, #eventList button { flex: 0 0 auto; align-self: center; background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--green); font-weight: 400; font-size: 13px; width: 44px; padding: 0; min-height: 34px; }
   #editList button:active, #eventList button:active { background: #e8f0ea; }
+  #editList .who { flex-direction: row; align-items: center; justify-content: flex-start; padding-left: 4px; }
+  #editList .grip { flex: 0 0 auto; align-self: stretch; display: flex; align-items: center; padding: 0 10px; margin: -8px 0; color: var(--sub); font-size: 18px; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
+  .fm { font-size: 15px; color: #c2185b; margin-left: 4px; white-space: nowrap; }
+  .who > .fm { margin-left: auto; padding-left: 8px; } /* 枠の右端に寄せる */
+  #viewPeople .addRow button { margin-right: 0; }
+  #btnDelMember { margin-top: 12px; }
+  #mGroups { list-style: none; margin: 0 0 16px; padding: 0; }
+  #mGroups li { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin-bottom: 8px; word-break: break-all; }
+  .nameRow { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+  .nameRow .textIn { flex: 1; min-width: 0; margin-bottom: 0; }
+  #mFemale { flex: 0 0 auto; margin: 0; background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--sub); font-weight: 400; font-size: 14px; padding: 0 16px; min-height: 38px; }
+  #mFemale[aria-pressed="true"] { background: #c2185b; border-color: #c2185b; color: #fff; }
+  #editList .nm { min-width: 0; word-break: break-all; }
+  #editList li.dragging { position: relative; z-index: 2; }
+  #editList li.dragging .who { box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18); border-color: var(--green); }
   #editList button.del, #eventList button.del { color: var(--warn); }
   .sub:empty { display: none; }
   #btnPick {
@@ -143,15 +162,41 @@
     background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; min-height: 46px;
   }
   #pickList button { flex: 0 0 auto; align-self: center; background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--green); font-weight: 400; font-size: 13px; width: 44px; padding: 0; min-height: 34px; margin-right: 52px; }
+  #pickList .who { flex-direction: row; align-items: center; justify-content: flex-start; }
   #pickList button:active { background: #e8f0ea; }
   #viewList button.addGroup { margin-bottom: 16px; }
   #listEmpty { margin-top: 0; }
-  #btnHistory { width: 100%; background: #fff; color: var(--green); border-color: var(--line); }
-  #btnHistory:active { background: #e8f0ea; }
-  #eventList button:not(.del) { width: auto; padding: 0 8px; }
+  #btnGroups, #btnPeople { margin-top: 10px; }
+  #peopleList { list-style: none; margin: 0; padding: 0; }
+  #peopleList li { margin-bottom: 8px; }
+  #peopleList .who { display: flex; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; min-height: 46px; cursor: pointer; word-break: break-all; }
+  #peopleList .who:active { background: #e8f0ea; }
+  #groupsList { list-style: none; margin: 0 0 8px; padding: 0; }
+  #groupsList li { margin-bottom: 8px; }
+  #groupsList .who { display: block; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; min-height: 52px; cursor: pointer; word-break: break-all; }
+  #groupsList .who:active { background: #e8f0ea; }
+  #groupsList .mt { display: block; }
+  #groupsList .ms { display: block; font-size: 13px; color: var(--sub); line-height: 1.4; }
+  #btnHistory, #btnGroups, #btnPeople { width: 100%; background: #fff; color: var(--green); border-color: var(--line); }
+  #btnHistory:active, #btnGroups:active, #btnPeople:active { background: #e8f0ea; }
+  #eventList .who { cursor: pointer; }
+  #eventList .who:active { background: #e8f0ea; }
   #eventList .who .mt { display: block; word-break: break-all; }
   #eventList .who .ms { display: block; font-size: 13px; color: var(--sub); line-height: 1.4; }
   #btnFee { margin-top: 10px; }
+  .row2 { display: flex; gap: 10px; }
+  #btnDecide { width: 100%; margin-top: 14px; }
+  #btnDecide[hidden] { display: none; }
+  #rowDone .row button { flex: 1; width: auto; min-width: 0; font-size: 15px; }
+  #btnDecide[aria-pressed="true"] { background: var(--green); color: #fff; }
+  #decideHint { margin: 0 2px 10px; font-weight: 700; color: var(--warn); }
+  #decideHint[hidden] { display: none; }
+  #pastList button.dec { color: var(--green); }
+  #pastList button.dec[aria-pressed="true"] { background: var(--green); border-color: var(--green); color: #fff; }
+  #pastList .badge { margin-left: auto; padding: 2px 10px; border-radius: 999px; background: var(--green); color: #fff; font-size: 13px; font-weight: 700; flex: 0 0 auto; }
+  #pastList li.decided .who { border-color: var(--green); background: #e8f0ea; }
+  #btnSave.del { color: var(--warn); border-color: var(--warn); }
+  .row2 button { flex: 1; min-width: 0; }
   .feeGrid { display: flex; gap: 12px; margin-bottom: 14px; }
   .feeGrid > div { flex: 1; min-width: 0; }
   .feeIn { display: flex; align-items: center; gap: 6px; }
@@ -213,11 +258,79 @@
   #homeMembers { margin-bottom: 16px; }
   #homeMsg { margin: 8px 2px 0; font-size: 15px; color: var(--warn); font-weight: 700; }
   #homeMsg:empty { display: none; }
+  #amida { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 6px 4px; }
+  #amida svg { display: block; flex: 0 0 auto; }
+  .amWrap { display: flex; align-items: flex-start; }
+  .amNames, .amRess { display: flex; flex-direction: column; }
+  .amNames { flex: 0 0 140px; }
+  .amRess { flex: 0 0 50px; }
+  .amName { height: 44px; min-height: 0; width: 140px; padding: 0 4px 0 4px; gap: 4px; border: none; background: none; color: var(--text); font-weight: 400; font-size: 15px; text-align: left; display: flex; align-items: center; white-space: nowrap; overflow: hidden; border-radius: 6px; }
+  .amMk { flex: 0 0 22px; width: 22px; height: 22px; display: inline-flex; }
+  .amMk svg { width: 100%; height: 100%; }
+  .amName .nmT { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .amName .fm { flex: 0 0 auto; margin-left: 1px; font-size: 13px; }
+  .amName:not(.done):active { background: #e8f0ea; }
+  .amName.done { color: var(--sub); }
+  .amRes { height: 44px; display: flex; align-items: center; gap: 3px; padding-left: 4px; font-weight: 700; font-size: 14px; color: var(--sub); white-space: nowrap; }
+  .amV { stroke: #9aa39d; stroke-width: 2; }
+  .amH { stroke: #9aa39d; stroke-width: 2; }
+  .amP { fill: none; stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; }
+  #pastList { list-style: none; margin: 0 0 16px; padding: 0; }
+  #pastList li { display: flex; align-items: stretch; gap: 8px; margin-bottom: 8px; }
+  #pastList .who { flex: 1; min-width: 0; display: flex; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; min-height: 48px; cursor: pointer; word-break: break-all; }
+  #pastList .who:active { background: #e8f0ea; }
+  #pastList button { flex: 0 0 auto; align-self: center; background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--warn); font-weight: 400; font-size: 13px; width: 44px; padding: 0; min-height: 34px; }
+  #gpBox { margin: 0 0 12px; padding: 8px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; display: flex; justify-content: center; }
+  #gpBox[hidden] { display: none; }
+  #gpBox svg { width: 170px; height: 150px; overflow: visible; }
+  #gpDrum { transform-box: view-box; transform-origin: 32px 27px; }
+  #gpDrum.spin { animation: gpSpin 1.6s cubic-bezier(.2,.6,.3,1); }
+  @keyframes gpSpin { from { transform: rotate(0deg); } to { transform: rotate(1080deg); } }
+  #gpBall.out { animation: gpOut 0.5s ease-out; }
+  @keyframes gpOut { from { transform: translate(19px, -10px) scale(0.3); opacity: 0; } to { transform: none; opacity: 1; } }
+  #wheelBox { margin: 0 0 12px; padding: 12px 8px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+  #wheelBox[hidden] { display: none; }
+  #wheel { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  #wheel .cell { position: relative; min-width: 64px; height: 44px; padding: 0 8px; display: flex; align-items: center; justify-content: center; gap: 4px; border: 3px solid #ccc; border-radius: 10px; background: #fff; font-weight: 700; font-size: 16px; color: var(--text); transition: transform 0.08s; }
+  #wheel .cell .dot { width: 12px; height: 12px; }
+  #wheel .cell.on { background: #fff6c8; transform: scale(1.12); box-shadow: 0 0 0 3px #f2b705; z-index: 1; }
+  #wheel .cell.on::before { content: '▼'; position: absolute; top: -18px; left: 50%; transform: translateX(-50%); color: #17523a; font-size: 14px; }
+  #wheel .cell.hit { background: #ffe680; }
+  #sizeList { list-style: none; margin: 0 0 10px; padding: 0; }
+  #sizeList li { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  #sizeList .gname { display: flex; align-items: center; gap: 6px; width: 64px; font-weight: 700; }
+  #sizeList .textIn { width: 90px; margin: 0; text-align: right; }
+  #sizeMsg { margin: 8px 2px 12px; font-size: 15px; color: var(--warn); font-weight: 700; }
+  #sizeMsg:empty { display: none; }
+  .countRow { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .countRow .textIn { width: 90px; margin: 0; text-align: right; }
+  .countRow .textIn.dim { opacity: 0.4; }
+  #btnOrder { margin-left: auto; background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--green); font-weight: 400; font-size: 16px; padding: 0 18px; min-height: 42px; }
+  #btnOrder[aria-pressed="true"] { background: var(--green); border-color: var(--green); color: #fff; }
   #summary.warn { color: var(--warn); font-weight: 700; }
 
   /* 抽選 */
   .drawHead { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
   .drawHead .t { font-weight: 700; font-size: 18px; }
+  .drawHead .tl { display: flex; align-items: center; gap: 10px; }
+  .drawHead .t.big { font-size: 26px; line-height: 1.2; white-space: nowrap; }
+  .drawHead .t.big.am { font-size: 22px; }
+  .gp { display: inline-flex; flex: 0 0 auto; }
+  .gp svg { width: 100%; height: 100%; }
+  .gp.big { width: 44px; height: 44px; }
+  .am.big { display: inline-flex; flex: 0 0 auto; width: 44px; height: 44px; }
+  .am.big svg { width: 100%; height: 100%; }
+  #btnBalls, #btnAmida, #btnRoulette { display: flex; align-items: center; gap: 12px; }
+  button.method .mi { display: inline-flex; flex: 0 0 auto; width: 36px; height: 36px; }
+  button.method .mi svg { width: 100%; height: 100%; }
+  .gp.small { width: 30px; height: 30px; }
+  #btnRest { display: flex; align-items: center; justify-content: flex-start; gap: 4px; flex: 0 0 auto; width: 172px; background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--green); font-weight: 400; font-size: 16px; padding: 0 6px; min-height: 42px; white-space: nowrap; } /* 文字が変わっても大きさは同じ */
+  #btnRest[hidden] { display: none; }
+  #btnCopyTop { flex: 0 0 auto; font-size: 15px; padding: 0 16px; }
+  #btnCopyTop[hidden] { display: none; }
+  #btnRest:active { background: #e8f0ea; }
+  #btnRest .gp.small { width: 24px; height: 24px; }
+  .drawHead { align-items: center; }
   .drawHead .r { color: var(--sub); font-size: 15px; white-space: nowrap; }
   .dot { display: inline-block; width: 16px; height: 16px; border-radius: 50%; flex: 0 0 auto; border: 1px solid rgba(0,0,0,0.18); }
   #quota { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
@@ -265,6 +378,30 @@
   <section id="viewList" hidden>
     <button id="btnNewEvent" class="addGroup" type="button">＋ 新規イベント</button>
     <button id="btnHistory" type="button">イベント履歴</button>
+    <button id="btnGroups" type="button">グループ一覧/グループ追加</button>
+    <button id="btnPeople" type="button">メンバー一覧/メンバー追加</button>
+  </section>
+
+  <!-- メンバー一覧 -->
+  <section id="viewPeople" hidden>
+    <button id="btnPeopleBack" class="link" type="button">← 戻る</button>
+    <div class="pageTitle" id="peopleTitle">メンバー一覧</div>
+    <div class="addRow">
+      <input id="pNew" type="text" placeholder="名前を入力" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
+      <button id="btnPAdd" type="button">追加</button>
+    </div>
+    <div class="fieldMsg" id="pAddMsg"></div>
+    <div id="peopleEmpty" class="sub" hidden>まだメンバーがいません</div>
+    <ul id="peopleList"></ul>
+  </section>
+
+  <!-- グループ一覧 -->
+  <section id="viewGroups" hidden>
+    <button id="btnGroupsBack" class="link" type="button">← 戻る</button>
+    <div class="pageTitle">グループ一覧</div>
+    <div id="groupsEmpty" class="sub" hidden>まだグループがありません</div>
+    <ul id="groupsList"></ul>
+    <button id="btnGroupsAdd" class="addGroup" type="button">＋ グループを追加</button>
   </section>
 
   <!-- イベント履歴 -->
@@ -279,8 +416,10 @@
     <button id="btnHomeBack" class="link" type="button">← 戻る</button>
     <label class="title" for="eventName">イベント名（任意）</label>
     <input id="eventName" class="textIn" type="text" maxlength="40" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
+    <div class="fieldMsg" id="eventNameMsg"></div>
     <label class="title" for="eventDate">イベント開催日（任意）</label>
     <div class="dateWrap"><input id="eventDate" class="textIn" type="date" min="1900-01-01" max="2100-12-31"><span class="dateShow"></span></div>
+    <div class="fieldMsg" id="eventDateMsg"></div>
     <div class="title" id="groupBoxLabel">グループ選択</div>
     <button id="groupBox" class="selBox" type="button" aria-labelledby="groupBoxLabel groupBoxText" aria-expanded="false"><span class="txt" id="groupBoxText"></span><span class="mark">▼</span></button>
     <div id="groupPanel" hidden>
@@ -297,8 +436,11 @@
       </div>
       <div id="homeMsg"></div>
     </div>
-    <button id="btnNext" class="primary" type="button">抽選方法へ進む</button>
-    <button id="btnFee" class="primary" type="button">会費確認</button>
+    <div class="row2">
+      <button id="btnNext" class="primary" type="button">抽選</button>
+      <button id="btnResults" class="primary" type="button">採用結果</button>
+    </div>
+    <button id="btnFee" class="primary" type="button">会計確認</button>
   </section>
 
   <!-- グループの編集（名簿） -->
@@ -328,9 +470,11 @@
     <button id="btnMemberBack" class="link" type="button">← 戻る</button>
     <div class="pageTitle">メンバーの編集</div>
     <div class="sub">名前以外は任意</div>
-    <div class="sub" id="mShared"></div>
     <label class="title" for="mName">名前</label>
-    <input id="mName" class="textIn" type="text" maxlength="40" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
+    <div class="nameRow">
+      <input id="mName" class="textIn" type="text" maxlength="40" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
+      <button id="mFemale" type="button" aria-pressed="false">女性</button>
+    </div>
     <div class="fieldMsg" id="mNameMsg"></div>
     <label class="title" for="mOrg">所属</label>
     <input id="mOrg" class="textIn" type="text" maxlength="40" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
@@ -340,6 +484,9 @@
     <input id="mContact" class="textIn" type="text" maxlength="80" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
     <label class="title" for="mMemo">メモ</label>
     <textarea id="mMemo" class="textIn" rows="3" maxlength="500" autocomplete="off" autocapitalize="off" spellcheck="false"></textarea>
+    <div class="title">所属グループ</div>
+    <ul id="mGroups"></ul>
+    <button id="btnDelMember" class="danger" type="button" hidden>このメンバーを削除</button>
   </section>
 
   <!-- ② 抽選方法をえらぶ -->
@@ -347,43 +494,60 @@
     <button id="btnMethodBack" class="link" type="button">← 戻る</button>
     <div class="pageTitle">抽選方法をえらぶ</div>
     <div class="sub" id="methodGroup"></div>
-    <button class="method" id="btnBalls" type="button"><span class="mt">色の玉で組み分け</span><span class="ms">例）11人を3・4・4に分ける</span></button>
-    <button class="method" type="button" disabled><span class="mt">あみだくじ</span><span class="ms">準備中</span></button>
-    <button class="method" type="button" disabled><span class="mt">順番を決める</span><span class="ms">準備中</span></button>
+    <button class="method" id="btnBalls" type="button"><span class="mi" id="gpIcon"></span><span class="mt">ガラポン</span></button>
+    <button class="method" id="btnAmida" type="button"><span class="mi" id="amIcon"></span><span class="mt">あみだくじ</span></button>
+    <button class="method" id="btnRoulette" type="button"><span class="mi" id="rlIcon"></span><span class="mt">ルーレット</span></button>
   </section>
 
   <!-- ③ 準備（組の人数の確認） -->
   <section id="viewMembers" hidden>
     <button id="btnSetupBack" class="link" type="button">← 戻る</button>
-    <div class="pageTitle">色の玉で組み分け</div>
+    <div class="pageTitle" id="setupTitle">ガラポン</div>
     <div class="sub" id="setupGroup"></div>
     <div id="summary"></div>
-    <button id="btnStart" class="primary" type="button">抽選をはじめる</button>
+    <label class="title" for="groupCount">組数</label>
+    <div class="countRow"><input id="groupCount" class="textIn" type="number" inputmode="numeric" min="0" step="1" enterkeyhint="done"><span>組</span><button id="btnOrder" type="button" aria-pressed="false">順番</button></div>
+    <div id="sizeArea">
+      <div class="title">各組の人数</div>
+      <ul id="sizeList"></ul>
+    </div>
+    <div id="sizeMsg"></div>
+    <button id="btnStart" class="primary" type="button">ガラポンを始める</button>
   </section>
 
   <!-- ④ 抽選 -->
   <section id="viewDraw" hidden>
     <button id="btnDrawBack" class="link" type="button">← 戻る</button>
     <div class="eventName" id="drawEvent"></div>
-    <div class="drawHead"><span class="t" id="drawTitle"></span><span class="r" id="drawRemain"></span></div>
+    <div class="drawHead"><span class="tl"><span class="gp big"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false"> <path d="M18 52 L32 34 L46 52" fill="none" stroke="#17523a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/> <rect x="12" y="51" width="40" height="5" rx="2.5" fill="#17523a"/> <polygon points="24,8 40,8 51,19 51,35 40,46 24,46 13,35 13,19" fill="#1f6b45" stroke="#17523a" stroke-width="2"/> <polygon points="26,13 38,13 46,21 46,33 38,41 26,41 18,33 18,21" fill="none" stroke="#e8f0ea" stroke-width="1.5" opacity="0.6"/> <line x1="32" y1="27" x2="56" y2="14" stroke="#17523a" stroke-width="3" stroke-linecap="round"/> <circle cx="57" cy="13" r="3.5" fill="#f2b705" stroke="#17523a" stroke-width="1.5"/> <circle cx="32" cy="27" r="3" fill="#e8f0ea"/> <circle cx="9" cy="47" r="5" fill="#e5382b" stroke="#a52a20" stroke-width="1"/> <circle cx="7.5" cy="45.5" r="1.4" fill="#fff" opacity="0.8"/> </svg></span><span class="am big" id="rlBig" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="35" r="25" fill="#fff" stroke="#17523a" stroke-width="3"/><path d="M32 35 L32 10 A25 25 0 0 1 53.65 22.5 Z" fill="#e5382b"/><path d="M32 35 L53.65 22.5 A25 25 0 0 1 53.65 47.5 Z" fill="#1f7ae0"/><path d="M32 35 L53.65 47.5 A25 25 0 0 1 32 60 Z" fill="#f2b705"/><path d="M32 35 L32 60 A25 25 0 0 1 10.35 47.5 Z" fill="#2fa84f"/><path d="M32 35 L10.35 47.5 A25 25 0 0 1 10.35 22.5 Z" fill="#f57c1f"/><path d="M32 35 L10.35 22.5 A25 25 0 0 1 32 10 Z" fill="#7b47d1"/><circle cx="32" cy="35" r="25" fill="none" stroke="#17523a" stroke-width="3"/><circle cx="32" cy="35" r="5" fill="#17523a"/><path d="M26 2 L38 2 L32 13 Z" fill="#17523a"/></svg></span><span class="am big" id="amBig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="4" y="4" width="56" height="56" rx="10" fill="#e8f0ea"/><g stroke="#17523a" stroke-width="3.5" stroke-linecap="round"><line x1="16" y1="12" x2="16" y2="52"/><line x1="32" y1="12" x2="32" y2="52"/><line x1="48" y1="12" x2="48" y2="52"/><line x1="16" y1="20" x2="32" y2="20"/><line x1="32" y1="30" x2="48" y2="30"/><line x1="16" y1="40" x2="32" y2="40"/><line x1="32" y1="46" x2="48" y2="46"/></g><polyline points="16,12 16,20 32,20 32,30 48,30 48,46 32,46 32,52" fill="none" stroke="#e5382b" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="54" r="4.5" fill="#e5382b"/></svg></span><span class="t" id="drawTitle"></span></span><button id="btnRest" type="button"><span class="gp small" id="restMark"></span><span id="restText">まとめてガラポン</span></button><button id="btnCopyTop" class="link" type="button" hidden>コピー</button></div>
     <div id="quota"></div>
+    <div id="gpBox" hidden><svg xmlns="http://www.w3.org/2000/svg" viewBox="-22 2 80 60" aria-hidden="true" focusable="false"><defs><linearGradient id="gpRainbow" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e5382b"/><stop offset="0.2" stop-color="#f57c1f"/><stop offset="0.4" stop-color="#f2b705"/><stop offset="0.6" stop-color="#2fa84f"/><stop offset="0.8" stop-color="#1f7ae0"/><stop offset="1" stop-color="#7b47d1"/></linearGradient></defs><path d="M18 52 L32 34 L46 52" fill="none" stroke="#17523a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><rect x="12" y="51" width="40" height="5" rx="2.5" fill="#17523a"/><g id="gpDrum"><polygon points="24,8 40,8 51,19 51,35 40,46 24,46 13,35 13,19" fill="#1f6b45" stroke="#17523a" stroke-width="2"/><polygon points="26,13 38,13 46,21 46,33 38,41 26,41 18,33 18,21" fill="none" stroke="#e8f0ea" stroke-width="1.5" opacity="0.6"/><line x1="32" y1="27" x2="56" y2="14" stroke="#17523a" stroke-width="3" stroke-linecap="round"/><circle cx="57" cy="13" r="3.5" fill="#f2b705" stroke="#17523a" stroke-width="1.5"/></g><circle cx="32" cy="27" r="3" fill="#e8f0ea"/><g id="gpBall" visibility="hidden"><circle id="gpBallC" cx="-7" cy="42.5" r="7.5" stroke="#555" stroke-width="0.8"/><text id="gpBallT" x="-7" y="45.3" text-anchor="middle" font-size="7.5" font-weight="700"></text></g><path d="M-20 49 L6 49 Q5 56 -7 56 Q-19 56 -20 49 Z" fill="#1f6b45" stroke="#17523a" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+    <div id="wheelBox" hidden><div id="wheel"></div></div>
     <ul id="drawList"></ul>
+    <div id="amida" hidden></div>
     <div id="groups"></div>
-    <div class="row" id="rowDrawing">
-      <button id="btnRest" class="secondary" type="button">残りをまとめて抽選</button>
-    </div>
     <div id="rowDone" hidden>
+      <button id="btnDecide" class="secondary" type="button" aria-pressed="false">決定</button>
       <div class="row">
-        <button id="btnCopy" class="secondary" type="button">コピー</button>
-        <button id="btnRedo" class="secondary" type="button">最初からやり直す</button>
+        <button id="btnSave" class="secondary" type="button">保存</button>
+        <button id="btnRedo" class="secondary" type="button">再抽選</button>
       </div>
     </div>
+  </section>
+
+  <!-- 抽選結果（保存した抽選の一覧） -->
+  <section id="viewResults" hidden>
+    <button id="btnResultsBack" class="link" type="button">← 戻る</button>
+    <div class="pageTitle">採用結果一覧</div>
+    <div class="sub" id="resultsHead"></div>
+    <div id="decideHint" hidden>回を開いて組合せを確かめ、「決定」を押してください</div>
+    <ul id="pastList"></ul>
   </section>
 
   <!-- ⑤ 会費 -->
   <section id="viewFee" hidden>
     <button id="btnFeeBack" class="link" type="button">← 戻る</button>
-    <div class="pageTitle">会費確認</div>
+    <div class="pageTitle">会計確認</div>
     <div class="sub" id="feeHead"></div>
     <div class="feeGrid">
       <div><label class="title" for="fee1">会費1</label><div class="feeIn"><input id="fee1" class="textIn" type="number" inputmode="numeric" min="0" step="500" autocomplete="off" enterkeyhint="done"><span>円</span></div></div>
@@ -417,17 +581,26 @@
     { hex: '#7b47d1', emoji: '🟣' }, // 紫
     { hex: '#8a5a3c', emoji: '🟤' }, // 茶
     { hex: '#2b2b2b', emoji: '⚫' },       // 黒
-    { hex: '#ffffff', emoji: '⚪' }        // 白
+    { hex: '#ffffff', emoji: '⚪' },       // 白
+    { hex: '#ec6fa9', emoji: '' },        // 桃（コピー文は色の絵文字なし）
+    { hex: '#36b9c9', emoji: '' },        // 水色
+    { hex: '#9e9e9e', emoji: '' }         // 灰
   ];
+  var MAX_GROUPS = COLORS.length; // 組は12組まで（色が重ならないように）
   function colorOf(g) { return COLORS[g % COLORS.length]; }
 
-  // people:    登録されている人 [{ id, name, org: 所属, birth: 生年月日 'YYYY-MM-DD', contact: 連絡先, memo: メモ }]
+  // people:    登録されている人 [{ id, name, f: 女性なら true, org: 所属, birth: 生年月日 'YYYY-MM-DD', contact: 連絡先, memo: メモ }]
   //            （org / birth / contact / memo は空でもよい。同じ名前の人は1人だけ。どのグループにも入っていない人は残さない）
   // groups:    グループ（名簿）の一覧 [{ id, name, members: [{ pid: 人の id }] }]
   //            同じ人が複数のグループに入れる。人の情報を直すと、入っている全部のグループに反映される
   // events:    登録したイベントの一覧（過去の分も残る）
   //            { id, name: イベント名, date: 開催日 'YYYY-MM-DD', groupId: グループ or null, groupName: グループが消されたときの名前,
+  //              created: 入力した日 'YYYY-MM-DD',
+  //              sizes: ガラポンの各組の人数（入力中のもの）, order: 「順番」を押しているか（組分けでなく順番を決める）,
+  //              all: グループなしで、登録メンバー全員から選ぶとき true,
   //              ids: [参加する人の id], step: いまの画面 'info' / 'method' / 'setup' / 'draw' / 'fee', method: 'balls' or null, draw: 抽選 or null,
+  //              lastNo: 最後に付けた「◯回目」の番号, decidedId: 決定にした抽選の id（イベントに1つだけ。なければ null）,
+  //              draws: 保存した抽選の一覧（draw と同じ形）。draw.savedId があるのは、保存したものを見ているとき,
   //              fee1 / fee2: 会費の金額（2通り。未入力は null）, pay: { 人の id: { t: 1 or 2（どちらの会費か）, amt: 手入力の金額 or null, paid: 集金済みか } } }
   //            draw = { sizes: [組ごとの人数], ids: [参加者（人）の id], picked: [[id, 組の番号(0始まり)], ...] 引いた順, names: { id: 抽選したときの名前 } }
   //            （name / date は空でもよい）
@@ -439,13 +612,19 @@
   var panelOpen = null;    // グループの一覧を開いているか（null = まだ選んでいなければ開く。保存しない）
   var pickOpen = false;    // 「登録済みの名前から選ぶ」を開いているか（保存しない）
   var histOpen = false;    // イベント履歴を開いているか（保存しない）
+  var groupsOpen = false;  // グループ一覧を開いているか（保存しない）
+  var peopleOpen = false;  // メンバー一覧を開いているか（保存しない）
   var freshId = null;      // 今回の編集で追加したグループ（空のまま戻ったら残さない）
 
   function trim(s) { return String(s).replace(/^[\s　]+|[\s　]+$/g, ''); }
   function newId() { return data.nextId++; }
   function str(v) { return typeof v === 'string' ? v : ''; }
+  function today() {
+    var d = new Date(), p = function (n) { return (n < 10 ? '0' : '') + n; };
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+  }
   function isDate(v) { return typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v); }
-  // 日付の欄には「2026年10月27日(火曜日)」の形で重ねて表示する（空なら何も出さない）
+  // 日付の欄には「2026年10月27日(火)」の形で重ねて表示する（空なら何も出さない）
   function markDate(el) { el.nextElementSibling.textContent = fmtDate(el.value); }
   function newMember(id, name) { return { id: id, name: name, on: true, org: '', birth: '', contact: '', memo: '' }; }
 
@@ -475,7 +654,7 @@
     return null;
   }
   function addPerson(name) {
-    var p = { id: newId(), name: name, org: '', birth: '', contact: '', memo: '' };
+    var p = { id: newId(), name: name, f: false, org: '', birth: '', contact: '', memo: '' };
     data.people.push(p);
     return p;
   }
@@ -484,13 +663,8 @@
     return data.groups.filter(function (g) { return g !== except && memberById(g, pid); });
   }
   // どのグループにも入っていない人は残さない
-  function dropOrphans() {
-    var used = {};
-    function mark(g) { g.members.forEach(function (m) { used[m.pid] = true; }); }
-    data.groups.forEach(mark);
-    if (draft) mark(draft);
-    data.people = data.people.filter(function (p) { return used[p.id]; });
-  }
+  // どのグループにも入っていない人も、メンバー一覧に残す（消すのはメンバーの編集の「このメンバーを削除」だけ）
+  function dropOrphans() {}
 
   function cleanMembers(list) {
     var out = [];
@@ -550,7 +724,7 @@
       g.members.forEach(function (m) {
         var p = byName['$' + m.name];
         if (!p) {
-          p = { id: m.id, name: m.name, org: m.org, birth: m.birth, contact: m.contact, memo: m.memo };
+          p = { id: m.id, name: m.name, f: false, org: m.org, birth: m.birth, contact: m.contact, memo: m.memo };
           byName['$' + m.name] = p; data.people.push(p);
         } else {
           ['org', 'birth', 'contact', 'memo'].forEach(function (k) { if (!p[k]) p[k] = m[k]; });
@@ -571,7 +745,7 @@
       if (!p || typeof p.name !== 'string' || !p.name || !(id > 0) || id !== Math.floor(id) || seenId[id] || seenName['$' + p.name]) return;
       seenId[id] = true; seenName['$' + p.name] = true;
       if (id > max) max = id;
-      data.people.push({ id: id, name: p.name, org: str(p.org), birth: isDate(p.birth) ? p.birth : '', contact: str(p.contact), memo: str(p.memo) });
+      data.people.push({ id: id, name: p.name, f: p.f === true, org: str(p.org), birth: isDate(p.birth) ? p.birth : '', contact: str(p.contact), memo: str(p.memo) });
     });
     (Array.isArray(d.groups) ? d.groups : []).forEach(function (g) {
       if (!g || typeof g !== 'object') return;
@@ -609,10 +783,26 @@
       var p = person(id);
       names[id] = d.names && typeof d.names[id] === 'string' && d.names[id] ? d.names[id] : (p ? p.name : '');
     });
-    return { sizes: d.sizes.slice(), ids: d.ids.slice(), picked: d.picked.map(function (p) { return [p[0], p[1]]; }), names: names };
+    // shown: 「ガラポン結果」を押したか（前の版のデータで全員決まっているものは、押したことにする）
+    var shown = d.shown === true || (d.shown === undefined && d.picked.length === d.ids.length);
+    var out = { sizes: d.sizes.slice(), ids: d.ids.slice(), picked: d.picked.map(function (p) { return [p[0], p[1]]; }), names: names, shown: shown, order: d.order === true };
+    out.id = typeof d.id === 'number' ? d.id : Date.now() + Math.floor(Math.random() * 1000);
+    if (typeof d.savedId === 'number') out.savedId = d.savedId;
+    if (d.no > 0) out.no = Math.floor(d.no); // 「◯回目」の番号（削除しても変えない）
+    if (d.fromList === true) { out.fromList = true; out.listNo = Number(d.listNo) || 0; } // 抽選結果の一覧から開いたもの
+    if (d.kind === 'roulette') out.kind = 'roulette';
+    // あみだくじ：横線と下の結果の並び
+    if (d.kind === 'amida') {
+      var n = d.ids.length, rows = Number(d.rows), okA = rows > 0 && rows === Math.floor(rows) && Array.isArray(d.bars) && Array.isArray(d.bottom) && d.bottom.length === n;
+      if (okA) d.bars.forEach(function (b) { if (!Array.isArray(b) || !(b[0] >= 0 && b[0] < rows) || !(b[1] >= 0 && b[1] < n - 1)) okA = false; });
+      if (okA) d.bottom.forEach(function (g) { if (!(g >= 0 && g < d.sizes.length)) okA = false; });
+      if (!okA) return null;
+      out.kind = 'amida'; out.rows = rows; out.bars = d.bars.map(function (b) { return [b[0], b[1]]; }); out.bottom = d.bottom.slice();
+    }
+    return out;
   }
 
-  var STEPS = ['info', 'method', 'setup', 'draw', 'fee'];
+  var STEPS = ['info', 'method', 'setup', 'draw', 'fee', 'results'];
   // 金額（0以上の整数）。そうでなければ null
   function money(v) { return typeof v === 'number' && v >= 0 && v === Math.floor(v) ? v : null; }
   function readPay(o) {
@@ -622,6 +812,22 @@
       if (r && typeof r === 'object') out[k] = { t: r.t === 2 ? 2 : 1, amt: money(r.amt), paid: r.paid === true };
     });
     return out;
+  }
+
+  // 保存した抽選の一覧。前の版のデータで、全員決まっている抽選は保存したことにする
+  function readDraws(x) {
+    if (Array.isArray(x.draws)) return x.draws.map(readDraw).filter(Boolean);
+    var d = readDraw(x.draw);
+    return d && d.picked.length === d.ids.length ? [d] : [];
+  }
+
+  // 番号のない回（前の版のデータ）には、古い順に番号を付ける
+  function numberDraws(list, x) {
+    var max = Number(x.lastNo) || 0;
+    list.forEach(function (d) { if (d.no > max) max = d.no; });
+    list.forEach(function (d) { if (!(d.no > 0)) d.no = ++max; });
+    x.lastNo = max;
+    return list;
   }
 
   // v9 のイベントの一覧を読む（おかしなものは直すか捨てる）
@@ -635,9 +841,13 @@
       });
       var e = {
         id: Number(x.id) || 0, name: str(x.name), date: isDate(x.date) ? x.date : '',
-        groupId: g ? g.id : null, groupName: str(x.groupName), ids: ids,
-        step: STEPS.indexOf(x.step) >= 0 ? x.step : 'info', method: x.method === 'balls' ? 'balls' : null, draw: readDraw(x.draw),
-        fee1: money(x.fee1), fee2: money(x.fee2), pay: readPay(x.pay)
+        created: isDate(x.created) ? x.created : today(), groupId: g ? g.id : null, all: !g && x.all === true, groupName: str(x.groupName), ids: ids,
+        step: STEPS.indexOf(x.step) >= 0 ? x.step : 'info', method: ['balls', 'amida', 'roulette'].indexOf(x.method) >= 0 ? x.method : null, draw: readDraw(x.draw),
+        draws: numberDraws(readDraws(x), x), decidedId: typeof x.decidedId === 'number' ? x.decidedId : null,
+        lastNo: Math.max(Number(x.lastNo) || 0, 0),
+        fee1: money(x.fee1), fee2: money(x.fee2), pay: readPay(x.pay),
+        order: x.order === true,
+        sizes: Array.isArray(x.sizes) ? x.sizes.map(function (v) { return typeof v === 'number' && v >= 1 && v === Math.floor(v) ? v : 0; }) : null
       };
       if (e.id > 0 && e.id === Math.floor(e.id) && !seen[e.id]) { seen[e.id] = true; if (e.id > max) max = e.id; }
       else todo.push(e);
@@ -660,7 +870,7 @@
   function toEvents(L) {
     var g = groupById(L.draw ? L.draw.groupId : L.sel.groupId);
     if (trim(L.eventName) || L.eventDate || g) {
-      var e = { id: newId(), name: L.eventName, date: L.eventDate, groupId: null, groupName: '', ids: [], step: 'info', method: null, draw: null, fee1: null, fee2: null, pay: {} };
+      var e = { id: newId(), name: L.eventName, date: L.eventDate, created: today(), groupId: null, all: false, groupName: '', ids: [], step: 'info', method: null, draw: null, draws: [], fee1: null, fee2: null, pay: {} };
       if (g) {
         e.groupId = g.id;
         e.ids = g.members.filter(function (m) { return m.on; }).map(function (m) { return m.pid; });
@@ -769,11 +979,18 @@
     return text.split(/[\r\n、,，]+/).map(trim).filter(function (s) { return s.length > 0; });
   }
 
-  // 例: 11人 → [3,4,4]（少ない組を先に）
+  // n人を k組に、なるべく同じ人数で分ける（人数の多い組を先に）
+  function splitInto(n, k) {
+    var base = Math.floor(n / k), extra = n % k, sizes = [];
+    for (var i = 0; i < k; i++) sizes.push(i < extra ? base + 1 : base);
+    return sizes;
+  }
+
+  // 例: 11人 → [4,4,3]（人数の多い組を先に）
   function groupSizes(n) {
     var g = Math.ceil(n / MAX_PER_GROUP);
     var base = Math.floor(n / g), extra = n % g, sizes = [];
-    for (var i = 0; i < g; i++) sizes.push(i >= g - extra ? base + 1 : base);
+    for (var i = 0; i < g; i++) sizes.push(i < extra ? base + 1 : base);
     return sizes;
   }
 
@@ -796,6 +1013,8 @@
   // 残っている玉から1つ引く（どの玉も同じ確率）
   function pickOne(id) {
     if (groupOf(id) >= 0) return;
+    var d = ev().draw;
+    if (d.kind === 'amida') { d.picked.push([id, d.bottom[amidaEnd(d, d.ids.indexOf(id))]]); return; }
     var rem = remaining(), total = 0;
     rem.forEach(function (n) { total += n; });
     if (total <= 0) return;
@@ -804,20 +1023,243 @@
     ev().draw.picked.push([id, g]);
   }
 
+  // 「採用」を押したら、採用結果一覧に入れる
+  function autoSave() {
+    var e = ev(), d = e.draw;
+    if (!d || d.savedId || d.picked.length !== d.ids.length) return;
+    d.savedId = d.id;
+    var c = JSON.parse(JSON.stringify(d)); delete c.savedId; c.shown = true;
+    e.lastNo = (e.lastNo || 0) + 1; c.no = e.lastNo; // 番号は使い回さない
+    e.draws.push(c);
+  }
 
-  // 例: '2026-10-27' → '2026年10月27日(火曜日)'（日付でなければ空）
+
+  // 例: '2026-10-27' → '2026年10月27日(火)'（日付でなければ空）
   function fmtDate(v) {
     if (!isDate(v)) return '';
     var a = v.split('-'), y = Number(a[0]), m = Number(a[1]), d = Number(a[2]);
     var dt = new Date(y, m - 1, d);
     if (dt.getFullYear() !== y || dt.getMonth() !== m - 1 || dt.getDate() !== d) return '';
-    return y + '年' + m + '月' + d + '日(' + '日月火水木金土'.charAt(dt.getDay()) + '曜日)';
+    return y + '年' + m + '月' + d + '日(' + '日月火水木金土'.charAt(dt.getDay()) + ')';
   }
 
-  // 例: '2026年10月27日(火曜日) 10月コンペ'（どちらも無ければ空）
+  // 例: '2026年10月27日(火) 10月コンペ'（どちらも無ければ空）
   function labelOf(e) { var dt = fmtDate(e.date), nm = trim(e.name); return dt && nm ? dt + ' ' + nm : dt + nm; }
   function eventLabel() { return labelOf(ev()); }
   function isDone() { return ev().draw.picked.length === ev().draw.ids.length; }
+
+  // ---- あみだくじ ----
+  // 横線を作る（同じ段で隣り合う横線は作らない）。下には組（または順番）を、人数分シャッフルして並べる
+  function makeAmida(d) {
+    var n = d.ids.length, rows = Math.max(8, n + 4), bars = [], bottom = [];
+    for (var r = 0; r < rows; r++) {
+      var prev = false;
+      for (var c = 0; c < n - 1; c++) {
+        if (!prev && Math.random() < 0.45) { bars.push([r, c]); prev = true; } else prev = false;
+      }
+    }
+    d.sizes.forEach(function (k, g) { for (var i = 0; i < k; i++) bottom.push(g); });
+    for (var i = bottom.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = bottom[i]; bottom[i] = bottom[j]; bottom[j] = t; }
+    d.kind = 'amida'; d.rows = rows; d.bars = bars; d.bottom = bottom;
+  }
+  function hasBar(d, r, c) { for (var i = 0; i < d.bars.length; i++) if (d.bars[i][0] === r && d.bars[i][1] === c) return true; return false; }
+  // 上の c 列目からたどって、たどり着く下の列
+  function amidaEnd(d, c) {
+    for (var r = 0; r < d.rows; r++) { if (hasBar(d, r, c)) c++; else if (c > 0 && hasBar(d, r, c - 1)) c--; }
+    return c;
+  }
+  // たどった道すじ（点の並び）
+  function amidaPath(d, c, X, Y) {
+    var pts = [[X(c), Y(-1)]];
+    for (var r = 0; r < d.rows; r++) {
+      var y = Y(r);
+      if (hasBar(d, r, c)) { pts.push([X(c), y]); c++; pts.push([X(c), y]); }
+      else if (c > 0 && hasBar(d, r, c - 1)) { pts.push([X(c), y]); c--; pts.push([X(c), y]); }
+    }
+    pts.push([X(c), Y(d.rows)]);
+    return pts;
+  }
+
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  function svgEl(tag, attrs) { var el = document.createElementNS(SVGNS, tag); Object.keys(attrs).forEach(function (k) { el.setAttribute(k, attrs[k]); }); return el; }
+
+  // あみだくじを描く（横向き：名前は左に縦に並び、線は左から右へ、結果は右）。animId の人は、線をたどる動きを付ける
+  function renderAmida(d, animId) {
+    var box = $('amida'), n = d.ids.length, ROWH = 44, NAMEW = 140, RESW = 50;
+    // animId は1人（id）か、まとめてのときは複数（配列）
+    var anim = function (id) { return Array.isArray(animId) ? animId.indexOf(id) >= 0 : id === animId; };
+    box.textContent = '';
+    var wrap = document.createElement('div'); wrap.className = 'amWrap';
+    box.appendChild(wrap);
+    var LW = Math.max(130, (box.clientWidth || 340) - 8 - NAMEW - RESW), H = n * ROWH;
+    var stepW = LW / (d.rows + 1);
+    // 列 c（人）→ 縦の位置、段 r → 横の位置
+    var rowY = function (c) { return c * ROWH + ROWH / 2; }, stepX = function (r) { return (r + 1) * stepW; };
+    // 左の名前（押すと、その人の線をたどる）
+    var left = document.createElement('div'); left.className = 'amNames';
+    d.ids.forEach(function (id) {
+      var g = groupOf(id), b = document.createElement('button'); b.type = 'button';
+      b.className = 'amName' + (g >= 0 ? ' done' : '');
+      // 名前の左のあみだマーク（引いたあとは空けておく）
+      var mk = document.createElement('span'); mk.className = 'amMk'; if (g < 0) mk.innerHTML = AM_SVG; b.appendChild(mk);
+      var nt = document.createElement('span'); nt.className = 'nmT'; nt.textContent = memberName(id); b.appendChild(nt); addFm(b, person(id));
+      b.setAttribute('aria-label', memberName(id) + (g >= 0 ? '（' + unitText(g, d) + '）' : 'を引く'));
+      b.addEventListener('click', function () { if (groupOf(id) >= 0) return; pickOne(id); saveData(); renderDraw(id); });
+      left.appendChild(b);
+    });
+    wrap.appendChild(left);
+    // 線
+    var svg = svgEl('svg', { width: LW, height: H, viewBox: '0 0 ' + LW + ' ' + H, 'aria-hidden': 'true' });
+    for (var c = 0; c < n; c++) svg.appendChild(svgEl('line', { x1: 0, y1: rowY(c), x2: LW, y2: rowY(c), class: 'amV' }));
+    d.bars.forEach(function (b) { svg.appendChild(svgEl('line', { x1: stepX(b[0]), y1: rowY(b[1]), x2: stepX(b[0]), y2: rowY(b[1] + 1), class: 'amH' })); });
+    d.picked.forEach(function (p) {
+      // amidaPath は（列→横, 段→縦）で点を返すので、横向き用に入れ替える
+      var pts = amidaPath(d, d.ids.indexOf(p[0]), function (cc) { return rowY(cc); }, function (r) { return r < 0 ? 0 : r >= d.rows ? LW : stepX(r); })
+        .map(function (q) { return [q[1], q[0]]; });
+      var line = svgEl('polyline', { points: pts.map(function (q) { return q.join(','); }).join(' '), class: 'amP' });
+      line.style.stroke = d.order ? 'var(--green)' : colorOf(p[1]).hex === '#ffffff' ? '#bbb' : colorOf(p[1]).hex;
+      svg.appendChild(line);
+      if (anim(p[0])) {
+        var len = 0; for (var i = 1; i < pts.length; i++) len += Math.abs(pts[i][0] - pts[i - 1][0]) + Math.abs(pts[i][1] - pts[i - 1][1]);
+        line.style.strokeDasharray = len; line.style.strokeDashoffset = len;
+        line.getBoundingClientRect();
+        line.style.transition = 'stroke-dashoffset 1.6s ease-in-out';
+        requestAnimationFrame(function () { line.style.strokeDashoffset = '0'; });
+      }
+    });
+    wrap.appendChild(svg);
+    // 右の結果
+    var right = document.createElement('div'); right.className = 'amRess';
+    d.bottom.forEach(function (g, c) {
+      var cell = document.createElement('span'); cell.className = 'amRes';
+      // 組（順番）は最初から見せておく
+      if (!d.order) cell.appendChild(dot(g));
+      cell.appendChild(document.createTextNode(d.order ? circled(g + 1) : (g + 1) + '組'));
+      right.appendChild(cell);
+    });
+    wrap.appendChild(right);
+  }
+
+  // これまでの抽選（タップで結果を見る）
+  function drawLabel(d, i) {
+    return (d.no || i + 1) + '回目　' + kindName(d.kind) + '　' + (d.order ? '順番' : d.sizes.join('・'));
+  }
+  function renderPast() {
+    var e = ev(), box = $('pastList');
+    box.textContent = '';
+    // 新しいものを上に（「◯回目」は古い順の番号のまま）
+    // 新しい順（決定しても並びは変えない）
+    var rows = e.draws.map(function (d, i) { return [d, i]; }).reverse();
+    rows.forEach(function (x) {
+      var d = x[0], i = x[1];
+      var li = document.createElement('li');
+      var who = document.createElement('div'); who.className = 'who';
+      who.setAttribute('role', 'button'); who.setAttribute('tabindex', '0');
+      who.textContent = drawLabel(d, i);
+      // 決定は、回を開いた確認の画面で行う。一覧では印だけ
+      if (d.id === e.decidedId) { var bd = document.createElement('span'); bd.className = 'badge'; bd.textContent = '決定'; who.appendChild(bd); li.className = 'decided'; }
+      function open() { var c = JSON.parse(JSON.stringify(d)); c.savedId = d.id; c.shown = true; c.fromList = true; c.listNo = d.no || i + 1; e.draw = c; e.step = 'draw'; saveData(); go(); }
+      who.addEventListener('click', open);
+      who.addEventListener('keydown', function (k) { if (k.key === 'Enter' || k.key === ' ') { k.preventDefault(); open(); } });
+      var del = document.createElement('button'); del.type = 'button'; del.className = 'del'; del.textContent = '削除';
+      del.addEventListener('click', function () {
+        e.draws = e.draws.filter(function (x) { return x !== d; });
+        if (e.decidedId === d.id) e.decidedId = null;
+        if (e.draws.length === 0) e.step = 'info';
+        saveData(); go();
+      });
+      li.appendChild(who); li.appendChild(del); box.appendChild(li);
+    });
+    // まだ決定がなければ、決定をうながす
+    $('decideHint').hidden = e.draws.length === 0 || e.draws.some(function (x) { return x.id === e.decidedId; });
+  }
+
+  // ---- ガラポン（まわして球を出す） ----
+  // fast: まとめてのとき（短く回す）。next: 終わったら次へ
+  function spinGP(id, fast, next) {
+    var d = ev().draw;
+    if ((spinning && !next) || groupOf(id) >= 0) return;
+    var rem = remaining(), total = 0;
+    rem.forEach(function (n) { total += n; });
+    if (total <= 0) return;
+    var r = Math.floor(Math.random() * total), g = 0;
+    while (r >= rem[g]) { r -= rem[g]; g++; }
+    spinning = true;
+    try { $('gpBox').scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e1) {}
+    var drum = $('gpDrum'), ball = $('gpBall');
+    ball.setAttribute('visibility', 'hidden'); ball.classList.remove('out');
+    var spinMs = fast ? 700 : 1600, ballMs = fast ? 450 : 800;
+    drum.style.animationDuration = spinMs + 'ms';
+    drum.classList.remove('spin'); void drum.getBoundingClientRect(); drum.classList.add('spin');
+    setTimeout(function () {
+      drum.classList.remove('spin');
+      var col = colorOf(g).hex, dark = ['#ffffff', '#f2b705', '#36b9c9'].indexOf(col) >= 0;
+      $('gpBallC').setAttribute('fill', col);
+      $('gpBallT').setAttribute('fill', dark ? '#222' : '#fff');
+      $('gpBallT').textContent = String(g + 1);
+      ball.setAttribute('visibility', 'visible'); void ball.getBoundingClientRect(); ball.classList.add('out');
+      setTimeout(function () { d.picked.push([id, g]); saveData(); if (next) { next(); return; } spinning = false; renderDraw(); }, ballMs);
+    }, spinMs);
+  }
+
+  // ---- ルーレット ----
+  // 全部の枠（組の人数分。順番のときは番号ごとに1つ）。決まった分は used
+  function wheelSlots(d) {
+    var rem = remaining(), slots = [];
+    d.sizes.forEach(function (n, g) { for (var i = 0; i < n; i++) slots.push({ g: g, used: i < n - rem[g] }); });
+    return slots;
+  }
+  var spinning = false;
+  // 枠を横に並べる（多いときは折り返す）。文字は回らない
+  function renderWheel(d) {
+    var box = $('wheel'), slots = wheelSlots(d);
+    box.textContent = '';
+    slots.forEach(function (sl, i) {
+      var g = sl.g, c = document.createElement('div'); c.className = 'cell' + (sl.used ? ' used' : '');
+      var col = colorOf(d.order ? i : g).hex;
+      c.style.borderColor = col === '#ffffff' ? '#bbb' : col;
+      if (sl.used) c.style.background = col === '#ffffff' ? '#e4e4e4' : col + '66'; // 当たった枠は色だけ付けて残す
+      if (!d.order) { var dt = dot(g); c.appendChild(dt); }
+      c.appendChild(document.createTextNode(d.order ? circled(g + 1) : (g + 1) + '組'));
+      box.appendChild(c);
+    });
+  }
+  // その人のために針（光る枠）を動かし、止まった枠の組（順番）に決める
+  // fast: まとめてのとき（短く光らせる）。next: 終わったら次へ
+  function spinFor(id, fast, next) {
+    var d = ev().draw;
+    if ((spinning && !next) || groupOf(id) >= 0) return;
+    var all = wheelSlots(d);
+    renderWheel(d);
+    var cells = [], slots = [];
+    all.forEach(function (sl, i) { if (!sl.used) { cells.push($('wheel').children[i]); slots.push(sl.g); } }); // 空いている枠だけを光が回る
+    var n = slots.length;
+    if (n === 0) return;
+    var k = Math.floor(Math.random() * n), g = slots[k];
+    // 何周か回ってから、だんだん遅くなって k 番目で止まる
+    var loops = n === 1 ? 1 : fast ? Math.max(1, Math.ceil(10 / n)) : Math.max(2, Math.ceil(24 / n)), total = loops * n + k, step = 0, pos = -1;
+    spinning = true;
+    try { $('wheelBox').scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e1) {} // 動くところが見えるように
+    function tick() {
+      if (pos >= 0) cells[pos].classList.remove('on');
+      pos = (pos + 1) % n; step++;
+      cells[pos].classList.add('on');
+      if (step > total) {
+        cells[pos].classList.add('hit');
+        setTimeout(function () { d.picked.push([id, g]); saveData(); if (next) { next(); return; } spinning = false; renderDraw(); }, fast ? 350 : 700);
+        return;
+      }
+      var t = step / total; // 0 → 1
+      setTimeout(tick, fast ? 35 + 110 * t * t * t : 40 + 260 * t * t * t); // 最後に向けて遅くなる
+    }
+    tick();
+  }
+
+  // 組（ふつう）か、順番か。例: '1組' / '1番'
+  // 順番は ① ② … で表す（20を超えたら (21) のように）
+  function circled(n) { return n >= 1 && n <= 20 ? String.fromCharCode(0x2460 + n - 1) : '(' + n + ')'; }
+  function unitText(g, d) { return d && d.order ? circled(g + 1) : (g + 1) + '組'; }
+  function ones(n) { var a = []; for (var i = 0; i < n; i++) a.push(1); return a; }
 
   function groupsByName() {
     var groups = ev().draw.sizes.map(function () { return []; });
@@ -826,25 +1268,30 @@
   }
 
   function resultText() {
-    var ev = eventLabel();
-    var lines = ['【' + (ev ? ev + ' ' : '') + '組み分け】'];
-    groupsByName().forEach(function (g, i) { lines.push(colorOf(i).emoji + (i + 1) + '組：' + g.join('、')); });
+    var d = ev().draw, label = eventLabel();
+    var dec = d.savedId && ev().decidedId === d.savedId ? '（決定）' : '';
+    var lines = ['【' + (label ? label + ' ' : '') + (d.order ? '順番' : '組み分け') + dec + '】'];
+    groupsByName().forEach(function (g, i) { lines.push(unitText(i, d) + (d.order ? ' ' : '：') + g.join('、')); });
     return lines.join('\n');
   }
 
   // ---- 画面 ----
   var $ = function (id) { return document.getElementById(id); };
-  var VIEWS = { fee: $('viewFee'), list: $('viewList'), history: $('viewHistory'), home: $('viewHome'), edit: $('viewEdit'), member: $('viewMember'), method: $('viewMethod'), setup: $('viewMembers'), draw: $('viewDraw') };
+  var VIEWS = { results: $('viewResults'), people: $('viewPeople'), groups: $('viewGroups'), fee: $('viewFee'), list: $('viewList'), history: $('viewHistory'), home: $('viewHome'), edit: $('viewEdit'), member: $('viewMember'), method: $('viewMethod'), setup: $('viewMembers'), draw: $('viewDraw') };
   var elNew = $('newName'), elAddMsg = $('addMsg'), elList = $('memberList'), elBulk = $('bulk');
   var elSummary = $('summary'), elStart = $('btnStart'), elEvent = $('eventName'), elDate = $('eventDate');
   var elGroupName = $('groupName'), elEditList = $('editList');
-  var elTitle = $('drawTitle'), elRemain = $('drawRemain'), elQuota = $('quota');
+  var elTitle = $('drawTitle'), elQuota = $('quota');
   var elDrawList = $('drawList'), elGroups = $('groups');
   var elToast = $('toast'), toastTimer = null;
 
-  function curGroup() { var e = ev(); return e ? groupById(e.groupId) : null; }
+  // 「登録メンバー」（グループなしで、登録メンバー全員から選ぶ）
+  var ALL_ID = -1;
+  function allGroup() { return { id: ALL_ID, name: '登録メンバー', members: data.people.map(function (p) { return { pid: p.id }; }) }; }
+  function groupOfEvent(e) { return e.all ? allGroup() : groupById(e.groupId); }
+  function curGroup() { var e = ev(); return e ? groupOfEvent(e) : null; }
 
-  // 画面の上に小さく出す行。例: '2026年10月27日(火曜日) 10月コンペ ／ グループ1'
+  // 画面の上に小さく出す行。例: '2026年10月27日(火) 10月コンペ ／ グループ1'
   function headLine(g) {
     var ev = eventLabel();
     return ev ? ev + ' ／ ' + groupLabel(g) : 'グループ：' + groupLabel(g);
@@ -852,16 +1299,27 @@
 
   function screen() {
     if (editId !== null && editGroup()) return memberById(editGroup(), editMemberId) ? 'member' : 'edit';
+    if (editId === null && editMemberId !== null && person(editMemberId)) return 'member'; // メンバー一覧から開いたとき
     var e = ev();
-    if (!e) return histOpen ? 'history' : 'list';
+    if (!e) return histOpen ? 'history' : groupsOpen ? 'groups' : peopleOpen ? 'people' : 'list';
     if (e.step === 'draw' && e.draw) return 'draw';
     if (e.step === 'fee' && feeIds(e).length > 0) return 'fee';
+    if (e.step === 'results') return 'results';
     if (curGroup() && selectedIds().length >= MIN_PLAYERS) {
-      if (e.step === 'setup' && e.method === 'balls') return 'setup';
+      if (e.step === 'setup' && ['balls', 'amida', 'roulette'].indexOf(e.method) >= 0) return 'setup';
       if (e.step === 'method') return 'method';
     }
     return 'home';
   }
+
+  var GP_SVG = document.querySelector('.gp.big').innerHTML; // ガラポンマーク（見出しのものを使い回す）
+  var AM_SVG = $('amBig').innerHTML; // あみだくじマーク
+  var RL_SVG = $('rlBig').innerHTML; // ルーレットマーク
+  $('rlIcon').innerHTML = RL_SVG;
+  function kindName(k) { return k === 'amida' ? 'あみだくじ' : k === 'roulette' ? 'ルーレット' : 'ガラポン'; }
+  function kindOfDraw(d) { return d && (d.kind === 'amida' || d.kind === 'roulette') ? d.kind : 'balls'; }
+  $('restMark').innerHTML = GP_SVG;
+  $('gpIcon').innerHTML = GP_SVG; $('amIcon').innerHTML = AM_SVG; // 抽選方法のボタンにもマーク
 
   function dot(g) {
     var d = document.createElement('span');
@@ -870,15 +1328,15 @@
   }
 
   // イベント履歴（開催日の新しい順。開催日なしは上）
-  function eventGroupLabel(e) { var g = groupById(e.groupId); return g ? groupLabel(g) : e.groupName; }
+  function eventGroupLabel(e) { var g = groupOfEvent(e); return g ? groupLabel(g) : e.groupName; }
   function eventCount(e) {
     if (e.draw) return e.draw.ids.length;
-    var g = groupById(e.groupId);
+    var g = groupOfEvent(e);
     return g ? g.members.filter(function (m) { return e.ids.indexOf(m.pid) >= 0; }).length : 0;
   }
   function eventStatus(e) {
-    if (!e.draw) return '未抽選';
-    return e.draw.picked.length === e.draw.ids.length ? '抽選済み' : '抽選中';
+    if (e.draws.length > 0) return '抽選済み';
+    return e.draw && !e.draw.savedId ? '抽選中' : '未抽選';
   }
 
   function renderList() {
@@ -890,7 +1348,7 @@
     });
     $('listEmpty').hidden = list.length > 0;
     list.forEach(function (e) {
-      var label = labelOf(e) || NO_NAME;
+      var label = trim(e.name) ? labelOf(e) : 'イベント名未入力';
       var li = document.createElement('li');
       var who = document.createElement('div'); who.className = 'who';
       var mt = document.createElement('span'); mt.className = 'mt'; mt.textContent = label;
@@ -898,12 +1356,12 @@
       var grp = eventGroupLabel(e);
       ms.textContent = (grp ? [grp, eventCount(e) + '人'] : []).concat([eventStatus(e)]).join(' ・ ');
       who.appendChild(mt); who.appendChild(ms);
-      var open = document.createElement('button'); open.type = 'button'; open.textContent = '確認・修正';
-      open.setAttribute('aria-label', label + 'を確認・修正');
-      open.addEventListener('click', function () {
-        data.cur = e.id; e.step = 'info'; panelOpen = null;
-        saveData(); go();
-      });
+      // イベント名をタップすると開く
+      who.setAttribute('role', 'button'); who.setAttribute('tabindex', '0');
+      who.setAttribute('aria-label', label + 'を開く');
+      function open() { data.cur = e.id; e.step = 'info'; panelOpen = null; saveData(); go(); }
+      who.addEventListener('click', open);
+      who.addEventListener('keydown', function (k) { if (k.key === 'Enter' || k.key === ' ') { k.preventDefault(); open(); } });
       var del = document.createElement('button'); del.type = 'button'; del.className = 'del'; del.textContent = '削除';
       del.setAttribute('aria-label', label + 'を削除');
       del.addEventListener('click', function () {
@@ -911,24 +1369,87 @@
         data.events = data.events.filter(function (x) { return x !== e; });
         saveData(); renderList();
       });
-      li.appendChild(who); li.appendChild(open); li.appendChild(del); box.appendChild(li);
+      li.appendChild(who); li.appendChild(del); box.appendChild(li);
     });
   }
 
-  function isBlankEvent(e) { return !trim(e.name) && !e.date && e.groupId === null && !e.draw; }
+  // グループ一覧（名前をタップすると、グループの編集）
+  function renderGroups() {
+    var box = $('groupsList');
+    box.textContent = '';
+    $('groupsEmpty').hidden = data.groups.length > 0;
+    data.groups.forEach(function (g) {
+      var li = document.createElement('li');
+      var who = document.createElement('div'); who.className = 'who';
+      who.setAttribute('role', 'button'); who.setAttribute('tabindex', '0');
+      who.setAttribute('aria-label', groupLabel(g) + 'を編集');
+      var mt = document.createElement('span'); mt.className = 'mt'; mt.textContent = groupLabel(g);
+      var ms = document.createElement('span'); ms.className = 'ms'; ms.textContent = g.members.length + '人';
+      who.appendChild(mt); who.appendChild(ms);
+      function open() { editId = g.id; go(); }
+      who.addEventListener('click', open);
+      who.addEventListener('keydown', function (k) { if (k.key === 'Enter' || k.key === ' ') { k.preventDefault(); open(); } });
+      li.appendChild(who); box.appendChild(li);
+    });
+  }
+
+  // メンバー一覧（名前をタップすると、メンバーの編集）
+  function renderPeople() {
+    var box = $('peopleList');
+    box.textContent = '';
+    $('peopleEmpty').hidden = data.people.length > 0;
+    data.people.forEach(function (p) {
+      var li = document.createElement('li');
+      var who = document.createElement('div'); who.className = 'who'; who.textContent = p.name; addFm(who, p);
+      who.setAttribute('role', 'button'); who.setAttribute('tabindex', '0');
+      who.setAttribute('aria-label', p.name + 'を編集');
+      function open() { editId = null; editMemberId = p.id; go(); }
+      who.addEventListener('click', open);
+      who.addEventListener('keydown', function (k) { if (k.key === 'Enter' || k.key === ' ') { k.preventDefault(); open(); } });
+      li.appendChild(who); box.appendChild(li);
+    });
+  }
+
+  // メンバー一覧で追加（どのグループにも入らずに登録される）
+  function addPeople() {
+    var names = parseNames($('pNew').value), dup = [], seen = {};
+    if (names.length === 0) { $('pAddMsg').textContent = ''; return; }
+    names.forEach(function (n) {
+      if (personByName(n) || seen[n]) { if (dup.indexOf(n) < 0) dup.push(n); }
+      seen[n] = true;
+    });
+    if (dup.length > 0) { $('pAddMsg').textContent = '同じ名前があります：' + dup.join('、'); return; }
+    names.forEach(function (n) { addPerson(n); });
+    saveData();
+    $('pNew').value = ''; $('pAddMsg').textContent = '';
+    renderPeople();
+  }
+
+  // メンバーを消す（入っているグループと、まだ抽選していないイベントの参加者からも外す）
+  function deletePerson() {
+    var m = curMember();
+    if (!m || !window.confirm('「' + m.name + '」を削除しますか？\n入っているグループからも外れます。元に戻せません。')) return;
+    data.groups.forEach(function (g) { g.members = g.members.filter(function (x) { return x.pid !== m.id; }); });
+    data.events.forEach(function (e) { e.ids = e.ids.filter(function (id) { return id !== m.id; }); });
+    data.people = data.people.filter(function (p) { return p !== m; });
+    editMemberId = null;
+    saveData(); go();
+  }
+
+  function isBlankEvent(e) { return !trim(e.name) && !e.date && e.groupId === null && !e.all && !e.draw; }
 
   // グループをえらぶ（別のグループに変えたら、参加者は全員不参加から）
   function pickGroup(g) {
-    var e = ev();
-    if (e.groupId !== g.id) { if (!okToChange()) return; e.ids = []; }
-    e.groupId = g.id; e.step = 'info'; e.method = null; panelOpen = false;
+    var e = ev(), isAll = g.id === ALL_ID, cur = e.all ? ALL_ID : e.groupId;
+    if (cur !== g.id) { if (!okToChange()) return; e.ids = []; }
+    e.all = isAll; e.groupId = isAll ? null : g.id; e.step = 'info'; e.method = null; panelOpen = false;
   }
 
   // 抽選のあとで参加者を変えるときは、結果を消してよいか確かめる
   function okToChange() {
     var e = ev();
     if (!e.draw) return true;
-    if (e.draw.picked.length > 0 && !window.confirm('参加者を変えると、抽選の結果は消えます。変えますか？')) return false;
+    if (!e.draw.savedId && e.draw.picked.length > 0 && !window.confirm('参加者を変えると、保存していない抽選の結果は消えます。変えますか？')) return false;
     e.draw = null;
     return true;
   }
@@ -941,15 +1462,17 @@
     if (document.activeElement !== elDate) elDate.value = ev().date;
     markDate(elDate);
     var cur = curGroup();
-    var open = data.groups.length === 0 || (panelOpen === null ? !cur : panelOpen);
+    var none = data.groups.length === 0 && data.people.length === 0;
+    var open = none || (panelOpen === null ? !cur : panelOpen);
     $('groupBoxText').textContent = cur ? groupLabel(cur) : '';
     $('groupBox').setAttribute('aria-expanded', open ? 'true' : 'false');
     $('groupBox').querySelector('.mark').textContent = open ? '▲' : '▼';
     $('groupPanel').hidden = !open;
     renderHomeMembers(cur);
-    $('homeEmpty').hidden = data.groups.length > 0;
-    data.groups.forEach(function (g) {
-      var row = document.createElement('div'); row.className = g === cur ? 'grow sel' : 'grow';
+    $('homeEmpty').hidden = !none;
+    var choices = data.people.length > 0 ? data.groups.concat([allGroup()]) : data.groups;
+    choices.forEach(function (g) {
+      var row = document.createElement('div'); row.className = cur && g.id === cur.id ? 'grow sel' : 'grow';
       var b = document.createElement('button'); b.type = 'button'; b.className = 'method';
       var mt = document.createElement('span'); mt.className = 'mt'; mt.textContent = groupLabel(g);
       var ms = document.createElement('span'); ms.className = 'ms'; ms.textContent = g.members.length + '人';
@@ -958,7 +1481,9 @@
       var e = document.createElement('button'); e.type = 'button'; e.className = 'gedit'; e.textContent = '編集';
       e.setAttribute('aria-label', groupLabel(g) + 'を編集');
       e.addEventListener('click', function () { editId = g.id; go(); });
-      row.appendChild(b); row.appendChild(e); box.appendChild(row);
+      row.appendChild(b);
+      if (g.id !== ALL_ID) row.appendChild(e); else row.appendChild(document.createElement('span')).className = 'gedit-space';
+      box.appendChild(row);
     });
   }
 
@@ -971,7 +1496,13 @@
     g.members.forEach(function (link) {
       var m = person(link.pid);
       var li = document.createElement('li');
-      var who = document.createElement('div'); who.className = 'who'; who.textContent = m.name;
+      li.setAttribute('data-pid', String(m.id));
+      var who = document.createElement('div'); who.className = 'who';
+      var grip = document.createElement('span'); grip.className = 'grip'; grip.textContent = '≡';
+      grip.setAttribute('aria-hidden', 'true');
+      var nm = document.createElement('span'); nm.className = 'nm'; nm.textContent = m.name;
+      who.appendChild(grip); who.appendChild(nm); addFm(who, m);
+      dragRow(li, grip, g);
       var open = document.createElement('button'); open.type = 'button'; open.textContent = '編集';
       open.setAttribute('aria-label', m.name + 'を編集');
       open.addEventListener('click', function () { editMemberId = m.id; go(); });
@@ -992,6 +1523,46 @@
     renderPick(g);
   }
 
+  // 女性なら、名前の横に（♀）を付ける
+  function addFm(el, p) {
+    if (!p || !p.f) return;
+    var s = document.createElement('span'); s.className = 'fm'; s.textContent = '（♀）';
+    el.appendChild(s);
+  }
+
+  // ≡ をつかんで上下に動かすと、名簿の順番が入れ替わる
+  function dragRow(li, grip, g) {
+    var startY = 0, active = false;
+    function rectOf(el) { return el.getBoundingClientRect(); }
+    grip.addEventListener('pointerdown', function (e) {
+      if (e.button !== undefined && e.button !== 0) return;
+      e.preventDefault();
+      active = true; startY = e.clientY;
+      li.classList.add('dragging');
+      try { grip.setPointerCapture(e.pointerId); } catch (err) {}
+    });
+    grip.addEventListener('pointermove', function (e) {
+      if (!active) return;
+      e.preventDefault();
+      var y = e.clientY, prev = li.previousElementSibling, next = li.nextElementSibling, r;
+      if (prev) { r = rectOf(prev); if (y < r.top + r.height / 2) { li.parentNode.insertBefore(li, prev); startY -= r.height + 8; } }
+      if (next) { r = rectOf(next); if (y > r.top + r.height / 2) { li.parentNode.insertBefore(next, li); startY += r.height + 8; } }
+      li.style.transform = 'translateY(' + (y - startY) + 'px)';
+    });
+    function end() {
+      if (!active) return;
+      active = false;
+      li.classList.remove('dragging'); li.style.transform = '';
+      var order = Array.prototype.map.call(li.parentNode.children, function (x) { return Number(x.getAttribute('data-pid')); });
+      var byPid = {};
+      g.members.forEach(function (m) { byPid[m.pid] = m; });
+      var moved = order.some(function (pid, i) { return g.members[i].pid !== pid; });
+      if (moved) { g.members = order.map(function (pid) { return byPid[pid]; }); saveData(); }
+    }
+    grip.addEventListener('pointerup', end);
+    grip.addEventListener('pointercancel', end);
+  }
+
   // 登録済みの名前から選ぶ（このグループにまだ入っていない人の一覧）
   function candidates(g) {
     return data.people.filter(function (p) { return !memberById(g, p.id); });
@@ -1007,7 +1578,7 @@
     if (!pickOpen) return;
     list.forEach(function (p) {
       var li = document.createElement('li');
-      var who = document.createElement('div'); who.className = 'who'; who.textContent = p.name;
+      var who = document.createElement('div'); who.className = 'who'; who.textContent = p.name; addFm(who, p);
       var add = document.createElement('button'); add.type = 'button'; add.textContent = '追加';
       add.setAttribute('aria-label', p.name + 'を追加');
       add.addEventListener('click', function () {
@@ -1021,15 +1592,23 @@
 
   // メンバーの編集（1人分）
   var mFields = { org: $('mOrg'), birth: $('mBirth'), contact: $('mContact'), memo: $('mMemo') };
-  function curMember() { var g = editGroup(); return g && memberById(g, editMemberId) ? person(editMemberId) : null; }
+  function curMember() {
+    if (editId === null) return editMemberId !== null ? person(editMemberId) : null; // メンバー一覧から開いたとき
+    var g = editGroup(); return g && memberById(g, editMemberId) ? person(editMemberId) : null;
+  }
 
   function renderMember() {
     var m = curMember();
     $('mName').value = m.name;
     $('mNameMsg').textContent = '';
-    var others = groupsOf(m.id, editGroup()).map(function (x) { return '「' + groupLabel(x) + '」'; });
-    $('mShared').textContent = others.length > 0 ? others.join('') + 'にも入っています。ここで直すと、そちらにも反映されます' : '';
     Object.keys(mFields).forEach(function (k) { mFields[k].value = m[k]; });
+    $('mFemale').setAttribute('aria-pressed', m.f ? 'true' : 'false');
+    $('btnDelMember').hidden = editId !== null; // メンバー一覧から開いたときだけ
+    var gl = $('mGroups');
+    gl.textContent = '';
+    groupsOf(m.id, null).forEach(function (x) {
+      var li = document.createElement('li'); li.textContent = groupLabel(x); gl.appendChild(li);
+    });
     markDate(mFields.birth);
   }
 
@@ -1064,10 +1643,7 @@
 
   function deleteGroup() {
     var g = editGroup();
-    var shared = g.members.some(function (m) { return groupsOf(m.pid, g).length > 0; });
-    if (!window.confirm('「' + groupLabel(g) + '」を削除しますか？\n' + (shared
-      ? '元に戻せません。\nほかのグループにも入っている人は、そちらに残ります。'
-      : '名簿の' + g.members.length + '人も消えます。元に戻せません。'))) return;
+    if (!window.confirm('「' + groupLabel(g) + '」を削除しますか？\n元に戻せません。')) return;
     data.groups = data.groups.filter(function (x) { return x !== g; });
     // このグループを使っていたイベントには、グループ名だけ残す（抽選の結果はそのまま）
     data.events.forEach(function (e) {
@@ -1085,26 +1661,75 @@
     return curGroup().members.map(function (m) { return m.pid; }).filter(function (id) { return e.ids.indexOf(id) >= 0; });
   }
 
+  // 組の人数が正しいか（全部1人以上で、合計が参加人数と同じ）
+  function sizesOk(sizes, n) {
+    var sum = 0, ok = Array.isArray(sizes) && sizes.length > 0;
+    if (ok) sizes.forEach(function (x) { if (!(x >= 1) || x !== Math.floor(x)) ok = false; sum += x; });
+    return ok && sum === n;
+  }
+
   function check() {
-    var total = curGroup().members.length, n = selectedIds().length;
-    var ok = false, msg = '', warn = false;
+    var e = ev(), total = curGroup().members.length, n = selectedIds().length;
+    var ok = false, msg = '', warn = false, smsg = '';
     if (total === 0) {
       msg = '名簿に名前がありません';
     } else if (n < MIN_PLAYERS) {
       msg = MIN_PLAYERS + '人以上にチェックを入れてください'; warn = true;
     } else {
-      var sizes = groupSizes(n);
-      msg = '参加 ' + n + '人 → ' + sizes.length + '組（' + sizes.join('・') + '）';
-      ok = true;
+      msg = '参加 ' + n + '人';
+      var sum = 0;
+      (e.sizes || []).forEach(function (x) { sum += x || 0; });
+      ok = e.order ? true : sizesOk(e.sizes, n); // 順番のときは人数の入力はいらない
+      if (!ok) smsg = (e.sizes || []).some(function (x) { return !(x >= 1); })
+        ? '人数が入っていない組があります'
+        : '合計 ' + sum + '人（参加 ' + n + '人）。人数を合わせてください';
     }
     elSummary.textContent = msg;
     elSummary.className = warn ? 'warn' : '';
+    $('sizeMsg').textContent = smsg;
     elStart.disabled = !ok;
     return ok;
   }
 
+  // 各組の人数の入力欄
+  function renderSizes() {
+    var e = ev(), box = $('sizeList');
+    box.textContent = '';
+    e.sizes.forEach(function (x, g) {
+      var li = document.createElement('li');
+      var lab = document.createElement('span'); lab.className = 'gname';
+      lab.appendChild(dot(g)); lab.appendChild(document.createTextNode((g + 1) + '組'));
+      var inp = document.createElement('input');
+      inp.type = 'number'; inp.className = 'textIn'; inp.min = '1'; inp.step = '1';
+      inp.setAttribute('inputmode', 'numeric'); inp.setAttribute('enterkeyhint', 'done');
+      inp.setAttribute('aria-label', (g + 1) + '組の人数');
+      inp.value = x ? String(x) : '';
+      function save() {
+        var v = inp.value === '' ? 0 : Math.floor(Number(inp.value));
+        e.sizes[g] = v > 0 ? v : 0;
+        saveData(); check();
+      }
+      inp.addEventListener('input', save);
+      inp.addEventListener('change', save);
+      blurOnEnter(inp);
+      var unit = document.createElement('span'); unit.textContent = '人';
+      li.appendChild(lab); li.appendChild(inp); li.appendChild(unit); box.appendChild(li);
+    });
+    if (document.activeElement !== $('groupCount')) $('groupCount').value = e.order ? '0' : String(e.sizes.length);
+    $('groupCount').max = String(Math.min(selectedIds().length, MAX_GROUPS));
+    // 「順番」を押しているときは、組の数と人数は使わない
+    $('btnOrder').setAttribute('aria-pressed', e.order ? 'true' : 'false');
+    $('sizeArea').hidden = !!e.order;
+  }
+
   function renderSetup() {
+    var e = ev(), n = selectedIds().length, am = e.method === 'amida';
+    var kn = kindName(e.method === 'balls' ? 'balls' : e.method);
+    $('setupTitle').textContent = kn;
+    elStart.textContent = kn + 'を始める';
     $('setupGroup').textContent = headLine(curGroup());
+    if (!Array.isArray(e.sizes) || e.sizes.length === 0) e.sizes = groupSizes(n); // 初めは自動で分けた人数を入れておく
+    renderSizes();
     check();
   }
 
@@ -1115,8 +1740,9 @@
     else if (cur && n < MIN_PLAYERS) msg = MIN_PLAYERS + '人以上にチェックを入れてください';
     $('memberTitle').textContent = '参加者（' + n + '人）';
     $('homeMsg').textContent = msg;
-    $('btnNext').disabled = !(ev().draw || (cur && n >= MIN_PLAYERS));
+    $('btnNext').disabled = !(cur && n >= MIN_PLAYERS);
     $('btnFee').disabled = feeIds(ev()).length === 0;
+    $('btnResults').disabled = ev().draws.length === 0; // 保存した抽選がなければ押せない
   }
 
   function renderHomeMembers(g) {
@@ -1126,7 +1752,7 @@
       g.members.forEach(function (m) {
         var p = person(m.pid);
         var li = document.createElement('li');
-        var who = document.createElement('div'); who.className = 'who'; who.textContent = p.name;
+        var who = document.createElement('div'); who.className = 'who'; who.textContent = p.name; addFm(who, p);
         var join = document.createElement('button'); join.type = 'button'; join.textContent = '参加';
         function isOn() { return ev().ids.indexOf(m.pid) >= 0; }
         function show() { li.className = isOn() ? 'on' : ''; join.setAttribute('aria-pressed', isOn() ? 'true' : 'false'); }
@@ -1152,14 +1778,19 @@
   }
 
   // ④ 抽選
-  function renderDraw() {
-    var d = ev().draw, done = isDone(), rem = remaining();
+  function renderDraw(animId) {
+    var d = ev().draw, allIn = isDone(), done = allIn && d.shown === true, rem = remaining(), am = d.kind === 'amida', rl = d.kind === 'roulette';
     $('drawEvent').textContent = eventLabel();
-    elTitle.textContent = done ? '全員決まりました' : '名前をタップして抽選';
-    elRemain.textContent = done ? '' : '残り ' + (d.ids.length - d.picked.length) + '人';
+    elTitle.textContent = done ? (d.fromList ? d.listNo + '回目　' + kindName(d.kind) : '抽選結果') : kindName(d.kind);
+    document.querySelector('.gp.big').style.display = done || am || rl ? 'none' : '';
+    $('amBig').style.display = done || !am ? 'none' : '';
+    $('rlBig').style.display = done || !rl ? 'none' : '';
+    $('restMark').innerHTML = am ? AM_SVG : rl ? RL_SVG : GP_SVG; // ボタンのマークも抽選方法に合わせる
+    elTitle.classList.toggle('big', !done); // マークに合わせて大きく
+    elTitle.classList.toggle('am', am || rl); // 「あみだくじ」「ルーレット」は文字が多いので少し小さく
 
     elQuota.textContent = '';
-    elQuota.hidden = done;
+    elQuota.hidden = true; // 「●組 あと●人」は出さない
     d.sizes.forEach(function (n, g) {
       var chip = document.createElement('span');
       chip.className = 'chip' + (rem[g] === 0 ? ' full' : '');
@@ -1169,24 +1800,37 @@
     });
 
     elDrawList.textContent = '';
-    elDrawList.hidden = done;
-    d.ids.forEach(function (id) {
+    elDrawList.hidden = done || am;
+    $('amida').hidden = done || !am;
+    $('wheelBox').hidden = done || !rl;
+    $('gpBox').hidden = done || rl || am;
+    if (d.picked.length === 0) $('gpBall').setAttribute('visibility', 'hidden');
+    if (rl && !done) renderWheel(d);
+    if (am && !done) renderAmida(d, animId);
+    // まだの人を上に、引いた人は引いた順に下へ（アニメーションが見えるように）
+    var listIds = d.ids.filter(function (id) { return groupOf(id) < 0; }).concat(d.picked.map(function (p) { return p[0]; }));
+    listIds.forEach(function (id) {
       var g = groupOf(id);
       var li = document.createElement('li');
       var b = document.createElement('button');
       b.type = 'button';
       var name = document.createElement('span');
-      name.className = 'name'; name.textContent = memberName(id);
+      name.className = 'name'; name.textContent = memberName(id); addFm(name, person(id));
       b.appendChild(name);
       if (g >= 0) {
         b.className = 'done';
         var res = document.createElement('span');
         res.className = 'res';
-        res.appendChild(dot(g));
-        res.appendChild(document.createTextNode((g + 1) + '組'));
+        if (!d.order) res.appendChild(dot(g));
+        res.appendChild(document.createTextNode(unitText(g, d)));
         b.appendChild(res);
       } else {
-        b.addEventListener('click', function () { pickOne(id); saveData(); renderDraw(); });
+        // 右はしのガラポンマーク（行のどこを押しても抽選）
+        var mk = document.createElement('span'); mk.className = 'gp small';
+        mk.innerHTML = rl ? RL_SVG : GP_SVG;
+        b.appendChild(mk);
+        b.setAttribute('aria-label', memberName(id) + 'を抽選');
+        b.addEventListener('click', function () { if (rl) spinFor(id); else spinGP(id); });
       }
       li.appendChild(b); elDrawList.appendChild(li);
     });
@@ -1197,13 +1841,29 @@
       groupsByName().forEach(function (names, g) {
         var row = document.createElement('div'); row.className = 'group';
         var no = document.createElement('div'); no.className = 'no';
-        no.appendChild(dot(g)); no.appendChild(document.createTextNode((g + 1) + '組'));
-        var mem = document.createElement('div'); mem.className = 'members'; mem.textContent = names.join('、');
+        if (!d.order) no.appendChild(dot(g));
+        no.appendChild(document.createTextNode(unitText(g, d)));
+        var mem = document.createElement('div'); mem.className = 'members';
+        names.forEach(function (nm) { var r = document.createElement('div'); r.textContent = nm; mem.appendChild(r); }); // 名前は縦に並べる
         row.appendChild(no); row.appendChild(mem); elGroups.appendChild(row);
       });
     }
-    $('rowDrawing').hidden = done;
+    // 全員決まったら、まず一人ずつの結果を見せ、同じボタンを「ガラポン結果」にして組ごとの表示へ
+    $('btnRest').hidden = done;
+    $('restText').textContent = am ? (allIn ? 'あみだ結果' : 'まとめてあみだ') : rl ? (allIn ? 'ルーレット結果' : 'まとめて回す') : (allIn ? 'ガラポン結果' : 'まとめてガラポン');
     $('rowDone').hidden = !done;
+    $('btnCopyTop').hidden = !done; // 結果の見出しの右に「コピー」
+    var isDec = !!d.savedId && ev().decidedId === d.savedId;
+    $('btnDecide').hidden = !d.fromList; // 抽選し終えた直後は、下の「決定」ボタンで決める
+    $('btnDecide').setAttribute('aria-pressed', isDec ? 'true' : 'false');
+    $('btnDecide').textContent = '決定'; // 決定済みは緑で表す
+    // 一覧から開いた結果：「削除」だけ（← 戻るで一覧へ）
+    // 抽選し終えた結果：「もう一度」（同じ設定で引き直し）と「完了」（イベントへ戻る）。← 戻るは出さない
+    $('btnSave').textContent = d.fromList ? '削除' : '採用';
+    $('btnSave').classList.toggle('del', !!d.fromList);
+    $('btnRedo').textContent = '再抽選';
+    $('btnRedo').hidden = !!d.fromList;
+    $('btnDrawBack').style.visibility = done && !d.fromList ? 'hidden' : ''; // 消しても場所は残す（右上のボタンと重ならないように）
   }
 
   function render() {
@@ -1211,10 +1871,13 @@
     Object.keys(VIEWS).forEach(function (k) { VIEWS[k].hidden = k !== sc; });
     if (sc === 'list') { /* ボタンだけ */ }
     else if (sc === 'history') renderList();
+    else if (sc === 'groups') renderGroups();
+    else if (sc === 'people') renderPeople();
     else if (sc === 'home') renderHome();
     else if (sc === 'edit') renderEdit();
     else if (sc === 'member') renderMember();
     else if (sc === 'method') $('methodGroup').textContent = headLine(curGroup());
+    else if (sc === 'results') { var lb = eventLabel(); $('resultsHead').textContent = lb; renderPast(); }
     else if (sc === 'setup') renderSetup();
     else if (sc === 'fee') renderFee();
     else renderDraw();
@@ -1236,28 +1899,83 @@
     var names = {};
     ids.forEach(function (id) { names[id] = person(id).name; });
     ev().ids = ids.slice();
-    ev().draw = { sizes: groupSizes(ids.length), ids: ids, picked: [], names: names };
+    var order = ev().order === true, sizes = order ? ones(ids.length) : ev().sizes.slice();
+    ev().draw = { id: Date.now(), sizes: sizes, ids: ids, picked: [], names: names, shown: false, order: order };
+    if (ev().method === 'amida') makeAmida(ev().draw);
+    if (ev().method === 'roulette') ev().draw.kind = 'roulette';
     ev().step = 'draw';
     saveData(); go();
   }
 
   function pickRest() {
+    if (spinning) return;
+    var d = ev().draw;
+    var finish = function () { spinning = false; d.ids.forEach(function (id) { pickOne(id); }); saveData(); go(); };
+    if (!d.kind) { // ガラポン：1回まわして虹色の球を出し、全員の結果を出す
+      spinning = true;
+      try { $('gpBox').scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e1) {}
+      var drum = $('gpDrum'), ball = $('gpBall');
+      ball.setAttribute('visibility', 'hidden'); ball.classList.remove('out');
+      drum.style.animationDuration = '1600ms';
+      drum.classList.remove('spin'); void drum.getBoundingClientRect(); drum.classList.add('spin');
+      setTimeout(function () {
+        drum.classList.remove('spin');
+        $('gpBallC').setAttribute('fill', 'url(#gpRainbow)'); $('gpBallT').textContent = '';
+        ball.setAttribute('visibility', 'visible'); void ball.getBoundingClientRect(); ball.classList.add('out');
+        setTimeout(finish, 900);
+      }, 1600);
+      return;
+    }
+    if (d.kind === 'amida') { // あみだ：残りの人の線をいっせいに伸ばす
+      var todo = d.ids.filter(function (id) { return groupOf(id) < 0; });
+      if (todo.length === 0) return;
+      todo.forEach(function (id) { pickOne(id); });
+      saveData(); spinning = true; renderDraw(todo);
+      setTimeout(function () { spinning = false; go(); }, 1700);
+      return;
+    }
+    if (d.kind === 'roulette') { // ルーレット：空いている枠をチカチカさせて、最後に全部点灯してから結果を出す
+      renderWheel(d);
+      var all = wheelSlots(d), cells = [];
+      all.forEach(function (sl, i) { if (!sl.used) cells.push($('wheel').children[i]); });
+      if (cells.length === 0) return;
+      spinning = true;
+      try { $('wheelBox').scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e2) {}
+      var step = 0, last = -1;
+      (function flick() {
+        if (last >= 0) cells[last].classList.remove('on');
+        if (step++ < 24) {
+          var k = Math.floor(Math.random() * cells.length);
+          if (cells.length > 1 && k === last) k = (k + 1) % cells.length;
+          cells[k].classList.add('on'); last = k;
+          setTimeout(flick, 70);
+          return;
+        }
+        cells.forEach(function (c) { c.classList.add('hit'); });
+        setTimeout(finish, 900);
+      })();
+      return;
+    }
     ev().draw.ids.forEach(function (id) { pickOne(id); });
     saveData(); go();
   }
 
+  // 再抽選：同じ設定（抽選方法・組数・人数）ですぐに引き直す。今の結果は残さない
   function redo() {
-    if (!window.confirm('抽選を最初からやり直しますか？')) return;
-    ev().draw.picked = [];
-    saveData(); go();
+    var e = ev(), d = e.draw;
+    e.method = kindOfDraw(d);
+    e.draw = null;
+    if (curGroup() && check()) { startDraw(); return; }
+    e.step = 'setup'; saveData(); go();
   }
 
   // ⑤ 会費
   function yen(n) { return Number(n).toLocaleString('ja-JP') + '円'; }
   // 会費を集める相手（参加者。グループが消されたイベントは、抽選に出た人）
   function feeIds(e) {
-    if (groupById(e.groupId)) return selectedIds();
-    return e.draw ? e.draw.ids.slice() : [];
+    if (groupOfEvent(e)) return selectedIds();
+    if (e.draw) return e.draw.ids.slice();
+    return e.draws.length > 0 ? e.draws[e.draws.length - 1].ids.slice() : [];
   }
   function nameOf(e, id) { var p = person(id); return p ? p.name : (e.draw ? str(e.draw.names[id]) : ''); }
   function payOf(e, id) { return e.pay[id] || { t: 1, amt: null, paid: false }; }
@@ -1281,7 +1999,7 @@
       var name = nameOf(e, id), r = payOf(e, id);
       var li = document.createElement('li');
       if (r.paid) li.className = 'paid';
-      var who = document.createElement('div'); who.className = 'who'; who.textContent = name;
+      var who = document.createElement('div'); who.className = 'who'; who.textContent = name; addFm(who, person(id));
       var amt = document.createElement('button'); amt.type = 'button'; amt.className = 'amt' + (r.amt !== null ? ' hand' : '');
       amt.textContent = yen(amountOf(e, id));
       amt.setAttribute('aria-label', name + 'の会費を切り替える');
@@ -1345,35 +2063,51 @@
 
   // イベントの一覧
   $('btnNewEvent').addEventListener('click', function () {
-    var e = { id: newId(), name: '', date: '', groupId: null, groupName: '', ids: [], step: 'info', method: null, draw: null, fee1: null, fee2: null, pay: {} };
+    var e = { id: newId(), name: '', date: '', created: today(), groupId: null, all: false, groupName: '', ids: [], step: 'info', method: null, draw: null, draws: [], fee1: null, fee2: null, pay: {} };
     data.events.push(e); data.cur = e.id; panelOpen = null;
     saveData(); go();
   });
   $('btnHistory').addEventListener('click', function () { histOpen = true; go(); });
   $('btnHistoryBack').addEventListener('click', function () { histOpen = false; go(); });
+  $('btnGroups').addEventListener('click', function () { groupsOpen = true; go(); });
+  $('btnPeople').addEventListener('click', function () { peopleOpen = true; go(); });
+  $('btnPeopleBack').addEventListener('click', function () { peopleOpen = false; $('pNew').value = ''; $('pAddMsg').textContent = ''; go(); });
+  $('btnPAdd').addEventListener('click', addPeople);
+  $('pNew').addEventListener('keydown', function (e) { if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); addPeople(); } });
+  $('pNew').addEventListener('input', function () { $('pAddMsg').textContent = ''; });
+  $('btnDelMember').addEventListener('click', deletePerson);
+  $('btnGroupsBack').addEventListener('click', function () { groupsOpen = false; go(); });
+  $('btnGroupsAdd').addEventListener('click', function () {
+    draft = { id: newId(), name: '', members: [] };
+    editId = freshId = draft.id; go();
+    elGroupName.focus();
+  });
   // ① イベントとグループ
   $('btnHomeBack').addEventListener('click', function () {
+    $('eventNameMsg').textContent = ''; $('eventDateMsg').textContent = '';
     var e = ev();
     if (isBlankEvent(e)) data.events = data.events.filter(function (x) { return x !== e; }); // 何も入れていなければ残さない
     data.cur = null;
     saveData(); go();
   });
-  elEvent.addEventListener('input', function () { ev().name = elEvent.value; saveData(); });
+  elEvent.addEventListener('input', function () { ev().name = elEvent.value; $('eventNameMsg').textContent = ''; saveData(); });
   blurOnEnter(elEvent);
-  function saveDate() { ev().date = isDate(elDate.value) ? elDate.value : ''; saveData(); markDate(elDate); }
+  function saveDate() { ev().date = isDate(elDate.value) ? elDate.value : ''; if (ev().date) $('eventDateMsg').textContent = ''; saveData(); markDate(elDate); }
   elDate.addEventListener('input', saveDate);
   elDate.addEventListener('change', saveDate);
   $('groupBox').addEventListener('click', function () {
-    if (data.groups.length === 0) return;
+    if (data.groups.length === 0 && data.people.length === 0) return;
     panelOpen = $('groupPanel').hidden;
     renderHome();
   });
   $('btnNext').addEventListener('click', function () {
     var e = ev();
-    if (e.draw) { e.step = 'draw'; saveData(); go(); return; } // 抽選してあれば、その結果へ
+    // 抽選ボタンからは、必ず抽選方法をえらぶ画面へ
     if (!curGroup() || selectedIds().length < MIN_PLAYERS) return;
     e.step = 'method'; e.method = null; saveData(); go();
   });
+  $('btnResults').addEventListener('click', function () { var e = ev(); if (e.draws.length === 0) return; e.step = 'results'; saveData(); go(); });
+  $('btnResultsBack').addEventListener('click', function () { ev().step = 'info'; saveData(); go(); });
   $('btnFee').addEventListener('click', function () {
     var e = ev();
     if (feeIds(e).length === 0) return;
@@ -1389,7 +2123,7 @@
     var g = groupById(editId);
     if (g && g.id === freshId) {
       if (isBlank(g)) data.groups = data.groups.filter(function (x) { return x !== g; });
-      else pickGroup(g); // 追加したグループを選んだ状態にする
+      else if (ev()) pickGroup(g); // イベントの画面から追加したときは、そのグループを選んだ状態にする
       saveData();
     }
     editId = null; editMemberId = null; draft = null; freshId = null; pickOpen = false; elNew.value = ''; elAddMsg.textContent = ''; go();
@@ -1412,6 +2146,11 @@
     editMemberId = null; go();
   });
   $('mName').addEventListener('input', onMemberName);
+  $('mFemale').addEventListener('click', function () {
+    var m = curMember(); if (!m) return;
+    m.f = !m.f; saveData();
+    $('mFemale').setAttribute('aria-pressed', m.f ? 'true' : 'false');
+  });
   blurOnEnter($('mName'));
   Object.keys(mFields).forEach(function (k) {
     var el = mFields[k];
@@ -1422,15 +2161,45 @@
   });
   // ② 方法
   $('btnMethodBack').addEventListener('click', function () { ev().step = 'info'; ev().method = null; saveData(); go(); });
-  $('btnBalls').addEventListener('click', function () { ev().method = 'balls'; ev().step = 'setup'; saveData(); go(); });
+  function chooseMethod(m) {
+    var e = ev();
+    e.method = m; e.step = 'setup'; e.sizes = groupSizes(selectedIds().length);
+    saveData(); go();
+  }
+  $('btnBalls').addEventListener('click', function () { chooseMethod('balls'); });
+  $('btnAmida').addEventListener('click', function () { chooseMethod('amida'); });
+  $('btnRoulette').addEventListener('click', function () { chooseMethod('roulette'); });
+  // 組の数を変えたら、各組の人数をなるべく同じに分け直す
+  function onCount() {
+    var e = ev(), n = selectedIds().length, v = $('groupCount').value, k = Math.floor(Number(v));
+    if (v !== '' && k === 0) { if (!e.order) { e.order = true; saveData(); renderSizes(); check(); } return; } // 0組 = 順番
+    if (e.order && k >= 1) { e.order = false; saveData(); renderSizes(); check(); } // 組の数を入れたら「順番」はやめる
+    if (!(k >= 1) || k > n || k > MAX_GROUPS || k === e.sizes.length) return;
+    e.sizes = splitInto(n, k);
+    saveData(); renderSizes(); check();
+  }
+  $('btnOrder').addEventListener('click', function () { var e = ev(); e.order = !e.order; saveData(); renderSizes(); check(); });
+  $('groupCount').addEventListener('input', onCount);
+  $('groupCount').addEventListener('change', function () { onCount(); $('groupCount').value = ev().order ? '0' : String(ev().sizes.length); });
+  blurOnEnter($('groupCount'));
   // ③ 準備
   $('btnSetupBack').addEventListener('click', function () { ev().method = null; ev().step = 'method'; saveData(); go(); });
   $('btnAllOn').addEventListener('click', function () { setAll(true); });
   $('btnAllOff').addEventListener('click', function () { setAll(false); });
   elStart.addEventListener('click', startDraw);
   // ④ 抽選
-  $('btnRest').addEventListener('click', pickRest);
-  $('btnDrawBack').addEventListener('click', function () { ev().step = 'info'; saveData(); go(); });
+  $('btnRest').addEventListener('click', function () {
+    if (isDone()) { ev().draw.shown = true; saveData(); go(); } else pickRest();
+  });
+  // ガラポンの画面から戻ると、抽選をはじめる画面（組の数・人数）へ
+  $('btnDrawBack').addEventListener('click', function () {
+    var e = ev();
+    if (e.draw && e.draw.fromList) { e.draw = null; e.method = null; e.step = 'results'; saveData(); go(); return; } // 一覧から開いていたとき
+    // 抽選の途中・全員決まったところからは、組数の画面へ（全員決まっていれば結果は保存済み）
+    e.method = kindOfDraw(e.draw);
+    if (e.draw && e.draw.picked.length === e.draw.ids.length) e.draw = null; // 採用していない結果は残さない
+    e.step = 'setup'; saveData(); go();
+  });
   // ⑤ 会費
   $('btnFeeBack').addEventListener('click', function () { ev().step = 'info'; saveData(); go(); });
   [['fee1', $('fee1')], ['fee2', $('fee2')]].forEach(function (x) {
@@ -1445,7 +2214,44 @@
     blurOnEnter(x[1]);
   });
   $('btnRedo').addEventListener('click', redo);
-  $('btnCopy').addEventListener('click', copyResult);
+  $('btnCopyTop').addEventListener('click', copyResult);
+  // 決定：イベントに1つだけ。もう一度押すと外れる
+  $('btnDecide').addEventListener('click', function () {
+    var e = ev(), d = e.draw;
+    autoSave();
+    if (!d.savedId) return;
+    if (e.decidedId === d.savedId) { e.decidedId = null; saveData(); renderDraw(); return; } // もう一度押すと外れる
+    e.decidedId = d.savedId;
+    e.draw = null; e.method = null; e.step = 'results';
+    saveData(); toast('決定しました'); go();
+  });
+  // 保存：これまでの抽選に加えて、抽選方法の画面へ
+  $('btnSave').addEventListener('click', function () {
+    var e = ev(), d = e.draw;
+    if (d.fromList) { // 一覧から開いた結果を消す
+      e.draws = e.draws.filter(function (x) { return x.id !== d.savedId; });
+      if (e.decidedId === d.savedId) e.decidedId = null;
+      e.draw = null; e.method = null; e.step = e.draws.length > 0 ? 'results' : 'info';
+      saveData(); go(); return;
+    }
+    // 採用：採用結果一覧に入れて、一覧へ。決定は一覧で選ぶ
+    autoSave();
+    e.draw = null; e.method = null; e.step = 'results';
+    saveData(); go();
+  });
+
+  // イベントの中の各ページに「イベントTOP」ボタン（右上）。押すとイベントの画面へ
+  ['viewMethod', 'viewMembers', 'viewDraw', 'viewResults', 'viewFee'].forEach(function (vid) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'link evTop'; b.textContent = 'イベントTOP';
+    b.addEventListener('click', function () {
+      var e = ev(); if (!e) return;
+      e.draw = null; // 採用していない抽選は残さない
+      e.method = null; e.step = 'info';
+      saveData(); go();
+    });
+    $(vid).insertBefore(b, $(vid).firstChild);
+  });
 
   loadData();
   render();
