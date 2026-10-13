@@ -493,7 +493,7 @@
   #feeList .amtBox { flex: 0 0 96px; display: flex; align-items: center; gap: 1px; height: 34px; align-self: center; padding: 0 8px 0 4px; background: #fff; border: 1px solid var(--line); border-radius: 8px; }
   #feeList .amtBox.hand { border-color: var(--green); }
   #feeList .amtBox:focus-within { outline: 2px solid var(--green); outline-offset: 1px; }
-  #feeList .amtIn { flex: 1 1 auto; min-width: 0; width: 100%; border: none; background: none; outline: none; font: inherit; font-size: 15px; text-align: right; padding: 0; color: var(--text); }
+  #feeList .amtIn { flex: 1 1 auto; min-width: 0; width: 100%; border: none; background: none; outline: none; font: inherit; font-size: 16px; text-align: right; padding: 0; color: var(--text); } /* 16px未満だとiPhoneが入力時に拡大して画面がぶれる */
   #feeList .amtBox .en { font-size: 13px; }
   /* ゲストは青系の色で分ける（印は付けない） */
   #memberList li.guest .who, #feeList li.guest .who { border-color: #8fb3d1; background: #f3f8fc; }
@@ -507,14 +507,18 @@
   #btnPick { width: var(--nameW); }
   #btnPick .who { margin-right: 0; }
   #btnGuest .who, #btnFeeAdd .who { margin: 0; }
-  .dataRow { display: flex; gap: 8px; margin-top: 28px; }
+  .dataRow { display: flex; gap: 8px; margin-top: 56px; }
   .dataRow button { flex: 1; min-height: 40px; padding: 6px 8px; font-size: 14px; font-weight: 400; background: #fff; color: var(--green); border: 1px solid var(--line); }
   .dataRow button:active { background: var(--sel); }
   #importFile[hidden] { display: none; }
+  /* 横にぶれないように（横スクロールを出さない） */
+  html, body { overflow-x: hidden; }
+  input, textarea, select { font-size: max(16px, 1em); }
+  header .tagline { font-size: 13px; font-weight: 400; color: var(--sub); letter-spacing: 0; margin-left: 4px; align-self: flex-end; padding-bottom: 3px; }
 </style>
 </head>
 <body>
-<header><img class="logo" src="icon-192.png" alt="" width="34" height="34">Pick Pon</header>
+<header><img class="logo" src="icon-192.png" alt="" width="34" height="34">Pick Pon<span class="tagline">イベント幹事アプリ</span></header>
 <main>
   <!-- ① グループ選択 -->
   <section id="viewList" hidden>
@@ -1894,7 +1898,7 @@
     if (total === 0) {
       msg = '名簿に名前がありません';
     } else if (n < MIN_PLAYERS) {
-      msg = MIN_PLAYERS + '人以上にチェックを入れてください'; warn = true;
+      msg = MIN_PLAYERS + '人以上を参加にしてください'; warn = true;
     } else {
       msg = '参加 ' + n + '人';
       var sum = 0;
@@ -1957,7 +1961,7 @@
   function homeState() {
     var cur = curGroup(), n = cur ? selectedIds().length : 0, msg = '';
     if (cur && cur.members.length === 0) msg = '名簿に名前がありません。グループの「編集」から追加してください';
-    else if (cur && n < MIN_PLAYERS) msg = MIN_PLAYERS + '人以上にチェックを入れてください';
+    else if (cur && n < MIN_PLAYERS) msg = MIN_PLAYERS + '人以上を参加にしてください';
     $('memberTitle').innerHTML = '<span class="cnt">' + n + '</span>人'; // グループ名と同じような枠の中に人数
     $('homeMsg').textContent = msg;
     $('btnNext').disabled = !(cur && n >= MIN_PLAYERS);
