@@ -455,6 +455,8 @@
   /* 参加ボタンをなくした分だけ広く（ゲストを追加のボタンと同じ幅） */
   #peopleList .who { width: calc(var(--nameW) + 52px); max-width: calc(var(--nameW) + 52px); } /* メンバー一覧もイベント詳細と同じ幅 */
   #memberList .who { flex-basis: calc(var(--nameW) + 52px); width: calc(var(--nameW) + 52px); max-width: calc(var(--nameW) + 52px); cursor: pointer; }
+  #guestList .who { flex-basis: calc(var(--nameW) + 52px); width: calc(var(--nameW) + 52px); max-width: calc(var(--nameW) + 52px); cursor: pointer; }
+  #feeAddList .who { flex-basis: calc(var(--nameW) + 46px); width: calc(var(--nameW) + 46px); max-width: calc(var(--nameW) + 46px); cursor: pointer; }
   #feeList .who { flex-basis: calc(var(--nameW) + 46px); width: calc(var(--nameW) + 46px); max-width: calc(var(--nameW) + 46px); cursor: pointer; }
   #memberTitle { display: flex; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 0 12px; min-height: 46px; margin-bottom: 10px; }
   #memberTitle .cnt { display: inline-block; width: 1.3em; text-align: right; margin-right: 2px; font-variant-numeric: tabular-nums; } /* 2けたまで「人」の位置が動かない */
@@ -463,13 +465,30 @@
   /* 1行の入力欄は会計確認の枠と同じ高さ（46px） */
   input.textIn { height: 46px; padding-top: 0; padding-bottom: 0; }
   .fem, .fem .nm, .fem .nmT, .fem .feeNm { color: #d32f2f !important; }
+  header { display: flex; align-items: center; gap: 10px; }
+  header .logo { width: 34px; height: 34px; border-radius: 8px; flex: 0 0 auto; }
+  #topMarks { display: flex; justify-content: space-around; align-items: flex-end; margin: 6px 0 22px; }
+  #topMarks .tm { display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; border: none; padding: 6px; min-height: 0; font-weight: 400; border-radius: 12px; }
+  #topMarks .tm:active { background: var(--sel); }
+  #topMarks .ic { width: 72px; height: 72px; display: block; }
+  #topMarks .ic svg { width: 100%; height: 100%; }
+  #topMarks .lb { font-size: 13px; color: var(--sub); }
+  .row2.one > button:not([hidden]) { flex: 1 1 100%; }
+  /* 名前を入力：名前の枠と同じ幅の1つの枠。右端（ゲスト表示の位置）に追加ボタン */
+  #guestPanel .addRow, #feeAddPanel .addRow { gap: 0; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 10px; height: 46px; padding: 0 8px 0 0; margin-bottom: 8px; }
+  #guestPanel .addRow { width: calc(var(--nameW) + 52px); }
+  #feeAddPanel .addRow { width: calc(var(--nameW) + 46px); }
+  #guestPanel .addRow:focus-within, #feeAddPanel .addRow:focus-within { outline: 2px solid var(--green); outline-offset: 1px; }
+  #guestPanel .addRow input, #feeAddPanel .addRow input { flex: 1 1 auto; width: auto; max-width: none; min-width: 0; height: 44px; border: none; background: none; outline: none; padding: 0 14px; }
+  #guestPanel .addRow button, #feeAddPanel .addRow button { flex: 0 0 auto; width: auto; min-height: 0; height: 26px; padding: 0 10px; font-size: 12px; border-radius: 6px; border: 1px solid var(--green); color: var(--green); background: #fff; margin: 0; }
 </style>
 </head>
 <body>
-<header>Pick Pon</header>
+<header><img class="logo" src="icon-192.png" alt="" width="34" height="34">Pick Pon</header>
 <main>
   <!-- ① グループ選択 -->
   <section id="viewList" hidden>
+    <div id="topMarks"></div>
     <button id="btnNewEvent" class="addGroup" type="button">＋ 新規イベント</button>
     <button id="btnHistory" type="button">イベント履歴</button>
     <button id="btnGroups" type="button">グループ一覧/グループ追加</button>
@@ -509,12 +528,14 @@
   <section id="viewHome" hidden>
     <button id="btnHomeBack" class="link" type="button">← 戻る</button>
     <div class="pageTitle" id="homeTitle">イベント詳細</div>
+    <div id="homeEventFields">
     <label class="title" for="eventName">イベント名（任意）</label>
     <input id="eventName" class="textIn" type="text" maxlength="40" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
     <div class="fieldMsg" id="eventNameMsg"></div>
     <label class="title" for="eventDate">イベント開催日（任意）</label>
     <div class="dateWrap"><input id="eventDate" class="textIn" type="date" min="1900-01-01" max="2100-12-31"><span class="dateShow"></span></div>
     <div class="fieldMsg" id="eventDateMsg"></div>
+    </div>
     <div class="title" id="groupBoxLabel">グループ選択</div>
     <button id="groupBox" class="selBox" type="button" aria-labelledby="groupBoxLabel groupBoxText" aria-expanded="false"><span class="txt" id="groupBoxText"></span><span class="mark">▼</span></button>
     <div id="groupPanel" hidden>
@@ -529,8 +550,8 @@
       <button id="btnGuest" type="button" aria-expanded="false"><span class="who">＋ ゲストを追加</span></button>
       <div id="guestPanel" hidden>
         <div class="addRow">
-          <button id="btnGuestAdd" type="button">追加</button>
           <input id="guestName" type="text" placeholder="名前を入力" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
+          <button id="btnGuestAdd" type="button">追加</button>
         </div>
         <div id="guestMsg"></div>
         <ul id="guestList"></ul>
@@ -661,8 +682,8 @@
     <button id="btnFeeAdd" type="button" aria-expanded="false"><span class="who">＋ ゲストを追加</span></button>
     <div id="feeAddPanel" hidden>
       <div class="addRow">
-        <button id="btnFeeAddName" type="button">追加</button>
         <input id="feeAddName" type="text" placeholder="名前を入力" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
+        <button id="btnFeeAddName" type="button">追加</button>
       </div>
       <div id="feeAddMsg"></div>
       <ul id="feeAddList"></ul>
@@ -961,6 +982,8 @@
         feeOnly: (Array.isArray(x.feeOnly) ? x.feeOnly : []).filter(function (id, i, a) { return typeof id === 'number' && person(id) && a.indexOf(id) === i; }),
         feeOff: (Array.isArray(x.feeOff) ? x.feeOff : []).filter(function (id, i, a) { return typeof id === 'number' && a.indexOf(id) === i; }),
         order: x.order === true,
+        quick: x.quick === true,
+        typed: (Array.isArray(x.typed) ? x.typed : []).filter(function (id) { return typeof id === 'number'; }), // このイベントで名前を入力して登録した人 // トップのマークから始めた抽選（イベントにしない）
         extra: (Array.isArray(x.extra) ? x.extra : []).filter(function (id, i, a) { return typeof id === 'number' && person(id) && a.indexOf(id) === i; }),
         sizes: Array.isArray(x.sizes) ? x.sizes.map(function (v) { return typeof v === 'number' && v >= 1 && v === Math.floor(v) ? v : 0; }) : null
       };
@@ -1431,6 +1454,14 @@
   var AM_SVG = $('amBig').innerHTML; // あみだくじマーク
   var RL_SVG = $('rlBig').innerHTML; // ルーレットマーク
   $('rlIcon').innerHTML = RL_SVG;
+  // トップページの飾り：ガラポン・あみだくじ・ルーレットのマーク
+  [[GP_SVG, 'ガラポン', 'balls'], [AM_SVG, 'あみだくじ', 'amida'], [RL_SVG, 'ルーレット', 'roulette']].forEach(function (x) {
+    var d = document.createElement('button'); d.type = 'button'; d.className = 'tm';
+    d.innerHTML = '<span class="ic">' + x[0] + '</span><span class="lb">' + x[1] + '</span>';
+    d.setAttribute('aria-label', x[1] + 'で抽選（イベントにしない）');
+    d.addEventListener('click', function () { startQuick(x[2]); });
+    $('topMarks').appendChild(d);
+  });
   function kindName(k) { return k === 'amida' ? 'あみだくじ' : k === 'roulette' ? 'ルーレット' : 'ガラポン'; }
   function kindOfDraw(d) { return d && (d.kind === 'amida' || d.kind === 'roulette') ? d.kind : 'balls'; }
   $('restMark').innerHTML = GP_SVG;
@@ -1457,7 +1488,7 @@
   function renderList() {
     var box = $('eventList');
     box.textContent = '';
-    var list = data.events.slice().sort(function (a, b) {
+    var list = data.events.filter(function (x) { return !x.quick; }).sort(function (a, b) {
       if (a.date !== b.date) { if (!a.date) return -1; if (!b.date) return 1; return a.date < b.date ? 1 : -1; }
       return b.id - a.id;
     });
@@ -1573,7 +1604,7 @@
     var e = ev(), isAll = g.id === ALL_ID, cur = e.all ? ALL_ID : e.groupId;
     if (cur !== g.id) { if (!okToChange()) return; e.ids = []; e.extra = []; }
     guestOpen = false;
-    e.all = isAll; e.groupId = isAll ? null : g.id; e.step = 'info'; e.method = null; panelOpen = false;
+    e.all = isAll; e.groupId = isAll ? null : g.id; e.step = 'info'; if (!e.quick) e.method = null; panelOpen = false; // すぐ抽選は方法をそのまま
   }
 
   // 抽選のあとで参加者を変えるときは、結果を消してよいか確かめる
@@ -1588,7 +1619,11 @@
   // ① イベントの内容（イベント名・開催日・グループ・参加者）
   var homeNew = false; // 「＋ 新規イベント」から開いたか（見出しを変える）
   function renderHome() {
-    $('homeTitle').textContent = homeNew ? '新規イベント' : 'イベント詳細';
+    var q = !!ev().quick;
+    $('homeTitle').textContent = q ? kindName(ev().method === 'balls' ? undefined : ev().method) : homeNew ? '新規イベント' : 'イベント詳細';
+    $('homeEventFields').hidden = q; // すぐ抽選：イベント名・日付・採用結果・会計は出さない
+    $('btnResults').hidden = q; $('btnFee').hidden = q;
+    $('btnNext').parentNode.classList.toggle('one', q);
     var box = $('groupList');
     box.textContent = '';
     if (document.activeElement !== elEvent) elEvent.value = ev().name;
@@ -1907,6 +1942,7 @@
         join.setAttribute('aria-label', p.name + 'の参加');
         join.addEventListener('click', function () {
           var e = ev();
+          if (!memberById(g, m.pid)) { removeGuest(m.pid); return; } // ゲストはもう一度押すと候補に戻る
           if (!okToChange()) return;
           if (isOn()) e.ids = e.ids.filter(function (id) { return id !== m.pid; }); else e.ids.push(m.pid);
           saveData(); show(); homeState();
@@ -1921,6 +1957,31 @@
 
   // ゲストを追加（グループには入れず、このイベントだけ。新しい名前はメンバー一覧にも登録）
   var guestOpen = false;
+  // 名前を入力して登録した人を外したら、ほかで使っていなければメンバーからも消す
+  function personUsed(pid) {
+    if (data.groups.some(function (g) { return memberById(g, pid); })) return true;
+    return data.events.some(function (e) {
+      var inDraws = (e.draws || []).some(function (d) { return d.ids.indexOf(pid) >= 0; }) || (e.draw && e.draw.ids.indexOf(pid) >= 0);
+      return inDraws || (e.extra || []).indexOf(pid) >= 0 || (e.feeOnly || []).indexOf(pid) >= 0;
+    });
+  }
+  function dropIfTyped(e, pid) {
+    if ((e.typed || []).indexOf(pid) < 0) return;
+    e.typed = e.typed.filter(function (x) { return x !== pid; });
+    if (!personUsed(pid)) {
+      data.people = data.people.filter(function (p) { return p.id !== pid; });
+      data.events.forEach(function (x) { x.ids = x.ids.filter(function (id) { return id !== pid; }); });
+    }
+  }
+  // ゲストを外す（もう一度押したとき）：候補の一覧に戻す。入力した人は消える
+  function removeGuest(pid) {
+    var e = ev();
+    if (!okToChange()) return;
+    e.extra = (e.extra || []).filter(function (x) { return x !== pid; });
+    e.ids = e.ids.filter(function (x) { return x !== pid; });
+    dropIfTyped(e, pid);
+    saveData(); renderHome();
+  }
   function addGuest(p) {
     var e = ev();
     if (!okToChange()) return;
@@ -1939,11 +2000,11 @@
     var pool = poolIds();
     data.people.filter(function (p) { return pool.indexOf(p.id) < 0; }).forEach(function (p) {
       var li = document.createElement('li');
+      // 名前を押すと参加者（ゲストを追加の上）へ
       var who = document.createElement('div'); who.className = 'who'; who.textContent = p.name; addFm(who, p);
-      var add = document.createElement('button'); add.type = 'button'; add.textContent = '追加';
-      add.setAttribute('aria-label', p.name + 'を追加');
-      add.addEventListener('click', function () { addGuest(p); });
-      li.appendChild(add); li.appendChild(who); box.appendChild(li);
+      who.setAttribute('role', 'button'); who.setAttribute('tabindex', '0'); who.setAttribute('aria-label', p.name + 'を追加');
+      who.addEventListener('click', function () { addGuest(p); });
+      li.appendChild(who); box.appendChild(li);
     });
   }
   function addGuestName() {
@@ -1954,7 +2015,8 @@
     if (!okToChange()) return;
     var e = ev(); if (!e.extra) e.extra = [];
     names.forEach(function (n) {
-      var p = personByName(n) || addPerson(n); // 登録済みの名前は同じ人として
+      var p = personByName(n);
+      if (!p) { p = addPerson(n); if (!e.typed) e.typed = []; e.typed.push(p.id); } // 登録済みの名前は同じ人として
       if (poolIds().indexOf(p.id) < 0) e.extra.push(p.id);
       if (e.ids.indexOf(p.id) < 0) e.ids.push(p.id);
     });
@@ -2051,6 +2113,7 @@
     // 一覧から開いた結果：「削除」だけ（← 戻るで一覧へ）
     // 抽選し終えた結果：「もう一度」（同じ設定で引き直し）と「完了」（イベントへ戻る）。← 戻るは出さない
     $('btnSave').textContent = d.fromList ? '削除' : '採用';
+    $('btnSave').hidden = !!ev().quick; // すぐ抽選は採用しない（再抽選だけ）
     $('btnSave').classList.toggle('del', !!d.fromList);
     $('btnRedo').textContent = '再抽選';
     $('btnRedo').hidden = !!d.fromList;
@@ -2059,6 +2122,8 @@
 
   function render() {
     var sc = screen();
+    var qk = !!(ev() && ev().quick);
+    Array.prototype.forEach.call(document.querySelectorAll('.evTop'), function (b) { b.textContent = qk ? 'TOP' : 'イベントTOP'; });
     Object.keys(VIEWS).forEach(function (k) { VIEWS[k].hidden = k !== sc; });
     if (sc === 'list') { /* ボタンだけ */ }
     else if (sc === 'history') renderList();
@@ -2226,7 +2291,11 @@
       join.addEventListener('keydown', function (k) { if (k.key === 'Enter' || k.key === ' ') { k.preventDefault(); join.click(); } });
       join.setAttribute('aria-pressed', on ? 'true' : 'false');
       join.setAttribute('aria-label', name + 'の会計');
-      join.addEventListener('click', function () { setFeeOn(e, id, !isFeeOn(e, id)); saveData(); renderFeeList(); });
+      join.addEventListener('click', function () {
+        var on2 = !isFeeOn(e, id); setFeeOn(e, id, on2);
+        if (!on2 && feeIds(e).indexOf(id) < 0) dropIfTyped(e, id); // 会計だけ足した人はもう一度押すと候補に戻る（入力した人は消える）
+        saveData(); renderFeeList();
+      });
       if (!on) { addFm(who, person(id)); li.appendChild(who); box.appendChild(li); return; }
       addFm(who, person(id));
       var amt = document.createElement('button'); amt.type = 'button'; amt.className = 'amt' + (r.amt !== null ? ' hand' : '');
@@ -2273,10 +2342,9 @@
     data.people.filter(function (p) { return have.indexOf(p.id) < 0; }).forEach(function (p) {
       var li = document.createElement('li');
       var who = document.createElement('div'); who.className = 'who'; who.textContent = p.name; addFm(who, p);
-      var add = document.createElement('button'); add.type = 'button'; add.textContent = '追加';
-      add.setAttribute('aria-label', p.name + 'を追加');
-      add.addEventListener('click', function () { feeAddPerson(p); saveData(); renderFeeList(); });
-      li.appendChild(add); li.appendChild(who); box.appendChild(li);
+      who.setAttribute('role', 'button'); who.setAttribute('tabindex', '0'); who.setAttribute('aria-label', p.name + 'を追加');
+      who.addEventListener('click', function () { feeAddPerson(p); saveData(); renderFeeList(); });
+      li.appendChild(who); box.appendChild(li);
     });
   }
   function feeAddName() {
@@ -2284,7 +2352,7 @@
     if (names.length === 0) { $('feeAddMsg').textContent = ''; return; }
     var on = feeOnIds(e), dup = names.filter(function (n) { var p = personByName(n); return p && on.indexOf(p.id) >= 0; });
     if (dup.length > 0) { $('feeAddMsg').textContent = 'もう会計の一覧にあります：' + dup.join('、'); return; }
-    names.forEach(function (n) { feeAddPerson(personByName(n) || addPerson(n)); });
+    names.forEach(function (n) { var p = personByName(n); if (!p) { p = addPerson(n); if (!e.typed) e.typed = []; e.typed.push(p.id); } feeAddPerson(p); });
     el.value = ''; $('feeAddMsg').textContent = '';
     saveData(); renderFeeList();
   }
@@ -2330,6 +2398,13 @@
     data.events.push(e); data.cur = e.id; panelOpen = null; homeNew = true;
     saveData(); go();
   });
+  // トップのマークから：イベントにしないで、すぐ抽選（参加者は登録メンバーから選ぶ）
+  function startQuick(kind) {
+    data.events = data.events.filter(function (x) { return !x.quick; });
+    var e = { id: newId(), name: '', date: '', created: today(), groupId: null, all: false, groupName: '', ids: [], step: 'info', method: kind, draw: null, draws: [], fee1: null, fee2: null, pay: {}, quick: true };
+    data.events.push(e); data.cur = e.id; panelOpen = null; homeNew = false;
+    saveData(); go();
+  }
   $('btnHistory').addEventListener('click', function () { histOpen = true; go(); });
   $('btnHistoryBack').addEventListener('click', function () { histOpen = false; go(); });
   $('btnGroups').addEventListener('click', function () { groupsOpen = true; go(); });
@@ -2349,7 +2424,7 @@
   $('btnHomeBack').addEventListener('click', function () {
     $('eventNameMsg').textContent = ''; $('eventDateMsg').textContent = '';
     var e = ev();
-    if (isBlankEvent(e)) data.events = data.events.filter(function (x) { return x !== e; }); // 何も入れていなければ残さない
+    if (isBlankEvent(e) || e.quick) data.events = data.events.filter(function (x) { return x !== e; }); // 何も入れていなければ残さない（すぐ抽選も残さない）
     data.cur = null;
     saveData(); go();
   });
@@ -2367,6 +2442,7 @@
     var e = ev();
     // 抽選ボタンからは、必ず抽選方法をえらぶ画面へ
     if (!curGroup() || selectedIds().length < MIN_PLAYERS) return;
+    if (e.quick) { e.step = 'setup'; saveData(); go(); return; } // すぐ抽選は方法が決まっている
     e.step = 'method'; e.method = null; saveData(); go();
   });
   $('btnResults').addEventListener('click', function () { var e = ev(); if (e.draws.length === 0) return; e.step = 'results'; saveData(); go(); });
@@ -2449,7 +2525,7 @@
   $('groupCount').addEventListener('change', function () { onCount(); $('groupCount').value = ev().order ? '0' : String(ev().sizes.length); });
   blurOnEnter($('groupCount'));
   // ③ 準備
-  $('btnSetupBack').addEventListener('click', function () { ev().method = null; ev().step = 'method'; saveData(); go(); });
+  $('btnSetupBack').addEventListener('click', function () { var e = ev(); if (e.quick) { e.step = 'info'; saveData(); go(); return; } e.method = null; e.step = 'method'; saveData(); go(); });
   $('btnGuest').addEventListener('click', function () { guestOpen = !guestOpen; $('guestMsg').textContent = ''; renderGuest(); if (guestOpen) $('guestName').focus(); });
   $('btnGuestAdd').addEventListener('click', addGuestName);
   $('guestName').addEventListener('keydown', function (ev2) { if (ev2.key === 'Enter') { ev2.preventDefault(); addGuestName(); } });
@@ -2519,6 +2595,7 @@
     b.type = 'button'; b.className = 'link evTop'; b.textContent = 'イベントTOP';
     b.addEventListener('click', function () {
       var e = ev(); if (!e) return;
+      if (e.quick) { data.events = data.events.filter(function (x) { return x !== e; }); data.cur = null; saveData(); go(); return; } // すぐ抽選はアプリのトップへ
       e.draw = null; // 採用していない抽選は残さない
       e.method = null; e.step = 'info';
       saveData(); go();
@@ -2539,6 +2616,7 @@
   (function () {
     var e = ev();
     if (e && isBlankEvent(e)) data.events = data.events.filter(function (x) { return x !== e; });
+    data.events = data.events.filter(function (x) { return !x.quick; }); // すぐ抽選は残さない
     data.events.forEach(function (x) { x.draw = null; if (x.step !== 'info') x.step = 'info'; });
     data.cur = null;
     saveData();
