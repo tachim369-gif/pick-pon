@@ -209,7 +209,8 @@
   #btnHistory:active, #btnGroups:active, #btnPeople:active { background: #e8f0ea; }
   #eventList .who { cursor: pointer; }
   #eventList .who:active { background: #e8f0ea; }
-  #eventList .who .mt { display: block; word-break: break-all; }
+  #eventList .who .md { display: block; font-size: 13px; color: var(--sub); line-height: 1.4; }
+  #eventList .who .mt { display: block; word-break: break-all; font-weight: 700; }
   #eventList .who .ms { display: block; font-size: 13px; color: var(--sub); line-height: 1.4; }
   #btnFee { margin-top: 10px; }
   .row2 { display: flex; gap: 10px; }
@@ -225,8 +226,8 @@
   #pastList li.decided .who { border-color: var(--green); background: #e8f0ea; }
   #btnSave.del { color: var(--warn); border-color: var(--warn); }
   .row2 button { flex: 1; min-width: 0; }
-  .feeGrid { display: flex; gap: 12px; margin-bottom: 14px; }
-  .feeGrid > div { flex: 1; min-width: 0; }
+  .feeGrid { display: grid; grid-template-columns: 1.25fr 1.25fr 0.75fr 0.75fr; gap: 8px; margin-bottom: 12px; } /* 会費1・会費2・参加者・集金済みを1行に */
+  .feeGrid > div { min-width: 0; }
   .feeIn { display: flex; align-items: center; gap: 2px; height: 46px; padding: 0 12px 0 0; background: var(--card); border: 1px solid var(--line); border-radius: 10px; } /* 円も枠の中 */
   .feeIn:focus-within { outline: 2px solid var(--green); outline-offset: 1px; }
   .feeIn .textIn { margin-bottom: 0; min-width: 0; text-align: right; border: none; background: none; outline: none; padding-right: 1px; }
@@ -237,18 +238,17 @@
   .feeIn input:not(:focus) { color: transparent; }
   .feeIn input:focus ~ .feeShow { display: none; }
   #fee1, #fee2 { height: 46px; padding-top: 0; padding-bottom: 0; } /* 会費の枠は名前の枠と同じ高さ */
-  #feeSum { margin-bottom: 14px; display: grid; grid-template-columns: 0.8fr 0.8fr 1.1fr 1.3fr; gap: 8px; } /* 人数の枠は狭め */
+  #feeSum { margin-bottom: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   #feeSum > div { min-width: 0; }
-  #feeSum .k { display: block; font-size: 14px; line-height: 1.6; color: var(--sub); margin-bottom: 4px; white-space: nowrap; } /* 会費1・2の見出しと同じ */
-  #feeSum .v { display: flex; align-items: center; justify-content: flex-end; height: 46px; padding: 0 8px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; font-size: 18px; white-space: nowrap; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
-  #feeSum .v small { font-size: 16px; margin-left: 1px; } /* 会費1・2と同じ：数字18px・単位16px */
+  #feeSum .k, .sumCell .k { display: block; font-size: 14px; line-height: 1.6; color: var(--sub); margin-bottom: 4px; white-space: nowrap; } /* 会費1・2の見出しと同じ */
+  #feeSum .v, .sumCell .v { display: flex; align-items: center; justify-content: flex-end; height: 46px; padding: 0 8px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; font-size: 18px; white-space: nowrap; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+  #feeSum .v small, .sumCell .v small { font-size: 16px; margin-left: 1px; } /* 会費1・2と同じ：数字18px・単位16px */
   #feeList { list-style: none; margin: 0; padding: 0; }
   #feeList li { display: flex; align-items: stretch; gap: 6px; margin-bottom: 8px; }
   #feeList .who {
     flex: 1; min-width: 0; display: flex; align-items: center; word-break: break-all;
     background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; min-height: 46px;
   }
-  #feeList li.paid .who { border-color: var(--green); background: #e8f0ea; }
   #btnFeeAdd {
     width: 100%; display: flex; align-items: stretch; text-align: left;
     background: none; border: none; border-radius: 0; padding: 0; min-height: 46px; margin: 4px 0 10px;
@@ -283,9 +283,11 @@
   #feeList button.join { color: var(--sub); }
   #feeList button.join[aria-pressed="true"] { background: var(--green); border-color: var(--green); color: #fff; }
   #feeList li.off .who { color: var(--sub); }
+  #feeList li:not(.off) .who { border-color: var(--green); background: #e8f0ea; color: var(--text); } /* 会計の対象はイベント詳細の参加と同じ色 */
+  #feeList li.off .who { color: var(--sub); }
   #feeList .feeNm { flex: 0 1 auto; min-width: 1.5em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   #feeList .gm { margin-left: auto; font-size: 11px; padding: 1px 4px; }
-  #feeList li.paid button.done { background: var(--green); border-color: var(--green); color: #fff; }
+  #feeList li.paid button.done { background: #e8f0ea; border-color: var(--green); color: var(--text); } /* 参加の名前と同じ配色 */
   .hint { font-size: 14px; color: var(--sub); margin: 8px 2px 0; }
   .hint:empty { display: none; }
   .fieldMsg { margin: -10px 2px 12px; font-size: 15px; color: var(--warn); font-weight: 700; }
@@ -445,12 +447,16 @@
   #memberList .who, #feeList .who, #guestList .who, #feeAddList .who, #peopleList .who, #editList .who, #pickList .who, .addRow input {
     flex: 0 0 var(--nameW); width: var(--nameW); max-width: var(--nameW);
   }
+  /* 参加ボタンをなくした分だけ広く（ゲストを追加のボタンと同じ幅） */
+  #memberList .who { flex-basis: calc(var(--nameW) + 52px); width: calc(var(--nameW) + 52px); max-width: calc(var(--nameW) + 52px); cursor: pointer; }
+  #feeList .who { flex-basis: calc(var(--nameW) + 46px); width: calc(var(--nameW) + 46px); max-width: calc(var(--nameW) + 46px); cursor: pointer; }
   #memberTitle { display: flex; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 0 12px; min-height: 46px; margin-bottom: 10px; }
   #memberTitle .cnt { display: inline-block; width: 1.3em; text-align: right; margin-right: 2px; font-variant-numeric: tabular-nums; } /* 2けたまで「人」の位置が動かない */
   /* 枠の中の文字を少し大きく */
   .textIn, button.selBox, .dateWrap .dateShow, #memberTitle { font-size: 18px; }
   /* 1行の入力欄は会計確認の枠と同じ高さ（46px） */
   input.textIn { height: 46px; padding-top: 0; padding-bottom: 0; }
+  .fem, .fem .nm, .fem .nmT, .fem .feeNm { color: #d32f2f !important; }
 </style>
 </head>
 <body>
@@ -641,6 +647,8 @@
     <div class="feeGrid">
       <div><label class="title" for="fee1">会費1</label><div class="feeIn"><input id="fee1" class="textIn" type="number" inputmode="numeric" min="0" step="500" autocomplete="off" enterkeyhint="done"><span>円</span><b class="feeShow" aria-hidden="true"></b></div></div>
       <div><label class="title" for="fee2">会費2</label><div class="feeIn"><input id="fee2" class="textIn" type="number" inputmode="numeric" min="0" step="500" autocomplete="off" enterkeyhint="done"><span>円</span><b class="feeShow" aria-hidden="true"></b></div></div>
+      <div class="sumCell" id="sumCnt"></div>
+      <div class="sumCell" id="sumPaid"></div>
     </div>
     <div id="feeSum"></div>
     <ul id="feeList"></ul>
@@ -653,7 +661,7 @@
       <div id="feeAddMsg"></div>
       <ul id="feeAddList"></ul>
     </div>
-    <div class="hint">金額を押すと、会費1・会費2が切り替わります。「修正」で金額を手入力できます。「参加」で会計の対象を切り替えます</div>
+    <div class="hint">金額を押すと、会費1・会費2が切り替わります。「修正」で金額を手入力できます。名前を押すと会計の対象を切り替えます</div>
   </section>
 </main>
 <div id="toast" role="status" aria-live="polite"></div>
@@ -1452,7 +1460,10 @@
       var label = trim(e.name) ? labelOf(e) : 'イベント名未入力';
       var li = document.createElement('li');
       var who = document.createElement('div'); who.className = 'who';
-      var mt = document.createElement('span'); mt.className = 'mt'; mt.textContent = label;
+      // 1行目：日付　2行目：イベント名　3行目：詳細
+      var dt = fmtDate(e.date);
+      if (dt) { var md = document.createElement('span'); md.className = 'md'; md.textContent = dt; who.appendChild(md); }
+      var mt = document.createElement('span'); mt.className = 'mt'; mt.textContent = trim(e.name) || 'イベント名未入力';
       var ms = document.createElement('span'); ms.className = 'ms';
       var grp = eventGroupLabel(e);
       ms.textContent = (grp ? [grp, eventCount(e) + '人'] : []).concat([eventStatus(e)]).join(' ・ ');
@@ -1644,11 +1655,10 @@
     renderPick(g);
   }
 
-  // 女性なら、名前の横に（♀）を付ける
+  // 女性なら、名前を赤で表示する
   function addFm(el, p) {
     if (!p || !p.f) return;
-    var s = document.createElement('span'); s.className = 'fm'; s.appendChild(document.createTextNode('（')); var v = document.createElement('span'); v.className = 'fmV'; v.textContent = '\u2640\uFE0E'; s.appendChild(v); s.appendChild(document.createTextNode('）')); // 絵文字にならない♀
-    el.appendChild(s);
+    el.classList.add('fem'); // 女性は名前を赤で表示（マークは付けない）
   }
 
   // ≡ をつかんで上下に動かすと、名簿の順番が入れ替わる
@@ -1883,7 +1893,9 @@
         var who = document.createElement('div'); who.className = 'who'; who.textContent = p.name;
         if (!memberById(g, pid)) { var gm = document.createElement('span'); gm.className = 'gm'; gm.textContent = 'ゲスト'; who.appendChild(gm); } // このイベントだけの人
         addFm(who, p);
-        var join = document.createElement('button'); join.type = 'button'; join.textContent = '参加';
+        // 名前の枠を押すと参加／不参加が切り替わる
+        var join = who; join.setAttribute('role', 'button'); join.setAttribute('tabindex', '0');
+        join.addEventListener('keydown', function (k) { if (k.key === 'Enter' || k.key === ' ') { k.preventDefault(); join.click(); } });
         function isOn() { return ev().ids.indexOf(m.pid) >= 0; }
         function show() { li.className = isOn() ? 'on' : ''; join.setAttribute('aria-pressed', isOn() ? 'true' : 'false'); }
         join.setAttribute('aria-label', p.name + 'の参加');
@@ -1894,7 +1906,7 @@
           saveData(); show(); homeState();
         });
         show();
-        li.appendChild(join); li.appendChild(who); elList.appendChild(li); // 参加ボタンは名前の左
+        li.appendChild(who); elList.appendChild(li);
       });
     }
     renderGuest();
@@ -2183,7 +2195,10 @@
     // 横に4つ。会費1・2と同じように、見出しの下に枠
     var row = function (k, v) { return '<div><span class="k">' + k + '</span><span class="v">' + v + '</span></div>'; };
     var num = function (x, u) { return Number(x).toLocaleString('ja-JP') + '<small>' + u + '</small>'; };
-    $('feeSum').innerHTML = row('参加者', num(ids.length, '人')) + row('集金済み', num(n, '人')) + row('集金額', num(got, '円')) + row('集金予定金額', num(all, '円'));
+    var cell = function (k, v) { return '<span class="k">' + k + '</span><span class="v">' + v + '</span>'; };
+    $('sumCnt').innerHTML = cell('参加者', num(ids.length, '人'));
+    $('sumPaid').innerHTML = cell('集金済', num(n, '人'));
+    $('feeSum').innerHTML = row('集金額', num(got, '円')) + row('集金予定金額', num(all, '円'));
   }
 
   function renderFeeList() {
@@ -2200,11 +2215,13 @@
       var nm = document.createElement('span'); nm.className = 'feeNm'; nm.textContent = name; who.appendChild(nm);
       if (group && !memberById(group, id)) { var gs = document.createElement('span'); gs.className = 'gm'; gs.textContent = 'ゲスト'; who.appendChild(gs); }
       // 参加ボタン（イベントの参加者と同じ形。押すと会計の対象になる／外れる）
-      var join = document.createElement('button'); join.type = 'button'; join.className = 'join'; join.textContent = '参加';
+      // 名前の枠を押すと会計の対象／対象外が切り替わる
+      var join = who; join.setAttribute('role', 'button'); join.setAttribute('tabindex', '0');
+      join.addEventListener('keydown', function (k) { if (k.key === 'Enter' || k.key === ' ') { k.preventDefault(); join.click(); } });
       join.setAttribute('aria-pressed', on ? 'true' : 'false');
       join.setAttribute('aria-label', name + 'の会計');
       join.addEventListener('click', function () { setFeeOn(e, id, !isFeeOn(e, id)); saveData(); renderFeeList(); });
-      if (!on) { addFm(who, person(id)); li.appendChild(join); li.appendChild(who); box.appendChild(li); return; }
+      if (!on) { addFm(who, person(id)); li.appendChild(who); box.appendChild(li); return; }
       addFm(who, person(id));
       var amt = document.createElement('button'); amt.type = 'button'; amt.className = 'amt' + (r.amt !== null ? ' hand' : '');
       amt.textContent = yen(amountOf(e, id));
@@ -2227,12 +2244,12 @@
         saveData(); renderFeeList();
       });
       var done = document.createElement('button'); done.type = 'button'; done.className = 'done'; done.textContent = '済';
-      done.setAttribute('aria-label', name + 'の集金済み');
+      done.setAttribute('aria-label', name + 'の集金済');
       done.setAttribute('aria-pressed', r.paid ? 'true' : 'false');
       done.addEventListener('click', function () { setPay(e, id, 'paid', !payOf(e, id).paid); saveData(); renderFeeList(); });
       var box2 = document.createElement('div'); box2.className = 'amtBox' + (r.amt !== null ? ' hand' : ''); // 金額と修正を1つの枠に
       box2.appendChild(amt); box2.appendChild(fix);
-      li.appendChild(join); li.appendChild(who); li.appendChild(box2); li.appendChild(done); box.appendChild(li);
+      li.appendChild(who); li.appendChild(box2); li.appendChild(done); box.appendChild(li);
     });
     renderFeeAdd();
     renderFeeSum();
@@ -2268,7 +2285,9 @@
 
   function renderFee() {
     var e = ev(), label = eventLabel(), grp = eventGroupLabel(e);
-    $('feeHead').textContent = label && grp ? label + ' ／ ' + grp : label || (grp ? 'グループ：' + grp : '');
+    // 日付・イベント名の2行（グループ名は出さない）
+    var fh = $('feeHead'); fh.textContent = '';
+    [fmtDate(e.date), trim(e.name)].forEach(function (t) { if (!t) return; var d = document.createElement('div'); d.textContent = t; fh.appendChild(d); });
     [['fee1', $('fee1')], ['fee2', $('fee2')]].forEach(function (x) {
       if (document.activeElement !== x[1]) x[1].value = e[x[0]] === null ? '' : String(e[x[0]]);
       showFee(x[1]);
