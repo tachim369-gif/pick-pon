@@ -231,7 +231,7 @@
   #pastList li.decided .who { border-color: var(--green); background: var(--sel); }
   #btnSave.del { color: var(--warn); border-color: var(--warn); }
   .row2 button { flex: 1; min-width: 0; }
-  .feeGrid { display: grid; grid-template-columns: 1.4fr 0.8fr 0.8fr; gap: 8px; margin-bottom: 12px; } /* 会費1・会費2・参加者・集金済みを1行に */
+  .feeGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; } /* 会費1・会費2・参加者・集金済みを1行に */
   .feeGrid > div { min-width: 0; }
   .feeIn { display: flex; align-items: center; gap: 2px; height: 46px; padding: 0 12px 0 0; background: var(--card); border: 1px solid var(--line); border-radius: 10px; } /* 円も枠の中 */
   .feeIn:focus-within { outline: 2px solid var(--green); outline-offset: 1px; }
@@ -516,6 +516,29 @@
   input, textarea, select { font-size: max(16px, 1em); }
   header .tagline { font-size: 13px; font-weight: 400; color: var(--sub); letter-spacing: 0; margin-left: 4px; align-self: flex-end; padding-bottom: 3px; }
   .dataHint { font-size: 12px; }
+  .memHead { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
+  .memHead #memberTitle { flex: 0 0 var(--nameW); width: var(--nameW); margin-bottom: 0; } /* 人数の枠は名前の枠と同じ幅 */
+  .memHead button { flex: 1 1 0; min-width: 0; min-height: 34px; padding: 0 2px; font-size: 12px; font-weight: 400; background: #fff; color: var(--green); border: 1px solid var(--line); border-radius: 8px; white-space: nowrap; }
+  .memHead button:active { background: var(--sel); }
+  .feeAllRow { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
+  .feeAllRow #sumCnt { flex: 0 0 calc(100% - 148px); width: calc(100% - 148px); }
+  .feeAllRow #sumCnt .v { justify-content: flex-start; padding: 0 12px; }
+  .feeAllRow button { flex: 1 1 0; min-width: 0; width: auto; min-height: 34px; padding: 0 2px; font-size: 13px; font-weight: 400; background: #fff; color: var(--green); border: 1px solid var(--line); border-radius: 8px; }
+  .feeAllRow button:active, .memHead button:active { background: var(--sel); }
+  .memHead button { font-size: 13px; }
+  #feeSum:empty { display: none; }
+  .feeGrid { row-gap: 12px; }
+  /* 数字の枠：単位の位置をそろえて左寄せ（数字は決まった幅の中で右寄せ） */
+  .n { display: inline-block; text-align: right; font-variant-numeric: tabular-nums; }
+  .n.ppl { width: 2.2ch; }
+  .n.yen { width: 7.2ch; }
+  #feeSum .v, .sumCell .v { justify-content: flex-start !important; padding: 0 12px !important; }
+  .feeAllRow #sumCnt .v { justify-content: flex-start; }
+  #memberTitle small { font-size: 16px; margin-left: 1px; }
+  /* 会費の入力欄も同じ：数字は決まった幅で右寄せ、円はその右（左寄せ） */
+  .feeIn { justify-content: flex-start; padding: 0 0 0 12px; }
+  .feeIn .textIn { flex: 0 0 auto; width: calc(7.2ch + 2px) !important; padding: 0 1px 0 0; font-variant-numeric: tabular-nums; }
+  .feeIn .feeShow { left: 12px; right: auto; width: calc(7.2ch + 2px); justify-content: flex-end; padding-right: 1px; font-variant-numeric: tabular-nums; }
 </style>
 </head>
 <body>
@@ -586,7 +609,7 @@
     </div>
     <div id="homeMembers" hidden>
       <div class="title">参加者</div>
-      <div id="memberTitle"></div>
+      <div class="memHead"><div id="memberTitle"></div><button id="btnAllOn" type="button">全員〇</button><button id="btnAllOff" type="button">全員✖</button></div>
       <ul id="memberList"></ul>
       <button id="btnGuest" type="button" aria-expanded="false"><span class="who">＋ ゲストを追加</span></button>
       <div id="guestPanel" hidden>
@@ -714,10 +737,13 @@
     <div class="sub" id="feeHead"></div>
     <div class="feeGrid">
       <div><label class="title" for="fee1">会費</label><div class="feeIn"><input id="fee1" class="textIn" type="number" inputmode="numeric" min="0" step="500" autocomplete="off" enterkeyhint="done"><span>円</span><b class="feeShow" aria-hidden="true"></b></div></div>
-      <div class="sumCell" id="sumCnt"></div>
+      <div class="sumCell" id="sumAll"></div>
       <div class="sumCell" id="sumPaid"></div>
+      <div class="sumCell" id="sumGot"></div>
     </div>
     <div id="feeSum"></div>
+    <div class="title">参加者</div>
+    <div class="feeAllRow"><div class="sumCell" id="sumCnt"></div><button id="btnFeeAllOn" type="button">全員〇</button><button id="btnFeeAllOff" type="button">全員✖</button></div>
     <ul id="feeList"></ul>
     <button id="btnFeeAdd" type="button" aria-expanded="false"><span class="who">＋ ゲストを追加</span></button>
     <div id="feeAddPanel" hidden>
@@ -1963,7 +1989,7 @@
     var cur = curGroup(), n = cur ? selectedIds().length : 0, msg = '';
     if (cur && cur.members.length === 0) msg = '名簿に名前がありません。グループの「編集」から追加してください';
     else if (cur && n < MIN_PLAYERS) msg = MIN_PLAYERS + '人以上を参加にしてください';
-    $('memberTitle').innerHTML = '<span class="cnt">' + n + '</span>人'; // グループ名と同じような枠の中に人数
+    $('memberTitle').innerHTML = '<span class="n ppl">' + n + '</span><small>人</small>'; // グループ名と同じような枠の中に人数
     $('homeMsg').textContent = msg;
     $('btnNext').disabled = !(cur && n >= MIN_PLAYERS);
     $('btnFee').disabled = feeIds(ev()).length === 0;
@@ -2311,11 +2337,15 @@
     ids.forEach(function (id) { var a = amountOf(e, id); all += a; if (payOf(e, id).paid) { n++; got += a; } });
     // 横に4つ。会費1・2と同じように、見出しの下に枠
     var row = function (k, v) { return '<div><span class="k">' + k + '</span><span class="v">' + v + '</span></div>'; };
-    var num = function (x, u) { return Number(x).toLocaleString('ja-JP') + '<small>' + u + '</small>'; };
+    // 数字は決まった幅の中で右寄せ、単位はいつも同じ位置（枠の中では左寄せ）
+    var num = function (x, u) { return '<span class="n ' + (u === '人' ? 'ppl' : 'yen') + '">' + Number(x).toLocaleString('ja-JP') + '</span><small>' + u + '</small>'; };
     var cell = function (k, v) { return '<span class="k">' + k + '</span><span class="v">' + v + '</span>'; };
-    $('sumCnt').innerHTML = cell('参加者', num(ids.length, '人'));
-    $('sumPaid').innerHTML = cell('集金済', num(n, '人'));
-    $('feeSum').innerHTML = row('集金額', num(got, '円')) + row('集金予定金額', num(all, '円'));
+    $('sumCnt').innerHTML = '<span class="v">' + num(ids.length, '人') + '</span>'; // 参加者の人数（イベント詳細と同じ位置）
+    $('sumPaid').innerHTML = cell('集金済参加者', num(n, '人'));
+    // 1行目：会費・集金予定金額　2行目：集金済・集金額
+    $('sumAll').innerHTML = cell('集金予定金額', num(all, '円'));
+    $('sumGot').innerHTML = cell('集金済金額', num(got, '円'));
+    $('feeSum').innerHTML = '';
   }
 
   function renderFeeList() {
@@ -2607,6 +2637,19 @@
   $('btnSetupBack').addEventListener('click', function () { var e = ev(); if (e.quick) { e.step = 'info'; saveData(); go(); return; } e.method = null; e.step = 'method'; saveData(); go(); });
   $('btnGuest').addEventListener('click', function () { guestOpen = !guestOpen; $('guestMsg').textContent = ''; renderGuest(); if (guestOpen) $('guestName').focus(); });
   $('btnGuestAdd').addEventListener('click', addGuestName);
+  $('btnAllOn').addEventListener('click', function () { setAll(true); });
+  // 会計確認：一覧の全員を会計の対象に／対象外に
+  function setFeeAll(on) {
+    var e = ev(), pool = groupOfEvent(e) ? poolIds() : feeBase(e);
+    feeIds(e).forEach(function (id) {
+      if (!on && pool.indexOf(id) < 0) return; // 会計だけ足した人は全員✖でも消さない
+      if (isFeeOn(e, id) !== on) setFeeOn(e, id, on);
+    });
+    saveData(); renderFeeList();
+  }
+  $('btnFeeAllOn').addEventListener('click', function () { setFeeAll(true); });
+  $('btnFeeAllOff').addEventListener('click', function () { setFeeAll(false); });
+  $('btnAllOff').addEventListener('click', function () { setAll(false); });
   $('guestName').addEventListener('keydown', function (ev2) { if (ev2.key === 'Enter') { ev2.preventDefault(); addGuestName(); } });
   elStart.addEventListener('click', startDraw);
   // ④ 抽選
