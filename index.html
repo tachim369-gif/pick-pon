@@ -498,6 +498,15 @@
   /* ゲストは青系の色で分ける（印は付けない） */
   #memberList li.guest .who, #feeList li.guest .who { border-color: #8fb3d1; background: #f3f8fc; }
   #memberList li.guest.on .who, #feeList li.guest:not(.off) .who { border-color: #4f7fa6; background: #cfe2f1; }
+  /* 名前の枠はアプリ全体で同じ幅（--nameW） */
+  #memberList .who, #feeList .who, #feeAddList .who, #guestList .who, #peopleList .who, #editList .who, #pickList .who,
+  .addRow input, #guestPanel .addRow input, #feeAddPanel .addRow input, #btnGuest, #btnFeeAdd {
+    flex: 0 0 var(--nameW) !important; width: var(--nameW) !important; max-width: var(--nameW) !important;
+  }
+  .addRow input { height: 46px; padding-top: 0; padding-bottom: 0; }
+  #btnPick { width: var(--nameW); }
+  #btnPick .who { margin-right: 0; }
+  #btnGuest .who, #btnFeeAdd .who { margin: 0; }
 </style>
 </head>
 <body>
@@ -600,7 +609,7 @@
     </div>
     <div class="title" id="listTitle" hidden></div>
     <ul id="editList"></ul>
-    <div class="hint" id="editHint">「編集」で、所属や連絡先などを入力できます</div>
+    <div class="hint" id="editHint">名前を押すと、所属や連絡先などを入力できます</div>
     <button id="btnDelGroup" class="danger" type="button">このグループを削除</button>
   </section>
 
@@ -1692,9 +1701,11 @@
         var moved = order.some(function (pid, i) { return g.members[i].pid !== pid; });
         if (moved) { g.members = order.map(function (pid) { return byPid[pid]; }); saveData(); }
       });
-      var open = document.createElement('button'); open.type = 'button'; open.textContent = '編集';
-      open.setAttribute('aria-label', m.name + 'を編集');
-      open.addEventListener('click', function () { editMemberId = m.id; go(); });
+      // 名前を押すとメンバーの編集
+      who.setAttribute('role', 'button'); who.setAttribute('tabindex', '0'); who.setAttribute('aria-label', m.name + 'を編集');
+      who.style.cursor = 'pointer';
+      who.addEventListener('click', function () { editMemberId = m.id; go(); });
+      who.addEventListener('keydown', function (k) { if (k.key === 'Enter' || k.key === ' ') { k.preventDefault(); editMemberId = m.id; go(); } });
       var del = document.createElement('button');
       del.type = 'button'; del.className = 'del'; del.textContent = '削除';
       del.setAttribute('aria-label', m.name + 'を削除');
@@ -1704,7 +1715,7 @@
         dropOrphans();
         saveData(); renderEdit();
       });
-      li.appendChild(who); li.appendChild(open); li.appendChild(del); li.appendChild(grip); elEditList.appendChild(li); // ≡ は削除の隣
+      li.appendChild(who); li.appendChild(del); li.appendChild(grip); elEditList.appendChild(li); // ≡ は削除の隣
     });
     $('editHint').hidden = g.members.length === 0;
     $('listTitle').hidden = g.members.length === 0;
@@ -2614,11 +2625,11 @@
     $(vid).insertBefore(b, $(vid).firstChild);
   });
 
-  // 名前の枠の幅：会計確認の1行（参加・名前・金額と修正・済）が、会費1・2の行と同じ横幅になる幅
+  // 名前の枠の幅：アプリ全体で同じ
   function setNameW() {
     var main = document.querySelector('main'), cs = getComputedStyle(main);
     var w = main.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-    document.documentElement.style.setProperty('--nameW', Math.max(110, Math.floor(w - 218)) + 'px'); // 会計の行の右端が、会費1・2の行の右端とそろう
+    document.documentElement.style.setProperty('--nameW', Math.max(110, Math.floor(w - 148)) + 'px'); // 会計の行（名前・金額96・済40）がちょうど収まる幅。全画面この幅
   }
   setNameW();
   window.addEventListener('resize', setNameW);
