@@ -46,7 +46,7 @@
     padding: 16px 16px calc(32px + env(safe-area-inset-bottom));
   }
   section[hidden], div[hidden], ul[hidden] { display: none !important; }
-  label.title, div.title { display: block; font-weight: 700; margin-bottom: 6px; }
+  label.title, div.title { display: block; font-weight: 400; font-size: 14px; color: var(--sub); margin-bottom: 4px; } /* 見出しは控えめに（中身が目立つように） */
   button {
     font: inherit;
     font-weight: 700;
@@ -104,7 +104,7 @@
   button.selBox {
     width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 10px; text-align: left;
     background: var(--card); color: var(--text); font-weight: 400;
-    border: 1px solid var(--line); border-radius: 10px; padding: 12px; min-height: 50px; margin-bottom: 16px;
+    border: 1px solid var(--line); border-radius: 10px; padding: 0 12px; min-height: 46px; margin-bottom: 16px;
   }
   button.selBox .txt { min-width: 0; word-break: break-all; }
   button.selBox .mark { flex: 0 0 auto; color: var(--sub); font-size: 12px; }
@@ -127,9 +127,14 @@
   #editList button, #eventList button { flex: 0 0 auto; align-self: center; background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--green); font-weight: 400; font-size: 13px; width: 44px; padding: 0; min-height: 34px; }
   #editList button:active, #eventList button:active { background: #e8f0ea; }
   #editList .who { flex-direction: row; align-items: center; justify-content: flex-start; padding-left: 4px; }
-  #editList .grip { flex: 0 0 auto; align-self: stretch; display: flex; align-items: center; padding: 0 10px; margin: -8px 0; color: var(--sub); font-size: 18px; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
+  #peopleList li.dragging { position: relative; z-index: 2; }
+  #peopleList li.dragging .who { box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18); border-color: var(--green); }
+  #editList .grip, #peopleList .grip { flex: 0 0 auto; align-self: stretch; display: flex; align-items: center; justify-content: center; min-width: 40px; padding: 0 8px; margin: -8px 0; color: var(--sub); font-size: 20px; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
   .fm { font-size: 15px; color: #c2185b; margin-left: 4px; white-space: nowrap; }
   .who > .fm { margin-left: auto; padding-left: 8px; } /* 枠の右端に寄せる */
+  .fmV { font-family: 'Segoe UI Symbol', 'Noto Sans Symbols', 'Arial Unicode MS', sans-serif; font-size: 0.95em; display: inline-block; line-height: 1; }
+  .gm { margin-left: auto; flex: 0 0 auto; font-size: 12px; color: var(--green); border: 1px solid var(--green); border-radius: 6px; padding: 1px 6px; white-space: nowrap; }
+  .who > .gm + .fm { margin-left: 0; padding-left: 4px; }
   #viewPeople .addRow button { margin-right: 0; }
   #btnDelMember { margin-top: 12px; }
   #mGroups { list-style: none; margin: 0 0 16px; padding: 0; }
@@ -164,12 +169,35 @@
   #pickList button { flex: 0 0 auto; align-self: center; background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--green); font-weight: 400; font-size: 13px; width: 44px; padding: 0; min-height: 34px; margin-right: 52px; }
   #pickList .who { flex-direction: row; align-items: center; justify-content: flex-start; }
   #pickList button:active { background: #e8f0ea; }
+  #btnGuest {
+    width: 100%; display: flex; align-items: stretch; gap: 8px; text-align: left;
+    background: none; border: none; border-radius: 0; padding: 0; min-height: 46px; margin: 4px 0 10px;
+    font-weight: 400; font-size: 16px;
+  }
+  #btnGuest .who {
+    flex: 1; min-width: 0; display: flex; align-items: center;
+    background: var(--card); color: var(--green); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px;
+  }
+  #btnGuest { width: calc(52px + var(--nameW)); } /* 参加ボタンの左端から名前の枠の右端まで */
+  #btnGuest:active .who { background: #e8f0ea; }
+  #guestPanel[hidden] { display: none; }
+  #guestPanel .addRow button { margin-right: 0; }
+  #guestMsg { margin: -4px 2px 8px; font-size: 15px; color: var(--warn); font-weight: 700; }
+  #guestMsg:empty { display: none; }
+  #guestList { list-style: none; margin: 0 0 8px; padding: 0; }
+  #guestList li { display: flex; align-items: stretch; gap: 8px; margin-bottom: 8px; }
+  #guestList .who {
+    flex: 1; min-width: 0; display: flex; align-items: center; word-break: break-all;
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; min-height: 46px;
+  }
+  #guestList button { flex: 0 0 auto; align-self: center; background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--green); font-weight: 400; font-size: 13px; width: 44px; padding: 0; min-height: 34px; }
+  #guestList button:active { background: #e8f0ea; }
   #viewList button.addGroup { margin-bottom: 16px; }
   #listEmpty { margin-top: 0; }
   #btnGroups, #btnPeople { margin-top: 10px; }
   #peopleList { list-style: none; margin: 0; padding: 0; }
   #peopleList li { margin-bottom: 8px; }
-  #peopleList .who { display: flex; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; min-height: 46px; cursor: pointer; word-break: break-all; }
+  #peopleList .who { display: flex; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px 8px 4px; min-height: 46px; cursor: pointer; word-break: break-all; }
   #peopleList .who:active { background: #e8f0ea; }
   #groupsList { list-style: none; margin: 0 0 8px; padding: 0; }
   #groupsList li { margin-bottom: 8px; }
@@ -199,9 +227,21 @@
   .row2 button { flex: 1; min-width: 0; }
   .feeGrid { display: flex; gap: 12px; margin-bottom: 14px; }
   .feeGrid > div { flex: 1; min-width: 0; }
-  .feeIn { display: flex; align-items: center; gap: 6px; }
-  .feeIn .textIn { margin-bottom: 0; min-width: 0; text-align: right; }
-  #feeSum { font-weight: 700; margin: 0 2px 10px; }
+  .feeIn { display: flex; align-items: center; gap: 2px; height: 46px; padding: 0 12px 0 0; background: var(--card); border: 1px solid var(--line); border-radius: 10px; } /* 円も枠の中 */
+  .feeIn:focus-within { outline: 2px solid var(--green); outline-offset: 1px; }
+  .feeIn .textIn { margin-bottom: 0; min-width: 0; text-align: right; border: none; background: none; outline: none; padding-right: 1px; }
+  .feeIn span { font-size: 16px; }
+  /* カンマ付きの表示（入力中は数字のまま） */
+  .feeIn { position: relative; }
+  .feeIn .feeShow { position: absolute; top: 0; bottom: 0; right: 31px; display: flex; align-items: center; font-weight: 400; font-size: 18px; pointer-events: none; }
+  .feeIn input:not(:focus) { color: transparent; }
+  .feeIn input:focus ~ .feeShow { display: none; }
+  #fee1, #fee2 { height: 46px; padding-top: 0; padding-bottom: 0; } /* 会費の枠は名前の枠と同じ高さ */
+  #feeSum { margin-bottom: 14px; display: grid; grid-template-columns: 0.8fr 0.8fr 1.1fr 1.3fr; gap: 8px; } /* 人数の枠は狭め */
+  #feeSum > div { min-width: 0; }
+  #feeSum .k { display: block; font-size: 14px; line-height: 1.6; color: var(--sub); margin-bottom: 4px; white-space: nowrap; } /* 会費1・2の見出しと同じ */
+  #feeSum .v { display: flex; align-items: center; justify-content: flex-end; height: 46px; padding: 0 8px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; font-size: 18px; white-space: nowrap; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+  #feeSum .v small { font-size: 16px; margin-left: 1px; } /* 会費1・2と同じ：数字18px・単位16px */
   #feeList { list-style: none; margin: 0; padding: 0; }
   #feeList li { display: flex; align-items: stretch; gap: 6px; margin-bottom: 8px; }
   #feeList .who {
@@ -209,20 +249,51 @@
     background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; min-height: 46px;
   }
   #feeList li.paid .who { border-color: var(--green); background: #e8f0ea; }
+  #btnFeeAdd {
+    width: 100%; display: flex; align-items: stretch; text-align: left;
+    background: none; border: none; border-radius: 0; padding: 0; min-height: 46px; margin: 4px 0 10px;
+    font-weight: 400; font-size: 16px;
+  }
+  #btnFeeAdd .who {
+    flex: 1; min-width: 0; display: flex; align-items: center;
+    background: var(--card); color: var(--green); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px;
+  }
+  #btnFeeAdd { width: calc(46px + var(--nameW)); }
+  #btnFeeAdd:active .who { background: #e8f0ea; }
+  #feeAddPanel[hidden] { display: none; }
+  #feeAddPanel .addRow { gap: 6px; }
+  #feeAddPanel .addRow button { margin-right: 0; width: 40px; }
+  #feeAddMsg { margin: -4px 2px 8px; font-size: 15px; color: var(--warn); font-weight: 700; }
+  #feeAddMsg:empty { display: none; }
+  #feeAddList { list-style: none; margin: 0 0 8px; padding: 0; }
+  #feeAddList li { display: flex; align-items: stretch; gap: 6px; margin-bottom: 8px; }
+  #feeAddList .who {
+    flex: 1; min-width: 0; display: flex; align-items: center; word-break: break-all;
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; min-height: 46px;
+  }
+  #feeAddList button { flex: 0 0 auto; align-self: center; background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--green); font-weight: 400; font-size: 13px; width: 40px; padding: 0; min-height: 34px; }
   #feeList button { flex: 0 0 auto; align-self: center; background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--green); font-weight: 400; font-size: 13px; width: 40px; padding: 0; min-height: 34px; }
   #feeList button:active { background: #e8f0ea; }
-  #feeList button.amt { width: 74px; color: var(--text); text-align: right; padding: 0 8px; }
-  #feeList button.amt.hand { border-color: var(--green); }
+  #feeList .amtBox { flex: 0 0 120px; align-self: center; display: flex; border: 1px solid var(--line); border-radius: 8px; background: #fff; overflow: hidden; min-height: 34px; }
+  #feeList .amtBox.hand { border-color: var(--green); }
+  #feeList .amtBox button { border: none; border-radius: 0; min-height: 34px; align-self: stretch; }
+  #feeList .amtBox button.amt { flex: 1; width: auto; color: var(--text); text-align: right; padding: 0 8px; }
+  #feeList .amtBox button:last-child { width: 44px; border-left: 1px solid var(--line); }
   #feeList button.done { color: var(--sub); }
+  #feeList button.join { color: var(--sub); }
+  #feeList button.join[aria-pressed="true"] { background: var(--green); border-color: var(--green); color: #fff; }
+  #feeList li.off .who { color: var(--sub); }
+  #feeList .feeNm { flex: 0 1 auto; min-width: 1.5em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #feeList .gm { margin-left: auto; font-size: 11px; padding: 1px 4px; }
   #feeList li.paid button.done { background: var(--green); border-color: var(--green); color: #fff; }
   .hint { font-size: 14px; color: var(--sub); margin: 8px 2px 0; }
   .hint:empty { display: none; }
   .fieldMsg { margin: -10px 2px 12px; font-size: 15px; color: var(--warn); font-weight: 700; }
   .fieldMsg:empty { display: none; }
-  input[type=date].textIn { display: block; min-height: 50px; -webkit-appearance: none; appearance: none; }
+  input[type=date].textIn { display: block; min-height: 46px; -webkit-appearance: none; appearance: none; }
   .dateWrap { position: relative; }
   .dateWrap input[type=date]:not(:focus) { color: transparent; }
-  .dateWrap .dateShow { position: absolute; left: 13px; right: 44px; top: 0; height: 50px; display: flex; align-items: center; overflow: hidden; white-space: nowrap; pointer-events: none; }
+  .dateWrap .dateShow { position: absolute; left: 13px; right: 44px; top: 0; height: 46px; display: flex; align-items: center; overflow: hidden; white-space: nowrap; pointer-events: none; }
   .dateWrap input:focus + .dateShow { display: none; }
   textarea.textIn { resize: vertical; min-height: 90px; display: block; }
 
@@ -369,6 +440,17 @@
     transition: opacity 0.2s;
   }
   #toast.show { opacity: 1; }
+  /* 名前の枠は、どの画面も同じ幅（会計確認の行に合わせる。幅は画面に合わせて計算） */
+  :root { --nameW: 150px; }
+  #memberList .who, #feeList .who, #guestList .who, #feeAddList .who, #peopleList .who, #editList .who, #pickList .who, .addRow input {
+    flex: 0 0 var(--nameW); width: var(--nameW); max-width: var(--nameW);
+  }
+  #memberTitle { display: flex; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 0 12px; min-height: 46px; margin-bottom: 10px; }
+  #memberTitle .cnt { display: inline-block; width: 1.3em; text-align: right; margin-right: 2px; font-variant-numeric: tabular-nums; } /* 2けたまで「人」の位置が動かない */
+  /* 枠の中の文字を少し大きく */
+  .textIn, button.selBox, .dateWrap .dateShow, #memberTitle { font-size: 18px; }
+  /* 1行の入力欄は会計確認の枠と同じ高さ（46px） */
+  input.textIn { height: 46px; padding-top: 0; padding-bottom: 0; }
 </style>
 </head>
 <body>
@@ -414,6 +496,7 @@
 
   <section id="viewHome" hidden>
     <button id="btnHomeBack" class="link" type="button">← 戻る</button>
+    <div class="pageTitle" id="homeTitle">イベント詳細</div>
     <label class="title" for="eventName">イベント名（任意）</label>
     <input id="eventName" class="textIn" type="text" maxlength="40" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
     <div class="fieldMsg" id="eventNameMsg"></div>
@@ -428,11 +511,17 @@
       <button id="btnAddGroup" class="addGroup" type="button">＋ グループを追加</button>
     </div>
     <div id="homeMembers" hidden>
-      <div class="title" id="memberTitle"></div>
+      <div class="title">参加者</div>
+      <div id="memberTitle"></div>
       <ul id="memberList"></ul>
-      <div class="bulk" id="bulk" hidden>
-        <button id="btnAllOn" type="button">全員にチェック</button>
-        <button id="btnAllOff" type="button">全員はずす</button>
+      <button id="btnGuest" type="button" aria-expanded="false"><span class="who">＋ ゲストを追加</span></button>
+      <div id="guestPanel" hidden>
+        <div class="addRow">
+          <button id="btnGuestAdd" type="button">追加</button>
+          <input id="guestName" type="text" placeholder="名前を入力" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
+        </div>
+        <div id="guestMsg"></div>
+        <ul id="guestList"></ul>
       </div>
       <div id="homeMsg"></div>
     </div>
@@ -550,12 +639,21 @@
     <div class="pageTitle">会計確認</div>
     <div class="sub" id="feeHead"></div>
     <div class="feeGrid">
-      <div><label class="title" for="fee1">会費1</label><div class="feeIn"><input id="fee1" class="textIn" type="number" inputmode="numeric" min="0" step="500" autocomplete="off" enterkeyhint="done"><span>円</span></div></div>
-      <div><label class="title" for="fee2">会費2</label><div class="feeIn"><input id="fee2" class="textIn" type="number" inputmode="numeric" min="0" step="500" autocomplete="off" enterkeyhint="done"><span>円</span></div></div>
+      <div><label class="title" for="fee1">会費1</label><div class="feeIn"><input id="fee1" class="textIn" type="number" inputmode="numeric" min="0" step="500" autocomplete="off" enterkeyhint="done"><span>円</span><b class="feeShow" aria-hidden="true"></b></div></div>
+      <div><label class="title" for="fee2">会費2</label><div class="feeIn"><input id="fee2" class="textIn" type="number" inputmode="numeric" min="0" step="500" autocomplete="off" enterkeyhint="done"><span>円</span><b class="feeShow" aria-hidden="true"></b></div></div>
     </div>
     <div id="feeSum"></div>
     <ul id="feeList"></ul>
-    <div class="hint">金額を押すと、会費1・会費2が切り替わります。「修正」で金額を手入力できます</div>
+    <button id="btnFeeAdd" type="button" aria-expanded="false"><span class="who">＋ ゲストを追加</span></button>
+    <div id="feeAddPanel" hidden>
+      <div class="addRow">
+        <button id="btnFeeAddName" type="button">追加</button>
+        <input id="feeAddName" type="text" placeholder="名前を入力" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
+      </div>
+      <div id="feeAddMsg"></div>
+      <ul id="feeAddList"></ul>
+    </div>
+    <div class="hint">金額を押すと、会費1・会費2が切り替わります。「修正」で金額を手入力できます。「参加」で会計の対象を切り替えます</div>
   </section>
 </main>
 <div id="toast" role="status" aria-live="polite"></div>
@@ -846,7 +944,10 @@
         draws: numberDraws(readDraws(x), x), decidedId: typeof x.decidedId === 'number' ? x.decidedId : null,
         lastNo: Math.max(Number(x.lastNo) || 0, 0),
         fee1: money(x.fee1), fee2: money(x.fee2), pay: readPay(x.pay),
+        feeOnly: (Array.isArray(x.feeOnly) ? x.feeOnly : []).filter(function (id, i, a) { return typeof id === 'number' && person(id) && a.indexOf(id) === i; }),
+        feeOff: (Array.isArray(x.feeOff) ? x.feeOff : []).filter(function (id, i, a) { return typeof id === 'number' && a.indexOf(id) === i; }),
         order: x.order === true,
+        extra: (Array.isArray(x.extra) ? x.extra : []).filter(function (id, i, a) { return typeof id === 'number' && person(id) && a.indexOf(id) === i; }),
         sizes: Array.isArray(x.sizes) ? x.sizes.map(function (v) { return typeof v === 'number' && v >= 1 && v === Math.floor(v) ? v : 0; }) : null
       };
       if (e.id > 0 && e.id === Math.floor(e.id) && !seen[e.id]) { seen[e.id] = true; if (e.id > max) max = e.id; }
@@ -1278,7 +1379,7 @@
   // ---- 画面 ----
   var $ = function (id) { return document.getElementById(id); };
   var VIEWS = { results: $('viewResults'), people: $('viewPeople'), groups: $('viewGroups'), fee: $('viewFee'), list: $('viewList'), history: $('viewHistory'), home: $('viewHome'), edit: $('viewEdit'), member: $('viewMember'), method: $('viewMethod'), setup: $('viewMembers'), draw: $('viewDraw') };
-  var elNew = $('newName'), elAddMsg = $('addMsg'), elList = $('memberList'), elBulk = $('bulk');
+  var elNew = $('newName'), elAddMsg = $('addMsg'), elList = $('memberList');
   var elSummary = $('summary'), elStart = $('btnStart'), elEvent = $('eventName'), elDate = $('eventDate');
   var elGroupName = $('groupName'), elEditList = $('editList');
   var elTitle = $('drawTitle'), elQuota = $('quota');
@@ -1359,7 +1460,7 @@
       // イベント名をタップすると開く
       who.setAttribute('role', 'button'); who.setAttribute('tabindex', '0');
       who.setAttribute('aria-label', label + 'を開く');
-      function open() { data.cur = e.id; e.step = 'info'; panelOpen = null; saveData(); go(); }
+      function open() { data.cur = e.id; e.step = 'info'; panelOpen = null; homeNew = false; saveData(); go(); }
       who.addEventListener('click', open);
       who.addEventListener('keydown', function (k) { if (k.key === 'Enter' || k.key === ' ') { k.preventDefault(); open(); } });
       var del = document.createElement('button'); del.type = 'button'; del.className = 'del'; del.textContent = '削除';
@@ -1398,9 +1499,21 @@
     var box = $('peopleList');
     box.textContent = '';
     $('peopleEmpty').hidden = data.people.length > 0;
+    // 登録した順。≡ をつかんで並べ替えられる
     data.people.forEach(function (p) {
       var li = document.createElement('li');
-      var who = document.createElement('div'); who.className = 'who'; who.textContent = p.name; addFm(who, p);
+      li.setAttribute('data-pid', String(p.id));
+      var who = document.createElement('div'); who.className = 'who';
+      var grip = document.createElement('span'); grip.className = 'grip'; grip.textContent = '≡'; grip.setAttribute('aria-hidden', 'true');
+      grip.addEventListener('click', function (k) { k.stopPropagation(); }); // つかんだだけでは開かない
+      var nm = document.createElement('span'); nm.className = 'nm'; nm.textContent = p.name;
+      who.appendChild(grip); who.appendChild(nm); addFm(who, p);
+      dragRow(li, grip, function (order) {
+        var byId = {};
+        data.people.forEach(function (x) { byId[x.id] = x; });
+        var moved = order.some(function (id, i) { return data.people[i].id !== id; });
+        if (moved) { data.people = order.map(function (id) { return byId[id]; }); saveData(); }
+      });
       who.setAttribute('role', 'button'); who.setAttribute('tabindex', '0');
       who.setAttribute('aria-label', p.name + 'を編集');
       function open() { editId = null; editMemberId = p.id; go(); }
@@ -1430,7 +1543,7 @@
     var m = curMember();
     if (!m || !window.confirm('「' + m.name + '」を削除しますか？\n入っているグループからも外れます。元に戻せません。')) return;
     data.groups.forEach(function (g) { g.members = g.members.filter(function (x) { return x.pid !== m.id; }); });
-    data.events.forEach(function (e) { e.ids = e.ids.filter(function (id) { return id !== m.id; }); });
+    data.events.forEach(function (e) { e.ids = e.ids.filter(function (id) { return id !== m.id; }); e.extra = (e.extra || []).filter(function (id) { return id !== m.id; }); e.feeOnly = (e.feeOnly || []).filter(function (id) { return id !== m.id; }); });
     data.people = data.people.filter(function (p) { return p !== m; });
     editMemberId = null;
     saveData(); go();
@@ -1441,7 +1554,8 @@
   // グループをえらぶ（別のグループに変えたら、参加者は全員不参加から）
   function pickGroup(g) {
     var e = ev(), isAll = g.id === ALL_ID, cur = e.all ? ALL_ID : e.groupId;
-    if (cur !== g.id) { if (!okToChange()) return; e.ids = []; }
+    if (cur !== g.id) { if (!okToChange()) return; e.ids = []; e.extra = []; }
+    guestOpen = false;
     e.all = isAll; e.groupId = isAll ? null : g.id; e.step = 'info'; e.method = null; panelOpen = false;
   }
 
@@ -1455,7 +1569,9 @@
   }
 
   // ① イベントの内容（イベント名・開催日・グループ・参加者）
+  var homeNew = false; // 「＋ 新規イベント」から開いたか（見出しを変える）
   function renderHome() {
+    $('homeTitle').textContent = homeNew ? '新規イベント' : 'イベント詳細';
     var box = $('groupList');
     box.textContent = '';
     if (document.activeElement !== elEvent) elEvent.value = ev().name;
@@ -1502,7 +1618,12 @@
       grip.setAttribute('aria-hidden', 'true');
       var nm = document.createElement('span'); nm.className = 'nm'; nm.textContent = m.name;
       who.appendChild(grip); who.appendChild(nm); addFm(who, m);
-      dragRow(li, grip, g);
+      dragRow(li, grip, function (order) {
+        var byPid = {};
+        g.members.forEach(function (m) { byPid[m.pid] = m; });
+        var moved = order.some(function (pid, i) { return g.members[i].pid !== pid; });
+        if (moved) { g.members = order.map(function (pid) { return byPid[pid]; }); saveData(); }
+      });
       var open = document.createElement('button'); open.type = 'button'; open.textContent = '編集';
       open.setAttribute('aria-label', m.name + 'を編集');
       open.addEventListener('click', function () { editMemberId = m.id; go(); });
@@ -1526,12 +1647,13 @@
   // 女性なら、名前の横に（♀）を付ける
   function addFm(el, p) {
     if (!p || !p.f) return;
-    var s = document.createElement('span'); s.className = 'fm'; s.textContent = '（♀）';
+    var s = document.createElement('span'); s.className = 'fm'; s.appendChild(document.createTextNode('（')); var v = document.createElement('span'); v.className = 'fmV'; v.textContent = '\u2640\uFE0E'; s.appendChild(v); s.appendChild(document.createTextNode('）')); // 絵文字にならない♀
     el.appendChild(s);
   }
 
   // ≡ をつかんで上下に動かすと、名簿の順番が入れ替わる
-  function dragRow(li, grip, g) {
+  // onDrop(order)：並べ替えたあとの id の順で呼ばれる
+  function dragRow(li, grip, onDrop) {
     var startY = 0, active = false;
     function rectOf(el) { return el.getBoundingClientRect(); }
     grip.addEventListener('pointerdown', function (e) {
@@ -1541,23 +1663,23 @@
       li.classList.add('dragging');
       try { grip.setPointerCapture(e.pointerId); } catch (err) {}
     });
+    // スマホで画面が一緒に動かないように
+    grip.addEventListener('touchstart', function (e) { e.preventDefault(); }, { passive: false });
+    grip.addEventListener('touchmove', function (e) { e.preventDefault(); }, { passive: false });
     grip.addEventListener('pointermove', function (e) {
       if (!active) return;
       e.preventDefault();
-      var y = e.clientY, prev = li.previousElementSibling, next = li.nextElementSibling, r;
-      if (prev) { r = rectOf(prev); if (y < r.top + r.height / 2) { li.parentNode.insertBefore(li, prev); startY -= r.height + 8; } }
-      if (next) { r = rectOf(next); if (y > r.top + r.height / 2) { li.parentNode.insertBefore(next, li); startY += r.height + 8; } }
+      var y = e.clientY, prev = li.previousElementSibling, next = li.nextElementSibling, r, top0 = li.offsetTop;
+      if (prev) { r = rectOf(prev); if (y < r.top + r.height / 2) li.parentNode.insertBefore(li, prev); }
+      if (next) { r = rectOf(next); if (y > r.top + r.height / 2) li.parentNode.insertBefore(next, li); }
+      startY += li.offsetTop - top0; // 入れ替わった分だけ基準をずらす（指の下から離れない）
       li.style.transform = 'translateY(' + (y - startY) + 'px)';
     });
     function end() {
       if (!active) return;
       active = false;
       li.classList.remove('dragging'); li.style.transform = '';
-      var order = Array.prototype.map.call(li.parentNode.children, function (x) { return Number(x.getAttribute('data-pid')); });
-      var byPid = {};
-      g.members.forEach(function (m) { byPid[m.pid] = m; });
-      var moved = order.some(function (pid, i) { return g.members[i].pid !== pid; });
-      if (moved) { g.members = order.map(function (pid) { return byPid[pid]; }); saveData(); }
+      onDrop(Array.prototype.map.call(li.parentNode.children, function (x) { return Number(x.getAttribute('data-pid')); }));
     }
     grip.addEventListener('pointerup', end);
     grip.addEventListener('pointercancel', end);
@@ -1656,9 +1778,15 @@
   }
 
   // ③ 準備
+  // このイベントで選べる人（グループのメンバー ＋ このイベントだけ追加した人）
+  function poolIds() {
+    var e = ev(), ids = curGroup().members.map(function (m) { return m.pid; });
+    (e.extra || []).forEach(function (id) { if (ids.indexOf(id) < 0 && person(id)) ids.push(id); });
+    return ids;
+  }
   function selectedIds() {
     var e = ev();
-    return curGroup().members.map(function (m) { return m.pid; }).filter(function (id) { return e.ids.indexOf(id) >= 0; });
+    return poolIds().filter(function (id) { return e.ids.indexOf(id) >= 0; });
   }
 
   // 組の人数が正しいか（全部1人以上で、合計が参加人数と同じ）
@@ -1669,7 +1797,7 @@
   }
 
   function check() {
-    var e = ev(), total = curGroup().members.length, n = selectedIds().length;
+    var e = ev(), total = poolIds().length, n = selectedIds().length;
     var ok = false, msg = '', warn = false, smsg = '';
     if (total === 0) {
       msg = '名簿に名前がありません';
@@ -1738,7 +1866,7 @@
     var cur = curGroup(), n = cur ? selectedIds().length : 0, msg = '';
     if (cur && cur.members.length === 0) msg = '名簿に名前がありません。グループの「編集」から追加してください';
     else if (cur && n < MIN_PLAYERS) msg = MIN_PLAYERS + '人以上にチェックを入れてください';
-    $('memberTitle').textContent = '参加者（' + n + '人）';
+    $('memberTitle').innerHTML = '<span class="cnt">' + n + '</span>人'; // グループ名と同じような枠の中に人数
     $('homeMsg').textContent = msg;
     $('btnNext').disabled = !(cur && n >= MIN_PLAYERS);
     $('btnFee').disabled = feeIds(ev()).length === 0;
@@ -1749,10 +1877,12 @@
     $('homeMembers').hidden = !g;
     elList.textContent = '';
     if (g) {
-      g.members.forEach(function (m) {
-        var p = person(m.pid);
+      poolIds().forEach(function (pid) {
+        var m = { pid: pid }, p = person(pid);
         var li = document.createElement('li');
-        var who = document.createElement('div'); who.className = 'who'; who.textContent = p.name; addFm(who, p);
+        var who = document.createElement('div'); who.className = 'who'; who.textContent = p.name;
+        if (!memberById(g, pid)) { var gm = document.createElement('span'); gm.className = 'gm'; gm.textContent = 'ゲスト'; who.appendChild(gm); } // このイベントだけの人
+        addFm(who, p);
         var join = document.createElement('button'); join.type = 'button'; join.textContent = '参加';
         function isOn() { return ev().ids.indexOf(m.pid) >= 0; }
         function show() { li.className = isOn() ? 'on' : ''; join.setAttribute('aria-pressed', isOn() ? 'true' : 'false'); }
@@ -1764,16 +1894,59 @@
           saveData(); show(); homeState();
         });
         show();
-        li.appendChild(who); li.appendChild(join); elList.appendChild(li);
+        li.appendChild(join); li.appendChild(who); elList.appendChild(li); // 参加ボタンは名前の左
       });
-      elBulk.hidden = g.members.length === 0;
     }
+    renderGuest();
     homeState();
+  }
+
+  // ゲストを追加（グループには入れず、このイベントだけ。新しい名前はメンバー一覧にも登録）
+  var guestOpen = false;
+  function addGuest(p) {
+    var e = ev();
+    if (!okToChange()) return;
+    if (!e.extra) e.extra = [];
+    if (poolIds().indexOf(p.id) < 0) e.extra.push(p.id);
+    if (e.ids.indexOf(p.id) < 0) e.ids.push(p.id); // 追加した人は参加にしておく
+    saveData(); renderHome();
+  }
+  function renderGuest() {
+    var g = curGroup();
+    $('btnGuest').hidden = !g;
+    $('btnGuest').setAttribute('aria-expanded', guestOpen ? 'true' : 'false');
+    $('guestPanel').hidden = !g || !guestOpen;
+    var box = $('guestList'); box.textContent = '';
+    if (!g || !guestOpen) return;
+    var pool = poolIds();
+    data.people.filter(function (p) { return pool.indexOf(p.id) < 0; }).forEach(function (p) {
+      var li = document.createElement('li');
+      var who = document.createElement('div'); who.className = 'who'; who.textContent = p.name; addFm(who, p);
+      var add = document.createElement('button'); add.type = 'button'; add.textContent = '追加';
+      add.setAttribute('aria-label', p.name + 'を追加');
+      add.addEventListener('click', function () { addGuest(p); });
+      li.appendChild(add); li.appendChild(who); box.appendChild(li);
+    });
+  }
+  function addGuestName() {
+    var el = $('guestName'), names = parseNames(el.value);
+    if (names.length === 0) { $('guestMsg').textContent = ''; return; }
+    var pool = poolIds(), dup = names.filter(function (n) { var p = personByName(n); return p && pool.indexOf(p.id) >= 0; });
+    if (dup.length > 0) { $('guestMsg').textContent = 'もう参加者の一覧にあります：' + dup.join('、'); return; }
+    if (!okToChange()) return;
+    var e = ev(); if (!e.extra) e.extra = [];
+    names.forEach(function (n) {
+      var p = personByName(n) || addPerson(n); // 登録済みの名前は同じ人として
+      if (poolIds().indexOf(p.id) < 0) e.extra.push(p.id);
+      if (e.ids.indexOf(p.id) < 0) e.ids.push(p.id);
+    });
+    el.value = ''; $('guestMsg').textContent = '';
+    saveData(); renderHome();
   }
 
   function setAll(on) {
     if (!okToChange()) return;
-    ev().ids = on ? curGroup().members.map(function (m) { return m.pid; }) : [];
+    ev().ids = on ? poolIds() : [];
     saveData(); renderHome();
   }
 
@@ -1972,11 +2145,29 @@
   // ⑤ 会費
   function yen(n) { return Number(n).toLocaleString('ja-JP') + '円'; }
   // 会費を集める相手（参加者。グループが消されたイベントは、抽選に出た人）
-  function feeIds(e) {
+  function feeBase(e) {
     if (groupOfEvent(e)) return selectedIds();
     if (e.draw) return e.draw.ids.slice();
     return e.draws.length > 0 ? e.draws[e.draws.length - 1].ids.slice() : [];
   }
+  // 会計の一覧に出る人（グループの全員・ゲスト ＋ 会計だけ追加した人）
+  function feeIds(e) {
+    var ids = groupOfEvent(e) ? poolIds() : feeBase(e);
+    (e.feeOnly || []).forEach(function (id) { if (ids.indexOf(id) < 0 && person(id)) ids.push(id); });
+    return ids;
+  }
+  function isFeeOff(e, id) { return (e.feeOff || []).indexOf(id) >= 0; }
+  // 会計の対象か（抽選の参加者か、会計だけ足した人。ただし外した人は除く）
+  function isFeeOn(e, id) { return !isFeeOff(e, id) && (feeBase(e).indexOf(id) >= 0 || (e.feeOnly || []).indexOf(id) >= 0); }
+  function setFeeOn(e, id, on) {
+    e.feeOff = (e.feeOff || []).filter(function (x) { return x !== id; });
+    e.feeOnly = (e.feeOnly || []).filter(function (x) { return x !== id; });
+    var inDraw = feeBase(e).indexOf(id) >= 0;
+    if (on && !inDraw) e.feeOnly.push(id);
+    if (!on && inDraw) e.feeOff.push(id);
+  }
+  // 会費を集める相手
+  function feeOnIds(e) { return feeIds(e).filter(function (id) { return isFeeOn(e, id); }); }
   function nameOf(e, id) { var p = person(id); return p ? p.name : (e.draw ? str(e.draw.names[id]) : ''); }
   function payOf(e, id) { return e.pay[id] || { t: 1, amt: null, paid: false }; }
   function setPay(e, id, k, v) { var r = e.pay[id] || (e.pay[id] = { t: 1, amt: null, paid: false }); r[k] = v; }
@@ -1987,19 +2178,34 @@
   }
 
   function renderFeeSum() {
-    var e = ev(), ids = feeIds(e), n = 0, got = 0, all = 0;
+    var e = ev(), ids = feeOnIds(e), n = 0, got = 0, all = 0;
     ids.forEach(function (id) { var a = amountOf(e, id); all += a; if (payOf(e, id).paid) { n++; got += a; } });
-    $('feeSum').textContent = '集金済み ' + n + '／' + ids.length + '人　' + yen(got) + '（予定 ' + yen(all) + '）';
+    // 横に4つ。会費1・2と同じように、見出しの下に枠
+    var row = function (k, v) { return '<div><span class="k">' + k + '</span><span class="v">' + v + '</span></div>'; };
+    var num = function (x, u) { return Number(x).toLocaleString('ja-JP') + '<small>' + u + '</small>'; };
+    $('feeSum').innerHTML = row('参加者', num(ids.length, '人')) + row('集金済み', num(n, '人')) + row('集金額', num(got, '円')) + row('集金予定金額', num(all, '円'));
   }
 
   function renderFeeList() {
     var e = ev(), box = $('feeList');
     box.textContent = '';
+    if (!e.feeOff) e.feeOff = [];
+    if (!e.feeOnly) e.feeOnly = [];
+    var group = curGroup();
     feeIds(e).forEach(function (id) {
-      var name = nameOf(e, id), r = payOf(e, id);
+      var name = nameOf(e, id), r = payOf(e, id), on = isFeeOn(e, id);
       var li = document.createElement('li');
-      if (r.paid) li.className = 'paid';
-      var who = document.createElement('div'); who.className = 'who'; who.textContent = name; addFm(who, person(id));
+      li.className = !on ? 'off' : r.paid ? 'paid' : '';
+      var who = document.createElement('div'); who.className = 'who';
+      var nm = document.createElement('span'); nm.className = 'feeNm'; nm.textContent = name; who.appendChild(nm);
+      if (group && !memberById(group, id)) { var gs = document.createElement('span'); gs.className = 'gm'; gs.textContent = 'ゲスト'; who.appendChild(gs); }
+      // 参加ボタン（イベントの参加者と同じ形。押すと会計の対象になる／外れる）
+      var join = document.createElement('button'); join.type = 'button'; join.className = 'join'; join.textContent = '参加';
+      join.setAttribute('aria-pressed', on ? 'true' : 'false');
+      join.setAttribute('aria-label', name + 'の会計');
+      join.addEventListener('click', function () { setFeeOn(e, id, !isFeeOn(e, id)); saveData(); renderFeeList(); });
+      if (!on) { addFm(who, person(id)); li.appendChild(join); li.appendChild(who); box.appendChild(li); return; }
+      addFm(who, person(id));
       var amt = document.createElement('button'); amt.type = 'button'; amt.className = 'amt' + (r.amt !== null ? ' hand' : '');
       amt.textContent = yen(amountOf(e, id));
       amt.setAttribute('aria-label', name + 'の会費を切り替える');
@@ -2024,9 +2230,40 @@
       done.setAttribute('aria-label', name + 'の集金済み');
       done.setAttribute('aria-pressed', r.paid ? 'true' : 'false');
       done.addEventListener('click', function () { setPay(e, id, 'paid', !payOf(e, id).paid); saveData(); renderFeeList(); });
-      li.appendChild(who); li.appendChild(amt); li.appendChild(fix); li.appendChild(done); box.appendChild(li);
+      var box2 = document.createElement('div'); box2.className = 'amtBox' + (r.amt !== null ? ' hand' : ''); // 金額と修正を1つの枠に
+      box2.appendChild(amt); box2.appendChild(fix);
+      li.appendChild(join); li.appendChild(who); li.appendChild(box2); li.appendChild(done); box.appendChild(li);
     });
+    renderFeeAdd();
     renderFeeSum();
+  }
+
+  // 会計だけの人を追加（抽選には出ない。新しい名前はメンバー一覧にも登録）
+  var feeAddOpen = false;
+  function feeAddPerson(p) { setFeeOn(ev(), p.id, true); }
+  function renderFeeAdd() {
+    $('btnFeeAdd').setAttribute('aria-expanded', feeAddOpen ? 'true' : 'false');
+    $('feeAddPanel').hidden = !feeAddOpen;
+    var box = $('feeAddList'); box.textContent = '';
+    if (!feeAddOpen) return;
+    var e = ev(), have = feeIds(e);
+    data.people.filter(function (p) { return have.indexOf(p.id) < 0; }).forEach(function (p) {
+      var li = document.createElement('li');
+      var who = document.createElement('div'); who.className = 'who'; who.textContent = p.name; addFm(who, p);
+      var add = document.createElement('button'); add.type = 'button'; add.textContent = '追加';
+      add.setAttribute('aria-label', p.name + 'を追加');
+      add.addEventListener('click', function () { feeAddPerson(p); saveData(); renderFeeList(); });
+      li.appendChild(add); li.appendChild(who); box.appendChild(li);
+    });
+  }
+  function feeAddName() {
+    var el = $('feeAddName'), names = parseNames(el.value), e = ev();
+    if (names.length === 0) { $('feeAddMsg').textContent = ''; return; }
+    var on = feeOnIds(e), dup = names.filter(function (n) { var p = personByName(n); return p && on.indexOf(p.id) >= 0; });
+    if (dup.length > 0) { $('feeAddMsg').textContent = 'もう会計の一覧にあります：' + dup.join('、'); return; }
+    names.forEach(function (n) { feeAddPerson(personByName(n) || addPerson(n)); });
+    el.value = ''; $('feeAddMsg').textContent = '';
+    saveData(); renderFeeList();
   }
 
   function renderFee() {
@@ -2034,6 +2271,7 @@
     $('feeHead').textContent = label && grp ? label + ' ／ ' + grp : label || (grp ? 'グループ：' + grp : '');
     [['fee1', $('fee1')], ['fee2', $('fee2')]].forEach(function (x) {
       if (document.activeElement !== x[1]) x[1].value = e[x[0]] === null ? '' : String(e[x[0]]);
+      showFee(x[1]);
     });
     renderFeeList();
   }
@@ -2064,7 +2302,7 @@
   // イベントの一覧
   $('btnNewEvent').addEventListener('click', function () {
     var e = { id: newId(), name: '', date: '', created: today(), groupId: null, all: false, groupName: '', ids: [], step: 'info', method: null, draw: null, draws: [], fee1: null, fee2: null, pay: {} };
-    data.events.push(e); data.cur = e.id; panelOpen = null;
+    data.events.push(e); data.cur = e.id; panelOpen = null; homeNew = true;
     saveData(); go();
   });
   $('btnHistory').addEventListener('click', function () { histOpen = true; go(); });
@@ -2108,6 +2346,9 @@
   });
   $('btnResults').addEventListener('click', function () { var e = ev(); if (e.draws.length === 0) return; e.step = 'results'; saveData(); go(); });
   $('btnResultsBack').addEventListener('click', function () { ev().step = 'info'; saveData(); go(); });
+  $('btnFeeAdd').addEventListener('click', function () { feeAddOpen = !feeAddOpen; $('feeAddMsg').textContent = ''; renderFeeAdd(); if (feeAddOpen) $('feeAddName').focus(); });
+  $('btnFeeAddName').addEventListener('click', feeAddName);
+  $('feeAddName').addEventListener('keydown', function (ev2) { if (ev2.key === 'Enter') { ev2.preventDefault(); feeAddName(); } });
   $('btnFee').addEventListener('click', function () {
     var e = ev();
     if (feeIds(e).length === 0) return;
@@ -2184,8 +2425,9 @@
   blurOnEnter($('groupCount'));
   // ③ 準備
   $('btnSetupBack').addEventListener('click', function () { ev().method = null; ev().step = 'method'; saveData(); go(); });
-  $('btnAllOn').addEventListener('click', function () { setAll(true); });
-  $('btnAllOff').addEventListener('click', function () { setAll(false); });
+  $('btnGuest').addEventListener('click', function () { guestOpen = !guestOpen; $('guestMsg').textContent = ''; renderGuest(); if (guestOpen) $('guestName').focus(); });
+  $('btnGuestAdd').addEventListener('click', addGuestName);
+  $('guestName').addEventListener('keydown', function (ev2) { if (ev2.key === 'Enter') { ev2.preventDefault(); addGuestName(); } });
   elStart.addEventListener('click', startDraw);
   // ④ 抽選
   $('btnRest').addEventListener('click', function () {
@@ -2202,7 +2444,13 @@
   });
   // ⑤ 会費
   $('btnFeeBack').addEventListener('click', function () { ev().step = 'info'; saveData(); go(); });
+  // 会費の枠：入力していないときは 5,000 のようにカンマ付きで見せる
+  function showFee(el) {
+    var n = el.value === '' ? null : Number(el.value);
+    el.parentNode.querySelector('.feeShow').textContent = n === null || isNaN(n) ? '' : n.toLocaleString('ja-JP');
+  }
   [['fee1', $('fee1')], ['fee2', $('fee2')]].forEach(function (x) {
+    x[1].addEventListener('input', function () { showFee(x[1]); });
     function save() {
       var v = money(x[1].value === '' ? null : Math.floor(Number(x[1].value)));
       if (ev()[x[0]] === v) return; // 変わっていなければ何もしない（一覧を作り直すと、押そうとしたボタンが空振りする）
@@ -2253,7 +2501,23 @@
     $(vid).insertBefore(b, $(vid).firstChild);
   });
 
+  // 名前の枠の幅：会計確認の1行（参加・名前・金額と修正・済）が、会費1・2の行と同じ横幅になる幅
+  function setNameW() {
+    var main = document.querySelector('main'), cs = getComputedStyle(main);
+    var w = main.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    document.documentElement.style.setProperty('--nameW', Math.max(110, Math.floor(w - 218)) + 'px'); // 会計の行の右端が、会費1・2の行の右端とそろう
+  }
+  setNameW();
+  window.addEventListener('resize', setNameW);
   loadData();
+  // 開き直したら、いつもトップから始める（採用していない抽選は残さない）
+  (function () {
+    var e = ev();
+    if (e && isBlankEvent(e)) data.events = data.events.filter(function (x) { return x !== e; });
+    data.events.forEach(function (x) { x.draw = null; if (x.step !== 'info') x.step = 'info'; });
+    data.cur = null;
+    saveData();
+  })();
   render();
 
   // オフラインでも開けるようにする（PCでファイルを直接開いたときは何もしない）
