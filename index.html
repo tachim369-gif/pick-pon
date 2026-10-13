@@ -597,19 +597,19 @@
     <div class="pageTitle">グループの編集</div>
     <label class="title" for="groupName">グループ名</label>
     <input id="groupName" class="textIn" type="text" maxlength="30" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
+    <div class="title" id="listTitle" hidden></div>
+    <ul id="editList"></ul>
+    <div class="hint" id="editHint" style="margin-bottom:16px">名前を押すと、所属や連絡先などを入力できます</div>
     <label class="title" for="newName">新規メンバー</label>
     <div class="addRow">
       <input id="newName" type="text" placeholder="名前を入力" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done">
       <button id="btnAdd" type="button">追加</button>
     </div>
     <div id="addMsg"></div>
-    <button id="btnPick" type="button" aria-expanded="false" hidden><span class="who">登録済みの名前から選ぶ</span></button>
+    <button id="btnPick" type="button" aria-expanded="false" hidden><span class="who">メンバー一覧から選ぶ</span></button>
     <div id="pickPanel" hidden>
       <ul id="pickList"></ul>
     </div>
-    <div class="title" id="listTitle" hidden></div>
-    <ul id="editList"></ul>
-    <div class="hint" id="editHint">名前を押すと、所属や連絡先などを入力できます</div>
     <button id="btnDelGroup" class="danger" type="button">このグループを削除</button>
   </section>
 
