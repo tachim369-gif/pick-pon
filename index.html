@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#fdea8e">
+<meta name="theme-color" content="#e6e6e2">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Pick Pon">
@@ -13,14 +13,14 @@
 <title>Pick Pon</title>
 <style>
   :root {
-    /* テーマ色：アイコンの黄色 */
-    --theme: #fdea8e;    /* 見出し帯（アイコンの背景と同じ） */
-    --accent: #f5c518;   /* 主なボタン */
-    --on-accent: #3a2c00;/* 黄色の上の文字 */
-    --sel: #ffe27a;      /* 選んでいるもの（参加など）の背景 */
-    --green: #9a6a00;    /* 文字・線のアクセント（名前は昔のまま） */
-    --green-dark: #e0ad00;
-    --bg: #f2f2ef;
+    /* テーマ色：ベージュ */
+    --theme: #efe2cc;    /* 見出し帯 */
+    --accent: #d9bf96;   /* 主なボタン */
+    --on-accent: #3b2c1a;/* ベージュの上の文字 */
+    --sel: #ead3aa;      /* 選んでいるもの（参加など）の背景 */
+    --green: #8a6a42;    /* 文字・線のアクセント（名前は昔のまま） */
+    --green-dark: #c8aa7c;
+    --bg: #e6e6e2;       /* 背景のグレー（白い枠と区別しやすく） */
     --card: #ffffff;
     --text: #1d2420;
     --sub: #66706a;
@@ -38,7 +38,7 @@
     -webkit-text-size-adjust: 100%;
   }
   header {
-    background: var(--theme);
+    background: var(--bg); /* 上の帯は背景と同じ色（スマホでぼやけないように） */
     color: var(--on-accent);
     padding: calc(26px + env(safe-area-inset-top)) 16px 14px; /* スマホで上が隠れないように余白を多めに */
     font-size: 20px;
