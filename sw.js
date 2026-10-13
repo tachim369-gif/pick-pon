@@ -1,6 +1,6 @@
 // Pick Pon service worker
 // 公開のたびに、下のバージョン番号を上げる
-const VERSION = 'v16';
+const VERSION = 'v17';
 const CACHE = 'pick-pon-' + VERSION;
 const FILES = ['./', 'index.html', 'manifest.json', 'icon-180.png', 'icon-192.png', 'icon-512.png'];
 
@@ -21,7 +21,7 @@ self.addEventListener('fetch', (e) => {
   const req = e.request;
   if (req.method !== 'GET' || new URL(req.url).origin !== self.location.origin) return;
   e.respondWith(
-    fetch(req)
+    fetch(req, { cache: 'no-cache' }) // 取っておいたものは使わず、必ずGitHubに確かめる
       .then((res) => {
         if (res && res.ok) {
           const copy = res.clone();
