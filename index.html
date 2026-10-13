@@ -524,11 +524,11 @@
     <button id="btnGroups" type="button">グループ一覧/グループ追加</button>
     <button id="btnPeople" type="button">メンバー一覧/メンバー追加</button>
     <div class="dataRow">
-      <button id="btnExport" type="button">データを書き出す</button>
-      <button id="btnImport" type="button">データを読み込む</button>
+      <button id="btnExport" type="button">データを保存</button>
+      <button id="btnImport" type="button">データを復元</button>
       <input id="importFile" type="file" accept=".json,application/json" hidden>
     </div>
-    <div class="hint">書き出したファイルで、バックアップや機種変更ができます</div>
+    <div class="hint">保存したファイルで、データの復元や機種変更ができます</div>
   </section>
 
   <!-- メンバー一覧 -->
@@ -2446,12 +2446,21 @@
     saveData();
     var text = JSON.stringify(data, null, 1);
     var blob = new Blob([text], { type: 'application/json' });
+    var fname = 'pickpon-' + today() + '.json';
+    // スマホは共有の画面（「ファイルに保存」・AirDrop・メールなど）を出す。できないときはダウンロード
+    try {
+      var file = new File([blob], fname, { type: 'application/json' });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        navigator.share({ files: [file], title: 'Pick Pon のデータ' }).then(function () { toast('保存しました'); }).catch(function () {});
+        return;
+      }
+    } catch (e) {}
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'pickpon-' + today() + '.json';
+    a.download = fname;
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
     setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
-    toast('書き出しました');
+    toast('保存しました');
   });
   // データの読み込み：ファイルの中身で今のデータを置き換える（前のデータは控えを残す）
   $('btnImport').addEventListener('click', function () { $('importFile').value = ''; $('importFile').click(); });
@@ -2462,7 +2471,7 @@
       var d = null;
       try { d = JSON.parse(String(rd.result)); } catch (e) {}
       if (!d || typeof d !== 'object' || !Array.isArray(d.people) || !Array.isArray(d.events)) { toast('Pick Pon のデータではありません'); return; }
-      var msg = 'このファイルのデータで、今のデータを置き換えます。\n（メンバー ' + d.people.length + '人・イベント ' + d.events.length + '件）\nよろしいですか？';
+      var msg = 'このファイルのデータに戻します（今のデータは置き換わります）。\n（メンバー ' + d.people.length + '人・イベント ' + d.events.length + '件）\nよろしいですか？';
       if (!window.confirm(msg)) return;
       try { localStorage.setItem(STORAGE_KEY + '_before_import', JSON.stringify(data)); } catch (e) {}
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); } catch (e) { toast('読み込めませんでした'); return; }
