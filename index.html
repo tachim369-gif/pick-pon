@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#1f6b45">
+<meta name="theme-color" content="#fdea8e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Pick Pon">
@@ -13,9 +13,14 @@
 <title>Pick Pon</title>
 <style>
   :root {
-    --green: #1f6b45;
-    --green-dark: #17523a;
-    --bg: #f3f5f1;
+    /* テーマ色：アイコンの黄色 */
+    --theme: #fdea8e;    /* 見出し帯（アイコンの背景と同じ） */
+    --accent: #f5c518;   /* 主なボタン */
+    --on-accent: #3a2c00;/* 黄色の上の文字 */
+    --sel: #ffe27a;      /* 選んでいるもの（参加など）の背景 */
+    --green: #9a6a00;    /* 文字・線のアクセント（名前は昔のまま） */
+    --green-dark: #e0ad00;
+    --bg: #f2f2ef;
     --card: #ffffff;
     --text: #1d2420;
     --sub: #66706a;
@@ -33,9 +38,9 @@
     -webkit-text-size-adjust: 100%;
   }
   header {
-    background: var(--green);
-    color: #fff;
-    padding: calc(14px + env(safe-area-inset-top)) 16px 14px;
+    background: var(--theme);
+    color: var(--on-accent);
+    padding: calc(26px + env(safe-area-inset-top)) 16px 14px; /* スマホで上が隠れないように余白を多めに */
     font-size: 20px;
     font-weight: 700;
     letter-spacing: 0.05em;
@@ -56,10 +61,10 @@
     cursor: pointer;
     border: 1px solid var(--green);
   }
-  button.primary { background: var(--green); color: #fff; width: 100%; font-size: 18px; }
+  button.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); width: 100%; font-size: 18px; }
   button.primary:active { background: var(--green-dark); }
   button.secondary { background: #fff; color: var(--green); flex: 1; }
-  button.secondary:active { background: #e8f0ea; }
+  button.secondary:active { background: var(--sel); }
   button:disabled { opacity: 0.4; cursor: default; }
   .row { display: flex; gap: 10px; margin-top: 14px; }
   .row button { padding-left: 8px; padding-right: 8px; font-size: 15px; white-space: nowrap; }
@@ -72,12 +77,12 @@
     border: 1px solid var(--line); border-left: 6px solid var(--green);
     padding: 14px 16px; margin-bottom: 10px;
   }
-  button.method:active { background: #e8f0ea; }
+  button.method:active { background: var(--sel); }
   button.method .mt { display: block; font-size: 18px; }
   button.method .ms { display: block; font-weight: 400; font-size: 14px; color: var(--sub); }
   button.method:disabled { border-left-color: var(--line); }
   button.link { background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--green); font-weight: 400; font-size: 14px; padding: 0 12px; min-height: 36px; }
-  button.link:active { background: #e8f0ea; }
+  button.link:active { background: var(--sel); }
   section > button.link { display: block; margin-bottom: 12px; }
   section > button.link[hidden] { display: none; }
   #viewMethod, #viewMembers, #viewDraw, #viewResults, #viewFee { position: relative; }
@@ -100,7 +105,7 @@
   .grow button.method { margin-bottom: 0; flex: 1; min-width: 0; }
   .grow button.method .mt { word-break: break-all; }
   .grow button.gedit { flex: 0 0 auto; align-self: center; background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--green); font-weight: 400; font-size: 13px; width: 44px; padding: 0; min-height: 34px; }
-  .grow button.gedit:active { background: #e8f0ea; }
+  .grow button.gedit:active { background: var(--sel); }
   button.selBox {
     width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 10px; text-align: left;
     background: var(--card); color: var(--text); font-weight: 400;
@@ -111,7 +116,7 @@
   #groupPanel { margin: -6px 0 16px; }
   #groupPanel .sub { margin-top: 0; }
   .gedit-space { flex: 0 0 auto; width: 44px; }
-  .grow.sel button.method { border-color: var(--green); background: #e8f0ea; }
+  .grow.sel button.method { border-color: var(--green); background: var(--sel); }
   button.addGroup { width: 100%; background: #fff; color: var(--green); border-style: dashed; }
   .titleRow { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
   .titleRow label.title, .titleRow .title { margin-bottom: 0; font-weight: 700; }
@@ -125,7 +130,7 @@
     background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; min-height: 52px;
   }
   #editList button, #eventList button { flex: 0 0 auto; align-self: center; background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--green); font-weight: 400; font-size: 13px; width: 44px; padding: 0; min-height: 34px; }
-  #editList button:active, #eventList button:active { background: #e8f0ea; }
+  #editList button:active, #eventList button:active { background: var(--sel); }
   #editList .who { flex-direction: row; align-items: center; justify-content: flex-start; padding-left: 4px; }
   #peopleList li.dragging { position: relative; z-index: 2; }
   #peopleList li.dragging .who { box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18); border-color: var(--green); }
@@ -158,7 +163,7 @@
     flex: 1; min-width: 0; display: flex; align-items: center;
     background: var(--card); color: var(--green); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; margin-right: 104px;
   }
-  #btnPick:active .who { background: #e8f0ea; }
+  #btnPick:active .who { background: var(--sel); }
   #pickPanel { margin-bottom: 6px; }
   #pickList { list-style: none; margin: 0; padding: 0; }
   #pickList li { display: flex; align-items: stretch; gap: 8px; margin-bottom: 8px; }
@@ -168,7 +173,7 @@
   }
   #pickList button { flex: 0 0 auto; align-self: center; background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--green); font-weight: 400; font-size: 13px; width: 44px; padding: 0; min-height: 34px; margin-right: 52px; }
   #pickList .who { flex-direction: row; align-items: center; justify-content: flex-start; }
-  #pickList button:active { background: #e8f0ea; }
+  #pickList button:active { background: var(--sel); }
   #btnGuest {
     width: 100%; display: flex; align-items: stretch; gap: 8px; text-align: left;
     background: none; border: none; border-radius: 0; padding: 0; min-height: 46px; margin: 4px 0 10px;
@@ -179,7 +184,7 @@
     background: var(--card); color: var(--green); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px;
   }
   #btnGuest { width: calc(52px + var(--nameW)); } /* 参加ボタンの左端から名前の枠の右端まで */
-  #btnGuest:active .who { background: #e8f0ea; }
+  #btnGuest:active .who { background: var(--sel); }
   #guestPanel[hidden] { display: none; }
   #guestPanel .addRow button { margin-right: 0; }
   #guestMsg { margin: -4px 2px 8px; font-size: 15px; color: var(--warn); font-weight: 700; }
@@ -191,24 +196,24 @@
     background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; min-height: 46px;
   }
   #guestList button { flex: 0 0 auto; align-self: center; background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--green); font-weight: 400; font-size: 13px; width: 44px; padding: 0; min-height: 34px; }
-  #guestList button:active { background: #e8f0ea; }
+  #guestList button:active { background: var(--sel); }
   #viewList button.addGroup { margin-bottom: 16px; }
   #listEmpty { margin-top: 0; }
   #btnGroups, #btnPeople { margin-top: 10px; }
   #peopleList { list-style: none; margin: 0; padding: 0; }
   #peopleList li { margin-bottom: 8px; }
   #peopleList .who { display: flex; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px 8px 4px; min-height: 46px; cursor: pointer; word-break: break-all; }
-  #peopleList .who:active { background: #e8f0ea; }
+  #peopleList .who:active { background: var(--sel); }
   #groupsList { list-style: none; margin: 0 0 8px; padding: 0; }
   #groupsList li { margin-bottom: 8px; }
   #groupsList .who { display: block; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; min-height: 52px; cursor: pointer; word-break: break-all; }
-  #groupsList .who:active { background: #e8f0ea; }
+  #groupsList .who:active { background: var(--sel); }
   #groupsList .mt { display: block; }
   #groupsList .ms { display: block; font-size: 13px; color: var(--sub); line-height: 1.4; }
   #btnHistory, #btnGroups, #btnPeople { width: 100%; background: #fff; color: var(--green); border-color: var(--line); }
-  #btnHistory:active, #btnGroups:active, #btnPeople:active { background: #e8f0ea; }
+  #btnHistory:active, #btnGroups:active, #btnPeople:active { background: var(--sel); }
   #eventList .who { cursor: pointer; }
-  #eventList .who:active { background: #e8f0ea; }
+  #eventList .who:active { background: var(--sel); }
   #eventList .who .md { display: block; font-size: 13px; color: var(--sub); line-height: 1.4; }
   #eventList .who .mt { display: block; word-break: break-all; font-weight: 700; }
   #eventList .who .ms { display: block; font-size: 13px; color: var(--sub); line-height: 1.4; }
@@ -217,13 +222,13 @@
   #btnDecide { width: 100%; margin-top: 14px; }
   #btnDecide[hidden] { display: none; }
   #rowDone .row button { flex: 1; width: auto; min-width: 0; font-size: 15px; }
-  #btnDecide[aria-pressed="true"] { background: var(--green); color: #fff; }
+  #btnDecide[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
   #decideHint { margin: 0 2px 10px; font-weight: 700; color: var(--warn); }
   #decideHint[hidden] { display: none; }
   #pastList button.dec { color: var(--green); }
-  #pastList button.dec[aria-pressed="true"] { background: var(--green); border-color: var(--green); color: #fff; }
-  #pastList .badge { margin-left: auto; padding: 2px 10px; border-radius: 999px; background: var(--green); color: #fff; font-size: 13px; font-weight: 700; flex: 0 0 auto; }
-  #pastList li.decided .who { border-color: var(--green); background: #e8f0ea; }
+  #pastList button.dec[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  #pastList .badge { margin-left: auto; padding: 2px 10px; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-size: 13px; font-weight: 700; flex: 0 0 auto; }
+  #pastList li.decided .who { border-color: var(--green); background: var(--sel); }
   #btnSave.del { color: var(--warn); border-color: var(--warn); }
   .row2 button { flex: 1; min-width: 0; }
   .feeGrid { display: grid; grid-template-columns: 1.25fr 1.25fr 0.75fr 0.75fr; gap: 8px; margin-bottom: 12px; } /* 会費1・会費2・参加者・集金済みを1行に */
@@ -259,7 +264,7 @@
     background: var(--card); color: var(--green); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px;
   }
   #btnFeeAdd { width: calc(46px + var(--nameW)); }
-  #btnFeeAdd:active .who { background: #e8f0ea; }
+  #btnFeeAdd:active .who { background: var(--sel); }
   #feeAddPanel[hidden] { display: none; }
   #feeAddPanel .addRow { gap: 6px; }
   #feeAddPanel .addRow button { margin-right: 0; width: 40px; }
@@ -273,7 +278,7 @@
   }
   #feeAddList button { flex: 0 0 auto; align-self: center; background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--green); font-weight: 400; font-size: 13px; width: 40px; padding: 0; min-height: 34px; }
   #feeList button { flex: 0 0 auto; align-self: center; background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--green); font-weight: 400; font-size: 13px; width: 40px; padding: 0; min-height: 34px; }
-  #feeList button:active { background: #e8f0ea; }
+  #feeList button:active { background: var(--sel); }
   #feeList .amtBox { flex: 0 0 120px; align-self: center; display: flex; border: 1px solid var(--line); border-radius: 8px; background: #fff; overflow: hidden; min-height: 34px; }
   #feeList .amtBox.hand { border-color: var(--green); }
   #feeList .amtBox button { border: none; border-radius: 0; min-height: 34px; align-self: stretch; }
@@ -281,13 +286,13 @@
   #feeList .amtBox button:last-child { width: 44px; border-left: 1px solid var(--line); }
   #feeList button.done { color: var(--sub); }
   #feeList button.join { color: var(--sub); }
-  #feeList button.join[aria-pressed="true"] { background: var(--green); border-color: var(--green); color: #fff; }
+  #feeList button.join[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
   #feeList li.off .who { color: var(--sub); }
-  #feeList li:not(.off) .who { border-color: var(--green); background: #e8f0ea; color: var(--text); } /* 会計の対象はイベント詳細の参加と同じ色 */
+  #feeList li:not(.off) .who { border-color: var(--green); background: var(--sel); color: var(--text); } /* 会計の対象はイベント詳細の参加と同じ色 */
   #feeList li.off .who { color: var(--sub); }
   #feeList .feeNm { flex: 0 1 auto; min-width: 1.5em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   #feeList .gm { margin-left: auto; font-size: 11px; padding: 1px 4px; }
-  #feeList li.paid button.done { background: #e8f0ea; border-color: var(--green); color: var(--text); } /* 参加の名前と同じ配色 */
+  #feeList li.paid button.done { background: var(--sel); border-color: var(--green); color: var(--text); } /* 参加の名前と同じ配色 */
   .hint { font-size: 14px; color: var(--sub); margin: 8px 2px 0; }
   .hint:empty { display: none; }
   .fieldMsg { margin: -10px 2px 12px; font-size: 15px; color: var(--warn); font-weight: 700; }
@@ -311,7 +316,7 @@
   }
   .addRow input:focus { outline: 2px solid var(--green); outline-offset: 1px; }
   .addRow button { flex: 0 0 auto; align-self: center; background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--green); font-weight: 400; font-size: 13px; width: 44px; padding: 0; min-height: 34px; margin-right: 52px; }
-  .addRow button:active { background: #e8f0ea; }
+  .addRow button:active { background: var(--sel); }
   #addMsg { margin: -4px 2px 8px; font-size: 15px; color: var(--warn); font-weight: 700; }
   #addMsg:empty { display: none; }
   #memberList { list-style: none; margin: 0; padding: 0; }
@@ -321,10 +326,10 @@
     flex: 1; min-width: 0; display: flex; align-items: center; word-break: break-all; color: var(--sub);
     background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; min-height: 46px;
   }
-  #memberList li.on .who { color: var(--text); border-color: var(--green); background: #e8f0ea; }
+  #memberList li.on .who { color: var(--text); border-color: var(--green); background: var(--sel); }
   #memberList button { flex: 0 0 auto; align-self: center; background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--green); font-weight: 400; font-size: 13px; width: 44px; padding: 0; min-height: 34px; }
   #memberList button { color: var(--sub); }
-  #memberList li.on button { background: var(--green); border-color: var(--green); color: #fff; }
+  #memberList li.on button { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
   .bulk { display: flex; gap: 10px; margin-top: 10px; }
   .bulk button { flex: 1; background: #fff; color: var(--green); border-color: var(--line); font-weight: 400; min-height: 40px; padding: 6px 10px; font-size: 14px; }
   #summary { min-height: 1.6em; margin: 8px 2px 14px; color: var(--sub); font-size: 15px; }
@@ -342,7 +347,7 @@
   .amMk svg { width: 100%; height: 100%; }
   .amName .nmT { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
   .amName .fm { flex: 0 0 auto; margin-left: 1px; font-size: 13px; }
-  .amName:not(.done):active { background: #e8f0ea; }
+  .amName:not(.done):active { background: var(--sel); }
   .amName.done { color: var(--sub); }
   .amRes { height: 44px; display: flex; align-items: center; gap: 3px; padding-left: 4px; font-weight: 700; font-size: 14px; color: var(--sub); white-space: nowrap; }
   .amV { stroke: #9aa39d; stroke-width: 2; }
@@ -351,7 +356,7 @@
   #pastList { list-style: none; margin: 0 0 16px; padding: 0; }
   #pastList li { display: flex; align-items: stretch; gap: 8px; margin-bottom: 8px; }
   #pastList .who { flex: 1; min-width: 0; display: flex; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; min-height: 48px; cursor: pointer; word-break: break-all; }
-  #pastList .who:active { background: #e8f0ea; }
+  #pastList .who:active { background: var(--sel); }
   #pastList button { flex: 0 0 auto; align-self: center; background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--warn); font-weight: 400; font-size: 13px; width: 44px; padding: 0; min-height: 34px; }
   #gpBox { margin: 0 0 12px; padding: 8px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; display: flex; justify-content: center; }
   #gpBox[hidden] { display: none; }
@@ -379,7 +384,7 @@
   .countRow .textIn { width: 90px; margin: 0; text-align: right; }
   .countRow .textIn.dim { opacity: 0.4; }
   #btnOrder { margin-left: auto; background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--green); font-weight: 400; font-size: 16px; padding: 0 18px; min-height: 42px; }
-  #btnOrder[aria-pressed="true"] { background: var(--green); border-color: var(--green); color: #fff; }
+  #btnOrder[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
   #summary.warn { color: var(--warn); font-weight: 700; }
 
   /* 抽選 */
@@ -401,7 +406,7 @@
   #btnRest[hidden] { display: none; }
   #btnCopyTop { flex: 0 0 auto; font-size: 15px; padding: 0 16px; }
   #btnCopyTop[hidden] { display: none; }
-  #btnRest:active { background: #e8f0ea; }
+  #btnRest:active { background: var(--sel); }
   #btnRest .gp.small { width: 24px; height: 24px; }
   .drawHead { align-items: center; }
   .drawHead .r { color: var(--sub); font-size: 15px; white-space: nowrap; }
@@ -417,7 +422,7 @@
     border: none; border-radius: 0; background: none; color: inherit;
     font-weight: 400; text-align: left; padding: 10px 14px; min-height: 54px;
   }
-  #drawList button:active { background: #e8f0ea; }
+  #drawList button:active { background: var(--sel); }
   #drawList button .name { word-break: break-all; }
   #drawList button .res { display: flex; align-items: center; gap: 6px; font-weight: 700; white-space: nowrap; }
   #drawList button.done { cursor: default; background: #f7f8f5; }
@@ -614,9 +619,9 @@
   <section id="viewDraw" hidden>
     <button id="btnDrawBack" class="link" type="button">← 戻る</button>
     <div class="eventName" id="drawEvent"></div>
-    <div class="drawHead"><span class="tl"><span class="gp big"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false"> <path d="M18 52 L32 34 L46 52" fill="none" stroke="#17523a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/> <rect x="12" y="51" width="40" height="5" rx="2.5" fill="#17523a"/> <polygon points="24,8 40,8 51,19 51,35 40,46 24,46 13,35 13,19" fill="#1f6b45" stroke="#17523a" stroke-width="2"/> <polygon points="26,13 38,13 46,21 46,33 38,41 26,41 18,33 18,21" fill="none" stroke="#e8f0ea" stroke-width="1.5" opacity="0.6"/> <line x1="32" y1="27" x2="56" y2="14" stroke="#17523a" stroke-width="3" stroke-linecap="round"/> <circle cx="57" cy="13" r="3.5" fill="#f2b705" stroke="#17523a" stroke-width="1.5"/> <circle cx="32" cy="27" r="3" fill="#e8f0ea"/> <circle cx="9" cy="47" r="5" fill="#e5382b" stroke="#a52a20" stroke-width="1"/> <circle cx="7.5" cy="45.5" r="1.4" fill="#fff" opacity="0.8"/> </svg></span><span class="am big" id="rlBig" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="35" r="25" fill="#fff" stroke="#17523a" stroke-width="3"/><path d="M32 35 L32 10 A25 25 0 0 1 53.65 22.5 Z" fill="#e5382b"/><path d="M32 35 L53.65 22.5 A25 25 0 0 1 53.65 47.5 Z" fill="#1f7ae0"/><path d="M32 35 L53.65 47.5 A25 25 0 0 1 32 60 Z" fill="#f2b705"/><path d="M32 35 L32 60 A25 25 0 0 1 10.35 47.5 Z" fill="#2fa84f"/><path d="M32 35 L10.35 47.5 A25 25 0 0 1 10.35 22.5 Z" fill="#f57c1f"/><path d="M32 35 L10.35 22.5 A25 25 0 0 1 32 10 Z" fill="#7b47d1"/><circle cx="32" cy="35" r="25" fill="none" stroke="#17523a" stroke-width="3"/><circle cx="32" cy="35" r="5" fill="#17523a"/><path d="M26 2 L38 2 L32 13 Z" fill="#17523a"/></svg></span><span class="am big" id="amBig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="4" y="4" width="56" height="56" rx="10" fill="#e8f0ea"/><g stroke="#17523a" stroke-width="3.5" stroke-linecap="round"><line x1="16" y1="12" x2="16" y2="52"/><line x1="32" y1="12" x2="32" y2="52"/><line x1="48" y1="12" x2="48" y2="52"/><line x1="16" y1="20" x2="32" y2="20"/><line x1="32" y1="30" x2="48" y2="30"/><line x1="16" y1="40" x2="32" y2="40"/><line x1="32" y1="46" x2="48" y2="46"/></g><polyline points="16,12 16,20 32,20 32,30 48,30 48,46 32,46 32,52" fill="none" stroke="#e5382b" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="54" r="4.5" fill="#e5382b"/></svg></span><span class="t" id="drawTitle"></span></span><button id="btnRest" type="button"><span class="gp small" id="restMark"></span><span id="restText">まとめてガラポン</span></button><button id="btnCopyTop" class="link" type="button" hidden>コピー</button></div>
+    <div class="drawHead"><span class="tl"><span class="gp big"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false"> <path d="M18 52 L32 34 L46 52" fill="none" stroke="#17523a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/> <rect x="12" y="51" width="40" height="5" rx="2.5" fill="#17523a"/> <polygon points="24,8 40,8 51,19 51,35 40,46 24,46 13,35 13,19" fill="#1f6b45" stroke="#17523a" stroke-width="2"/> <polygon points="26,13 38,13 46,21 46,33 38,41 26,41 18,33 18,21" fill="none" stroke="var(--sel)" stroke-width="1.5" opacity="0.6"/> <line x1="32" y1="27" x2="56" y2="14" stroke="#17523a" stroke-width="3" stroke-linecap="round"/> <circle cx="57" cy="13" r="3.5" fill="#f2b705" stroke="#17523a" stroke-width="1.5"/> <circle cx="32" cy="27" r="3" fill="var(--sel)"/> <circle cx="9" cy="47" r="5" fill="#e5382b" stroke="#a52a20" stroke-width="1"/> <circle cx="7.5" cy="45.5" r="1.4" fill="#fff" opacity="0.8"/> </svg></span><span class="am big" id="rlBig" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="35" r="25" fill="#fff" stroke="#17523a" stroke-width="3"/><path d="M32 35 L32 10 A25 25 0 0 1 53.65 22.5 Z" fill="#e5382b"/><path d="M32 35 L53.65 22.5 A25 25 0 0 1 53.65 47.5 Z" fill="#1f7ae0"/><path d="M32 35 L53.65 47.5 A25 25 0 0 1 32 60 Z" fill="#f2b705"/><path d="M32 35 L32 60 A25 25 0 0 1 10.35 47.5 Z" fill="#2fa84f"/><path d="M32 35 L10.35 47.5 A25 25 0 0 1 10.35 22.5 Z" fill="#f57c1f"/><path d="M32 35 L10.35 22.5 A25 25 0 0 1 32 10 Z" fill="#7b47d1"/><circle cx="32" cy="35" r="25" fill="none" stroke="#17523a" stroke-width="3"/><circle cx="32" cy="35" r="5" fill="#17523a"/><path d="M26 2 L38 2 L32 13 Z" fill="#17523a"/></svg></span><span class="am big" id="amBig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="4" y="4" width="56" height="56" rx="10" fill="var(--sel)"/><g stroke="#17523a" stroke-width="3.5" stroke-linecap="round"><line x1="16" y1="12" x2="16" y2="52"/><line x1="32" y1="12" x2="32" y2="52"/><line x1="48" y1="12" x2="48" y2="52"/><line x1="16" y1="20" x2="32" y2="20"/><line x1="32" y1="30" x2="48" y2="30"/><line x1="16" y1="40" x2="32" y2="40"/><line x1="32" y1="46" x2="48" y2="46"/></g><polyline points="16,12 16,20 32,20 32,30 48,30 48,46 32,46 32,52" fill="none" stroke="#e5382b" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="54" r="4.5" fill="#e5382b"/></svg></span><span class="t" id="drawTitle"></span></span><button id="btnRest" type="button"><span class="gp small" id="restMark"></span><span id="restText">まとめてガラポン</span></button><button id="btnCopyTop" class="link" type="button" hidden>コピー</button></div>
     <div id="quota"></div>
-    <div id="gpBox" hidden><svg xmlns="http://www.w3.org/2000/svg" viewBox="-22 2 80 60" aria-hidden="true" focusable="false"><defs><linearGradient id="gpRainbow" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e5382b"/><stop offset="0.2" stop-color="#f57c1f"/><stop offset="0.4" stop-color="#f2b705"/><stop offset="0.6" stop-color="#2fa84f"/><stop offset="0.8" stop-color="#1f7ae0"/><stop offset="1" stop-color="#7b47d1"/></linearGradient></defs><path d="M18 52 L32 34 L46 52" fill="none" stroke="#17523a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><rect x="12" y="51" width="40" height="5" rx="2.5" fill="#17523a"/><g id="gpDrum"><polygon points="24,8 40,8 51,19 51,35 40,46 24,46 13,35 13,19" fill="#1f6b45" stroke="#17523a" stroke-width="2"/><polygon points="26,13 38,13 46,21 46,33 38,41 26,41 18,33 18,21" fill="none" stroke="#e8f0ea" stroke-width="1.5" opacity="0.6"/><line x1="32" y1="27" x2="56" y2="14" stroke="#17523a" stroke-width="3" stroke-linecap="round"/><circle cx="57" cy="13" r="3.5" fill="#f2b705" stroke="#17523a" stroke-width="1.5"/></g><circle cx="32" cy="27" r="3" fill="#e8f0ea"/><g id="gpBall" visibility="hidden"><circle id="gpBallC" cx="-7" cy="42.5" r="7.5" stroke="#555" stroke-width="0.8"/><text id="gpBallT" x="-7" y="45.3" text-anchor="middle" font-size="7.5" font-weight="700"></text></g><path d="M-20 49 L6 49 Q5 56 -7 56 Q-19 56 -20 49 Z" fill="#1f6b45" stroke="#17523a" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+    <div id="gpBox" hidden><svg xmlns="http://www.w3.org/2000/svg" viewBox="-22 2 80 60" aria-hidden="true" focusable="false"><defs><linearGradient id="gpRainbow" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e5382b"/><stop offset="0.2" stop-color="#f57c1f"/><stop offset="0.4" stop-color="#f2b705"/><stop offset="0.6" stop-color="#2fa84f"/><stop offset="0.8" stop-color="#1f7ae0"/><stop offset="1" stop-color="#7b47d1"/></linearGradient></defs><path d="M18 52 L32 34 L46 52" fill="none" stroke="#17523a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><rect x="12" y="51" width="40" height="5" rx="2.5" fill="#17523a"/><g id="gpDrum"><polygon points="24,8 40,8 51,19 51,35 40,46 24,46 13,35 13,19" fill="#1f6b45" stroke="#17523a" stroke-width="2"/><polygon points="26,13 38,13 46,21 46,33 38,41 26,41 18,33 18,21" fill="none" stroke="var(--sel)" stroke-width="1.5" opacity="0.6"/><line x1="32" y1="27" x2="56" y2="14" stroke="#17523a" stroke-width="3" stroke-linecap="round"/><circle cx="57" cy="13" r="3.5" fill="#f2b705" stroke="#17523a" stroke-width="1.5"/></g><circle cx="32" cy="27" r="3" fill="var(--sel)"/><g id="gpBall" visibility="hidden"><circle id="gpBallC" cx="-7" cy="42.5" r="7.5" stroke="#555" stroke-width="0.8"/><text id="gpBallT" x="-7" y="45.3" text-anchor="middle" font-size="7.5" font-weight="700"></text></g><path d="M-20 49 L6 49 Q5 56 -7 56 Q-19 56 -20 49 Z" fill="#1f6b45" stroke="#17523a" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
     <div id="wheelBox" hidden><div id="wheel"></div></div>
     <ul id="drawList"></ul>
     <div id="amida" hidden></div>
