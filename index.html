@@ -453,6 +453,7 @@
     flex: 0 0 var(--nameW); width: var(--nameW); max-width: var(--nameW);
   }
   /* 参加ボタンをなくした分だけ広く（ゲストを追加のボタンと同じ幅） */
+  #peopleList .who { width: calc(var(--nameW) + 52px); max-width: calc(var(--nameW) + 52px); } /* メンバー一覧もイベント詳細と同じ幅 */
   #memberList .who { flex-basis: calc(var(--nameW) + 52px); width: calc(var(--nameW) + 52px); max-width: calc(var(--nameW) + 52px); cursor: pointer; }
   #feeList .who { flex-basis: calc(var(--nameW) + 46px); width: calc(var(--nameW) + 46px); max-width: calc(var(--nameW) + 46px); cursor: pointer; }
   #memberTitle { display: flex; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 0 12px; min-height: 46px; margin-bottom: 10px; }
