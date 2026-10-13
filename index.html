@@ -515,6 +515,7 @@
   html, body { overflow-x: hidden; }
   input, textarea, select { font-size: max(16px, 1em); }
   header .tagline { font-size: 13px; font-weight: 400; color: var(--sub); letter-spacing: 0; margin-left: 4px; align-self: flex-end; padding-bottom: 3px; }
+  .dataHint { font-size: 12px; }
 </style>
 </head>
 <body>
@@ -532,7 +533,7 @@
       <button id="btnImport" type="button">データを復元</button>
       <input id="importFile" type="file" accept=".json,application/json" hidden>
     </div>
-    <div class="hint">保存したファイルで、データの復元や機種変更ができます</div>
+    <div class="hint dataHint">保存したファイルで、データの復元や機種変更ができます</div>
   </section>
 
   <!-- メンバー一覧 -->
