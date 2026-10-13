@@ -507,6 +507,10 @@
   #btnPick { width: var(--nameW); }
   #btnPick .who { margin-right: 0; }
   #btnGuest .who, #btnFeeAdd .who { margin: 0; }
+  .dataRow { display: flex; gap: 8px; margin-top: 28px; }
+  .dataRow button { flex: 1; min-height: 40px; padding: 6px 8px; font-size: 14px; font-weight: 400; background: #fff; color: var(--green); border: 1px solid var(--line); }
+  .dataRow button:active { background: var(--sel); }
+  #importFile[hidden] { display: none; }
 </style>
 </head>
 <body>
@@ -519,6 +523,12 @@
     <button id="btnHistory" type="button">イベント履歴</button>
     <button id="btnGroups" type="button">グループ一覧/グループ追加</button>
     <button id="btnPeople" type="button">メンバー一覧/メンバー追加</button>
+    <div class="dataRow">
+      <button id="btnExport" type="button">データを書き出す</button>
+      <button id="btnImport" type="button">データを読み込む</button>
+      <input id="importFile" type="file" accept=".json,application/json" hidden>
+    </div>
+    <div class="hint">書き出したファイルで、バックアップや機種変更ができます</div>
   </section>
 
   <!-- メンバー一覧 -->
@@ -667,7 +677,7 @@
   <section id="viewDraw" hidden>
     <button id="btnDrawBack" class="link" type="button">← 戻る</button>
     <div class="eventName" id="drawEvent"></div>
-    <div class="drawHead"><span class="tl"><span class="gp big"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false"> <path d="M18 52 L32 34 L46 52" fill="none" stroke="#17523a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/> <rect x="12" y="51" width="40" height="5" rx="2.5" fill="#17523a"/> <polygon points="24,8 40,8 51,19 51,35 40,46 24,46 13,35 13,19" fill="#1f6b45" stroke="#17523a" stroke-width="2"/> <polygon points="26,13 38,13 46,21 46,33 38,41 26,41 18,33 18,21" fill="none" stroke="var(--sel)" stroke-width="1.5" opacity="0.6"/> <line x1="32" y1="27" x2="56" y2="14" stroke="#17523a" stroke-width="3" stroke-linecap="round"/> <circle cx="57" cy="13" r="3.5" fill="#f2b705" stroke="#17523a" stroke-width="1.5"/> <circle cx="32" cy="27" r="3" fill="var(--sel)"/> <circle cx="9" cy="47" r="5" fill="#e5382b" stroke="#a52a20" stroke-width="1"/> <circle cx="7.5" cy="45.5" r="1.4" fill="#fff" opacity="0.8"/> </svg></span><span class="am big" id="rlBig" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="35" r="25" fill="#fff" stroke="#17523a" stroke-width="3"/><path d="M32 35 L32 10 A25 25 0 0 1 53.65 22.5 Z" fill="#e5382b"/><path d="M32 35 L53.65 22.5 A25 25 0 0 1 53.65 47.5 Z" fill="#1f7ae0"/><path d="M32 35 L53.65 47.5 A25 25 0 0 1 32 60 Z" fill="#f2b705"/><path d="M32 35 L32 60 A25 25 0 0 1 10.35 47.5 Z" fill="#2fa84f"/><path d="M32 35 L10.35 47.5 A25 25 0 0 1 10.35 22.5 Z" fill="#f57c1f"/><path d="M32 35 L10.35 22.5 A25 25 0 0 1 32 10 Z" fill="#7b47d1"/><circle cx="32" cy="35" r="25" fill="none" stroke="#17523a" stroke-width="3"/><circle cx="32" cy="35" r="5" fill="#17523a"/><path d="M26 2 L38 2 L32 13 Z" fill="#17523a"/></svg></span><span class="am big" id="amBig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="4" y="4" width="56" height="56" rx="10" fill="var(--sel)"/><g stroke="#17523a" stroke-width="3.5" stroke-linecap="round"><line x1="16" y1="12" x2="16" y2="52"/><line x1="32" y1="12" x2="32" y2="52"/><line x1="48" y1="12" x2="48" y2="52"/><line x1="16" y1="20" x2="32" y2="20"/><line x1="32" y1="30" x2="48" y2="30"/><line x1="16" y1="40" x2="32" y2="40"/><line x1="32" y1="46" x2="48" y2="46"/></g><polyline points="16,12 16,20 32,20 32,30 48,30 48,46 32,46 32,52" fill="none" stroke="#e5382b" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="54" r="4.5" fill="#e5382b"/></svg></span><span class="t" id="drawTitle"></span></span><button id="btnRest" type="button"><span class="gp small" id="restMark"></span><span id="restText">まとめてガラポン</span></button><button id="btnCopyTop" class="link" type="button" hidden>コピー</button></div>
+    <div class="drawHead"><span class="tl"><span class="gp big"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false"> <path d="M18 52 L32 34 L46 52" fill="none" stroke="#17523a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/> <rect x="12" y="51" width="40" height="5" rx="2.5" fill="#17523a"/> <polygon points="24,8 40,8 51,19 51,35 40,46 24,46 13,35 13,19" fill="#1f6b45" stroke="#17523a" stroke-width="2"/> <polygon points="26,13 38,13 46,21 46,33 38,41 26,41 18,33 18,21" fill="none" stroke="var(--sel)" stroke-width="1.5" opacity="0.6"/> <line x1="32" y1="27" x2="56" y2="14" stroke="#17523a" stroke-width="3" stroke-linecap="round"/> <circle cx="57" cy="13" r="3.5" fill="#f2b705" stroke="#17523a" stroke-width="1.5"/> <circle cx="32" cy="27" r="3" fill="var(--sel)"/> <circle cx="9" cy="47" r="5" fill="#e5382b" stroke="#a52a20" stroke-width="1"/> <circle cx="7.5" cy="45.5" r="1.4" fill="#fff" opacity="0.8"/> </svg></span><span class="am big" id="rlBig" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><circle cx="32" cy="35" r="25" fill="#fff" stroke="#17523a" stroke-width="3"/><path d="M32 35 L32 10 A25 25 0 0 1 53.65 22.5 Z" fill="#1f7ae0"/><path d="M32 35 L53.65 22.5 A25 25 0 0 1 53.65 47.5 Z" fill="#e5382b"/><path d="M32 35 L53.65 47.5 A25 25 0 0 1 32 60 Z" fill="#f2b705"/><path d="M32 35 L32 60 A25 25 0 0 1 10.35 47.5 Z" fill="#2fa84f"/><path d="M32 35 L10.35 47.5 A25 25 0 0 1 10.35 22.5 Z" fill="#f57c1f"/><path d="M32 35 L10.35 22.5 A25 25 0 0 1 32 10 Z" fill="#7b47d1"/><circle cx="32" cy="35" r="25" fill="none" stroke="#17523a" stroke-width="3"/><circle cx="32" cy="35" r="5" fill="#17523a"/><circle cx="40.5" cy="49.5" r="5" fill="#e5382b" stroke="#a52a20" stroke-width="1"/><circle cx="39" cy="48" r="1.4" fill="#fff" opacity="0.8"/></svg></span><span class="am big" id="amBig"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="4" y="4" width="56" height="56" rx="10" fill="var(--sel)"/><g stroke="#17523a" stroke-width="3.5" stroke-linecap="round"><line x1="16" y1="12" x2="16" y2="52"/><line x1="32" y1="12" x2="32" y2="52"/><line x1="48" y1="12" x2="48" y2="52"/><line x1="16" y1="20" x2="32" y2="20"/><line x1="32" y1="30" x2="48" y2="30"/><line x1="16" y1="40" x2="32" y2="40"/><line x1="32" y1="46" x2="48" y2="46"/></g><polyline points="16,12 16,20 32,20 32,30 48,30 48,46 32,46 32,52" fill="none" stroke="#e5382b" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="54" r="4.5" fill="#e5382b"/></svg></span><span class="t" id="drawTitle"></span></span><button id="btnRest" type="button"><span class="gp small" id="restMark"></span><span id="restText">まとめてガラポン</span></button><button id="btnCopyTop" class="link" type="button" hidden>コピー</button></div>
     <div id="quota"></div>
     <div id="gpBox" hidden><svg xmlns="http://www.w3.org/2000/svg" viewBox="-22 2 80 60" aria-hidden="true" focusable="false"><defs><linearGradient id="gpRainbow" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e5382b"/><stop offset="0.2" stop-color="#f57c1f"/><stop offset="0.4" stop-color="#f2b705"/><stop offset="0.6" stop-color="#2fa84f"/><stop offset="0.8" stop-color="#1f7ae0"/><stop offset="1" stop-color="#7b47d1"/></linearGradient></defs><path d="M18 52 L32 34 L46 52" fill="none" stroke="#17523a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><rect x="12" y="51" width="40" height="5" rx="2.5" fill="#17523a"/><g id="gpDrum"><polygon points="24,8 40,8 51,19 51,35 40,46 24,46 13,35 13,19" fill="#1f6b45" stroke="#17523a" stroke-width="2"/><polygon points="26,13 38,13 46,21 46,33 38,41 26,41 18,33 18,21" fill="none" stroke="var(--sel)" stroke-width="1.5" opacity="0.6"/><line x1="32" y1="27" x2="56" y2="14" stroke="#17523a" stroke-width="3" stroke-linecap="round"/><circle cx="57" cy="13" r="3.5" fill="#f2b705" stroke="#17523a" stroke-width="1.5"/></g><circle cx="32" cy="27" r="3" fill="var(--sel)"/><g id="gpBall" visibility="hidden"><circle id="gpBallC" cx="-7" cy="42.5" r="7.5" stroke="#555" stroke-width="0.8"/><text id="gpBallT" x="-7" y="45.3" text-anchor="middle" font-size="7.5" font-weight="700"></text></g><path d="M-20 49 L6 49 Q5 56 -7 56 Q-19 56 -20 49 Z" fill="#1f6b45" stroke="#17523a" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
     <div id="wheelBox" hidden><div id="wheel"></div></div>
@@ -1280,9 +1290,13 @@
       var pts = amidaPath(d, d.ids.indexOf(p[0]), function (cc) { return rowY(cc); }, function (r) { return r < 0 ? 0 : r >= d.rows ? LW : stepX(r); })
         .map(function (q) { return [q[1], q[0]]; });
       var line = svgEl('polyline', { points: pts.map(function (q) { return q.join(','); }).join(' '), class: 'amP' });
-      line.style.stroke = d.order ? 'var(--green)' : colorOf(p[1]).hex === '#ffffff' ? '#bbb' : colorOf(p[1]).hex;
+      var lineCol = d.order ? 'var(--green)' : colorOf(p[1]).hex === '#ffffff' ? '#bbb' : colorOf(p[1]).hex;
+      line.style.stroke = lineCol;
       svg.appendChild(line);
       if (anim(p[0])) {
+        // 伸びている間は色を付けない（色で答えが先に分からないように）。着いたら組の色に
+        line.style.stroke = '#555';
+        (function (ln, col) { setTimeout(function () { ln.style.stroke = col; }, 1600); })(line, lineCol);
         var len = 0; for (var i = 1; i < pts.length; i++) len += Math.abs(pts[i][0] - pts[i - 1][0]) + Math.abs(pts[i][1] - pts[i - 1][1]);
         line.style.strokeDasharray = len; line.style.strokeDashoffset = len;
         line.getBoundingClientRect();
@@ -2427,6 +2441,35 @@
     data.events.push(e); data.cur = e.id; panelOpen = null; homeNew = false;
     saveData(); go();
   }
+  // データの書き出し：全データを1つのファイル（.json）でダウンロード
+  $('btnExport').addEventListener('click', function () {
+    saveData();
+    var text = JSON.stringify(data, null, 1);
+    var blob = new Blob([text], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'pickpon-' + today() + '.json';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+    toast('書き出しました');
+  });
+  // データの読み込み：ファイルの中身で今のデータを置き換える（前のデータは控えを残す）
+  $('btnImport').addEventListener('click', function () { $('importFile').value = ''; $('importFile').click(); });
+  $('importFile').addEventListener('change', function () {
+    var f = this.files && this.files[0]; if (!f) return;
+    var rd = new FileReader();
+    rd.onload = function () {
+      var d = null;
+      try { d = JSON.parse(String(rd.result)); } catch (e) {}
+      if (!d || typeof d !== 'object' || !Array.isArray(d.people) || !Array.isArray(d.events)) { toast('Pick Pon のデータではありません'); return; }
+      var msg = 'このファイルのデータで、今のデータを置き換えます。\n（メンバー ' + d.people.length + '人・イベント ' + d.events.length + '件）\nよろしいですか？';
+      if (!window.confirm(msg)) return;
+      try { localStorage.setItem(STORAGE_KEY + '_before_import', JSON.stringify(data)); } catch (e) {}
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); } catch (e) { toast('読み込めませんでした'); return; }
+      location.reload();
+    };
+    rd.readAsText(f);
+  });
   $('btnHistory').addEventListener('click', function () { histOpen = true; go(); });
   $('btnHistoryBack').addEventListener('click', function () { histOpen = false; go(); });
   $('btnGroups').addEventListener('click', function () { groupsOpen = true; go(); });
